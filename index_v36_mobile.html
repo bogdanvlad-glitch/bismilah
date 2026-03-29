@@ -1,0 +1,3540 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1730" />
+<title>Roi du Quartier</title>
+<style>
+:root{
+  --bg:#0b1730;
+  --bg2:#102246;
+  --card:#132a54;
+  --card2:#183664;
+  --line:rgba(255,255,255,.08);
+  --text:#eef4ff;
+  --muted:#abc0e4;
+  --gold:#f4c56f;
+  --green:#59d49c;
+  --blue:#7bc2ff;
+  --orange:#ff9e62;
+  --red:#ff8a8a;
+  --purple:#b18cff;
+  --shadow:0 18px 42px rgba(0,0,0,.28);
+  --radius:24px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;padding:0;min-height:100%;
+  background:linear-gradient(180deg,#081328 0%, #0d2042 32%, #122a54 100%);
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+body{display:flex;justify-content:center;overflow-x:hidden}
+button,input{font:inherit}
+.app{width:100%;max-width:560px;min-height:100vh;padding:14px 14px calc(108px + env(safe-area-inset-bottom));position:relative;z-index:1}
+.orb,.orb2,.orb3{position:fixed;border-radius:999px;pointer-events:none;filter:blur(22px);z-index:0}
+.orb{width:340px;height:340px;left:-110px;bottom:-130px;background:radial-gradient(circle,rgba(87,135,221,.28),rgba(87,135,221,0) 72%)}
+.orb2{width:280px;height:280px;right:-110px;top:0;background:radial-gradient(circle,rgba(89,212,156,.14),rgba(89,212,156,0) 68%)}
+.orb3{width:240px;height:240px;left:20%;top:120px;background:radial-gradient(circle,rgba(244,197,111,.10),rgba(244,197,111,0) 70%)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:calc(4px + env(safe-area-inset-top));position:relative;z-index:2}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:54px;height:54px;border-radius:18px;background:linear-gradient(180deg,#1d4a84,#14355f);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.logo svg{width:32px;height:32px;filter:drop-shadow(0 4px 10px rgba(244,197,111,.35))}
+.brand-title{font-size:22px;font-weight:900;line-height:1}
+.brand-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.money-pill{border:none;cursor:pointer;padding:11px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:900;box-shadow:var(--shadow);backdrop-filter:blur(8px)}
+.banner{display:none;margin-top:12px;padding:13px 14px;border-radius:18px;background:rgba(244,197,111,.14);color:#fff5dd;border:1px solid rgba(244,197,111,.22);font-size:13px;font-weight:800}
+.page{display:none;animation:pageIn .24s ease}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:linear-gradient(180deg,rgba(24,54,100,.97),rgba(19,42,84,.99));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.hero{padding:18px;margin-top:14px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;right:-40px;top:-60px;width:180px;height:180px;border-radius:999px;background:radial-gradient(circle,rgba(244,197,111,.22),rgba(244,197,111,0) 68%)}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:relative;z-index:2}
+.hero-badge{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:900;color:#dbe7ff}
+h1{margin:0;font-size:29px;line-height:1.03;font-weight:900;max-width:270px}
+.sub{color:var(--muted);font-size:14px;line-height:1.45;margin-top:8px;max-width:300px}
+.hero-visual{margin-top:16px;height:190px;border-radius:22px;overflow:hidden;position:relative;border:1px solid rgba(255,255,255,.08);background:#1a4377}
+.hero-visual img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,18,38,.02),rgba(8,18,38,.28))}
+.hero-actions{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:14px}
+.collect-btn{border:none;cursor:pointer;border-radius:20px;background:linear-gradient(180deg,#ffd28d,#f4c56f);color:#543608;padding:15px 16px;font-size:18px;font-weight:900;box-shadow:0 14px 26px rgba(244,197,111,.28);position:relative;overflow:hidden;animation:pulse 2.3s infinite}
+.collect-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.24),rgba(255,255,255,0));transform:translateX(-120%);animation:shine 2.8s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.016)}}
+@keyframes shine{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
+.boost-btn{border:none;cursor:pointer;border-radius:20px;padding:0 16px;background:linear-gradient(180deg,#6ae4b5,#59d49c);color:#063425;font-weight:900}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.stat{padding:14px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+.stat-label{font-size:12px;color:var(--muted);margin-bottom:6px}
+.stat-value{font-size:19px;font-weight:900}
+.section{margin-top:18px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:10px}
+.section-title{font-size:20px;font-weight:900}
+.section-sub{font-size:12px;color:var(--muted);line-height:1.45;max-width:280px}
+.muted-tag{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:900}
+.quick-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.quick-card{padding:14px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);min-height:120px}
+.q-icon{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.q-icon svg{width:22px;height:22px}
+.q-title{font-size:13px;font-weight:900}
+.q-text{font-size:12px;color:var(--muted);line-height:1.35;margin-top:6px}
+.list{display:grid;gap:12px}
+.biz-card,.city-card,.mission-card,.empire-card,.market-card{padding:14px}
+.biz-card,.city-card,.market-card{position:relative;overflow:hidden}
+.biz-card::after,.city-card::after,.market-card::after{content:"";position:absolute;right:-24px;top:-36px;width:120px;height:120px;border-radius:999px;background:radial-gradient(circle,rgba(255,255,255,.08),rgba(255,255,255,0) 70%)}
+.row-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;position:relative;z-index:2}
+.left-wrap{display:flex;gap:12px;align-items:flex-start;min-width:0;flex:1}
+.thumb{width:112px;height:82px;border-radius:20px;overflow:hidden;flex-shrink:0;background:#1b497f;border:1px solid rgba(255,255,255,.08);position:relative}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0))}
+.name{font-size:16px;font-weight:900}
+.desc{font-size:12px;color:var(--muted);line-height:1.45;margin-top:5px}
+.tag{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:900;white-space:nowrap}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.metric{padding:11px 12px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+.metric .label{font-size:11px;color:var(--muted);margin-bottom:4px}
+.metric .value{font-size:14px;font-weight:900}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.cta,.cta-soft,.btn-line,.manager-btn,.segment-btn,.trade-btn,.upgrade-buy{border:none;cursor:pointer;border-radius:16px;font-weight:900}
+.cta,.cta-soft,.btn-line{padding:12px}
+.cta small,.cta-soft small,.btn-line small{display:block;font-size:11px;font-weight:700;opacity:.9;margin-top:4px}
+.cta{background:linear-gradient(180deg,#7ec1ff,#77bcff);color:#08274d}
+.cta-soft{background:linear-gradient(180deg,#6ae4b5,#59d49c);color:#063425}
+.btn-line{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.08)}
+.btn-line.gold{background:linear-gradient(180deg,#ffd28d,#f4c56f);color:#543608;border:none}
+.btn-line.danger{background:rgba(255,138,138,.10);color:#ffd8d8;border:1px solid rgba(255,138,138,.20)}
+.cta:disabled,.cta-soft:disabled,.btn-line:disabled,.manager-btn:disabled,.upgrade-buy:disabled{
+  background:linear-gradient(180deg,#7e8797,#687283) !important;
+  color:#d7dde6 !important;
+  border-color:rgba(255,255,255,.04) !important;
+  cursor:not-allowed;
+  opacity:.72;
+  box-shadow:none;
+}
+.purchase-pop{
+  animation:purchasePop .82s cubic-bezier(.2,.9,.2,1);
+  transform-origin:center;
+}
+@keyframes purchasePop{
+  0%{transform:scale(1); filter:brightness(1)}
+  18%{transform:scale(1.04) rotate(-.25deg); filter:brightness(1.10)}
+  44%{transform:scale(1.09) rotate(.25deg); filter:brightness(1.20)}
+  100%{transform:scale(1); filter:brightness(1)}
+}
+.cash-pop{
+  animation:cashPulse .72s ease;
+}
+@keyframes cashPulse{
+  0%{transform:scale(1)}
+  35%{transform:scale(1.14)}
+  100%{transform:scale(1)}
+}
+.spark-pop{
+  position:absolute;
+  width:16px;height:16px;border-radius:999px;
+  background:linear-gradient(180deg,#ffd28d,#f4c56f);
+  box-shadow:0 0 0 6px rgba(244,197,111,.18),0 0 16px rgba(244,197,111,.40);
+  animation:sparkPop 1.0s ease forwards;
+}
+@keyframes sparkPop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.28)}
+  15%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.55)}
+}
+
+.action-pop{
+  animation:actionPop .48s ease;
+}
+@keyframes actionPop{
+  0%{transform:scale(1)}
+  35%{transform:scale(1.10)}
+  100%{transform:scale(1)}
+}
+.purchase-label{
+  position:absolute;
+  padding:10px 14px;border-radius:999px;
+  background:rgba(255,255,255,.98);
+  color:#6b4a17;font-size:13px;font-weight:900;
+  box-shadow:0 12px 24px rgba(18,33,66,.20);
+  animation:purchaseLabel 1.1s ease forwards;
+  pointer-events:none;
+}
+@keyframes purchaseLabel{
+  0%{opacity:0;transform:translate(-50%,-6px) scale(.76)}
+  15%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-66px) scale(1)}
+}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.pill{padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.06);font-size:11px;font-weight:800;color:#dbe7ff}
+.manager-box{margin-top:12px;padding:12px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+.manager-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.manager-title{font-size:13px;font-weight:900}
+.manager-sub{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.4}
+.manager-btn{padding:10px 12px;font-size:12px;background:linear-gradient(180deg,#ffd28d,#f4c56f);color:#543608;white-space:nowrap}
+.manager-btn.active{background:linear-gradient(180deg,#6ae4b5,#59d49c);color:#063425}
+.map-card{padding:14px}
+.map-wrap{position:relative;height:340px;border-radius:26px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:
+  radial-gradient(circle at 20% 18%, rgba(123,194,255,.22), rgba(123,194,255,0) 20%),
+  radial-gradient(circle at 82% 16%, rgba(89,212,156,.18), rgba(89,212,156,0) 16%),
+  linear-gradient(180deg,#1b3d6f,#112b53)}
+.map-water{position:absolute;inset:0;background:
+  radial-gradient(circle at 14% 18%, rgba(123,194,255,.22), rgba(123,194,255,0) 18%),
+  radial-gradient(circle at 84% 24%, rgba(123,194,255,.18), rgba(123,194,255,0) 16%),
+  radial-gradient(circle at 52% 88%, rgba(89,212,156,.12), rgba(89,212,156,0) 24%)}
+.map-svg{position:absolute;inset:0;width:100%;height:100%}
+.route-glow{filter:drop-shadow(0 0 10px rgba(244,197,111,.22))}
+.traveler,.traveler.two,.traveler.three{position:absolute;width:12px;height:12px;border-radius:999px}
+.traveler{background:linear-gradient(180deg,#ffd28d,#f4c56f);box-shadow:0 0 0 4px rgba(244,197,111,.12),0 0 14px rgba(244,197,111,.26);animation:moveOne 10s linear infinite}
+.traveler.two{background:linear-gradient(180deg,#8cc9ff,#7bc2ff);box-shadow:0 0 0 4px rgba(123,194,255,.12),0 0 14px rgba(123,194,255,.24);animation:moveTwo 13s linear infinite}
+.traveler.three{background:linear-gradient(180deg,#b18cff,#9d73ff);box-shadow:0 0 0 4px rgba(177,140,255,.12),0 0 14px rgba(177,140,255,.24);animation:moveThree 11s linear infinite}
+@keyframes moveOne{0%{left:12%;top:62%}25%{left:28%;top:44%}50%{left:46%;top:66%}75%{left:68%;top:50%}100%{left:90%;top:20%}}
+@keyframes moveTwo{0%{left:90%;top:20%}25%{left:82%;top:34%}50%{left:68%;top:50%}75%{left:46%;top:66%}100%{left:12%;top:62%}}
+@keyframes moveThree{0%{left:28%;top:44%}25%{left:46%;top:66%}50%{left:68%;top:50%}75%{left:82%;top:34%}100%{left:28%;top:44%}}
+.map-nodes{position:absolute;inset:0}
+.city-node{position:absolute;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:26px;overflow:hidden;background:#fff;border:3px solid rgba(255,255,255,.96);box-shadow:0 16px 30px rgba(0,0,0,.22);cursor:pointer}
+.city-node img{width:100%;height:100%;object-fit:cover;display:block}
+.city-node::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.16))}
+.city-node.active{outline:4px solid rgba(244,197,111,.96);box-shadow:0 0 0 8px rgba(244,197,111,.10),0 16px 30px rgba(0,0,0,.22)}
+.city-node.locked{filter:grayscale(.92);opacity:.55}
+.city-lock{position:absolute;right:-8px;top:-8px;width:30px;height:30px;border-radius:999px;background:#fff;border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:var(--shadow)}
+.city-ring{position:absolute;left:50%;top:50%;width:112px;height:112px;border-radius:999px;border:2px solid rgba(244,197,111,.28);transform:translate(-50%,-50%);animation:ringPulse 2.2s ease-in-out infinite;pointer-events:none}
+@keyframes ringPulse{0%,100%{opacity:.8;transform:translate(-50%,-50%) scale(1)}50%{opacity:.15;transform:translate(-50%,-50%) scale(1.14)}}
+.city-label{position:absolute;transform:translateX(-50%);padding:7px 12px;border-radius:999px;background:rgba(7,18,38,.88);border:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:900;color:#f4f7ff;white-space:nowrap;box-shadow:0 8px 20px rgba(0,0,0,.14)}
+.focus-card{padding:14px}
+.focus-grid{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:start}
+.focus-cover{width:110px;height:110px;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.focus-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.mission-card.done{background:linear-gradient(180deg,rgba(89,212,156,.16),rgba(19,42,84,.99));border-color:rgba(89,212,156,.16)}
+.mission-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.mission-state{font-size:12px;font-weight:900;color:#c7f6dc;white-space:nowrap}
+
+.segment{
+  display:flex;gap:8px;margin-bottom:10px;background:#ffffff;padding:6px;border-radius:18px;border:1px solid #e7ebf1;
+}
+.segment-btn{
+  flex:1;padding:10px 12px;background:transparent;color:#7f8793;font-weight:800;border:none;border-radius:14px;cursor:pointer;
+}
+.segment-btn.active{background:#edf2ff;color:#4670c7}
+.markets-shell{
+  background:#f5f7fb;border:1px solid rgba(255,255,255,.06);border-radius:28px;padding:14px;box-shadow:var(--shadow);
+}
+.market-screen-title{font-size:18px;font-weight:900;color:#20242b;margin-bottom:10px}
+.market-screen-sub{font-size:12px;color:#7f8793;margin-bottom:12px}
+.market-list{display:grid;gap:0;background:#fff;border:1px solid #e8edf3;border-radius:22px;overflow:hidden}
+.market-portfolio-card{
+  width:100%;border:none;cursor:pointer;text-align:left;
+  margin:12px 0 14px;padding:24px 22px;border-radius:28px;overflow:hidden;
+  background:linear-gradient(115deg,#4f71c8 0%, #294f98 38%, #1d3363 100%);
+  color:#fff;box-shadow:0 14px 34px rgba(34,55,109,.28);position:relative;
+}
+.market-portfolio-card::after{
+  content:"";position:absolute;right:-44px;top:-34px;width:170px;height:170px;border-radius:999px;
+  background:radial-gradient(circle,rgba(255,255,255,.16),rgba(255,255,255,0) 68%);
+}
+.market-portfolio-title{font-size:13px;opacity:.92}
+.market-portfolio-value{font-size:44px;font-weight:900;letter-spacing:-0.03em;margin-top:10px;line-height:1}
+.market-portfolio-change{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:17px;font-weight:800}
+.market-portfolio-change.up{color:#30e089}
+.market-portfolio-change.down{color:#ffcbc5}
+.market-portfolio-cta{
+  position:absolute;right:22px;bottom:20px;border:none;border-radius:22px;padding:16px 26px;
+  background:rgba(255,255,255,.12);color:#fff;font-size:20px;font-weight:900;backdrop-filter:blur(4px);
+}
+.market-portfolio-empty{width:100%;margin:12px 0 14px;padding:18px 16px;border-radius:24px;background:#fff;border:1px solid #e8edf3;color:#7f8793;font-size:13px;line-height:1.5}
+.market-empty{padding:18px;background:#fff;color:#7f8793;font-size:13px;line-height:1.5}
+
+.market-row{
+  position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:16px 14px;background:#fff;cursor:pointer;border-bottom:1px solid #edf0f5;
+}
+.market-row:last-child{border-bottom:none}
+.market-row-left{display:flex;align-items:center;gap:14px;min-width:0;flex:1}
+.market-logo{
+  width:54px;height:54px;border-radius:999px;overflow:hidden;flex-shrink:0;background:#fff;border:1px solid #edf0f5;
+}
+.market-logo img{width:100%;height:100%;display:block}
+.market-name{font-size:15px;font-weight:900;color:#20242b}
+.market-symbol{font-size:12px;color:#8a9099;margin-top:4px}
+.market-row-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-left:8px}
+.market-price{font-size:17px;font-weight:900;color:#20242b;text-align:right}
+.market-delta{font-size:12px;font-weight:800;text-align:right}
+.delta-up{color:#12b76a}
+.delta-down{color:#e15b52}
+.market-fav{
+  width:30px;height:30px;border:none;background:transparent;cursor:pointer;flex-shrink:0;color:#c6cad3;font-size:18px;display:flex;align-items:center;justify-content:center;
+}
+.market-fav.active{color:#ff5a7d}
+
+#marketModal,#tradeModal{align-items:center;padding:12px}
+.market-sheet{
+  background:#f6f7fb!important;border-color:#e7ebf1!important;color:#20242b!important;
+  width:100%;max-width:430px;max-height:min(900px, calc(100vh - 24px));padding:18px;border-radius:28px;
+}
+.market-sheet .sheet-handle{background:#d7dde7}
+.market-sheet .sheet-title{color:#20242b}
+.market-sheet .sheet-sub{color:#7f8793}
+.market-sheet .close-btn{background:#ffffff;border:1px solid #e7ebf1;color:#20242b}
+.market-modal-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:10px;position:sticky;top:0;z-index:5;
+  background:#f6f7fb;padding-bottom:6px;
+}
+.market-modal-close{
+  border:none;background:#fff;color:#20242b;border:1px solid #e7ebf1;
+  border-radius:14px;padding:10px 14px;font-size:13px;font-weight:900;cursor:pointer;
+}
+.market-modal-close.secondary{
+  background:#eef2f7;color:#4f71c8;
+}
+.market-detail-screen{padding:2px 2px 10px}
+.market-detail-header{display:flex;align-items:flex-start;gap:18px;margin-bottom:8px}
+.market-big-logo{width:92px;height:92px;border-radius:999px;overflow:hidden;flex-shrink:0;background:#fff;border:1px solid #e9edf4}
+.market-big-logo img{width:100%;height:100%;display:block}
+.market-big-name{font-size:24px;font-weight:900;color:#20242b}
+.market-big-price{font-size:28px;font-weight:900;color:#20242b;margin-top:6px;letter-spacing:-0.02em}
+.market-change-box{margin-top:12px;background:#eef2f7;border-radius:20px;padding:14px 16px;display:inline-flex;flex-direction:column;gap:6px}
+.market-change-main{font-size:16px;font-weight:900;color:#20242b}
+.market-change-sub{font-size:14px;font-weight:800}
+.market-detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.market-action-btn{border:none;border-radius:18px;padding:16px 14px;font-size:18px;font-weight:900;cursor:pointer}
+.market-action-btn.buy,.market-action-btn.sell{background:#4f71c8;color:#fff}
+.market-action-btn.buy.secondary{background:#dfe4ed;color:#4f71c8}
+.market-action-btn[disabled]{opacity:.5;cursor:not-allowed}
+.chart-wrap{margin-top:18px;padding:8px 0 0;border-radius:22px;background:#ffffff;border:1px solid #e8edf3;overflow:visible}
+.chart-svg{width:100%;height:300px;display:block}
+.chart-meta{display:flex;justify-content:space-between;gap:10px;padding:0 14px 12px;margin-top:0;font-size:12px;color:#8a9099}
+.chart-legend{display:flex;gap:8px;align-items:center}
+.legend-dot{width:10px;height:10px;border-radius:999px;background:#4f71c8}
+.chart-hover-wrap{position:relative}
+.chart-tooltip{
+  position:absolute;transform:translate(-50%, -100%);
+  min-width:150px;padding:14px 16px;border-radius:16px;background:#f0f2f7;color:#2b2f37;
+  text-align:center;box-shadow:0 10px 20px rgba(18,33,66,.10);pointer-events:none;display:none;z-index:10;
+}
+.chart-tooltip.below{
+  transform:translate(-50%, 14px);
+}
+.chart-tooltip-price{font-size:28px;font-weight:900;letter-spacing:-0.02em;line-height:1}
+.chart-tooltip-time{font-size:12px;color:#677188;margin-top:8px}
+.chart-cross-label{font-size:12px;fill:#8a9099}
+.investments-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.investments-summary-card{padding:12px;border-radius:18px;background:#fff;border:1px solid #e8edf3}
+.investments-summary-card .label{font-size:12px;color:#8a9099;margin-bottom:4px}
+.investments-summary-card .value{font-size:18px;color:#20242b;font-weight:900}
+.investments-list{display:grid;gap:10px;margin-top:14px}
+.investment-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:#fff;border:1px solid #e8edf3;border-radius:20px;cursor:pointer}
+.investment-left{display:flex;align-items:center;gap:12px;min-width:0}
+.investment-name{font-size:15px;font-weight:900;color:#20242b}
+.investment-sub{font-size:12px;color:#8a9099;margin-top:4px}
+.investment-right{text-align:right}
+.investment-value{font-size:15px;font-weight:900;color:#20242b}
+.investment-pnl{font-size:12px;font-weight:800;margin-top:4px}
+.market-details-box{margin-top:20px;background:#ffffff;border:1px solid #e8edf3;border-radius:22px;padding:14px}
+.market-details-title{font-size:16px;font-weight:900;color:#20242b;margin-bottom:12px}
+.market-stats-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.market-stat-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid #eef2f7}
+.market-stat-row:last-child{border-bottom:none}
+.market-stat-label{font-size:12px;color:#8a9099}
+.market-stat-value{font-size:15px;color:#20242b;font-weight:900;text-align:right}
+.trade-page{padding:2px 2px 8px}
+.trade-title{font-size:26px;font-weight:900;color:#20242b;margin-bottom:18px}
+.trade-balance{font-size:16px;color:#20242b;margin-bottom:16px}
+.trade-balance strong{font-size:18px}
+.trade-asset-row{background:#fff;border:1px solid #e8edf3;border-radius:22px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.trade-asset-left{display:flex;align-items:center;gap:14px;min-width:0}
+.trade-asset-name{font-size:15px;font-weight:900;color:#20242b}
+.trade-asset-sub{font-size:12px;color:#8a9099;margin-top:4px}
+.trade-qty-section{margin-top:22px}
+.trade-qty-label{font-size:16px;font-weight:800;color:#20242b;margin-bottom:10px}
+.trade-qty-box{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:0 0 10px;border-bottom:2px solid #2f2a24}
+.trade-qty-input{width:100%;border:none;outline:none;background:transparent;color:#20242b;font-size:42px;font-weight:800;padding:0}
+.trade-max-btn{border:none;background:#4f71c8;color:#fff;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:900;cursor:pointer}
+.trade-limits{font-size:12px;color:#8a9099;margin-top:10px}
+.trade-summary-line{font-size:18px;font-weight:800;color:#20242b;margin-top:28px}
+.trade-cta{width:100%;margin-top:18px;border:none;border-radius:18px;padding:18px 14px;background:#4f71c8;color:#fff;font-size:20px;font-weight:900;cursor:pointer}
+.trade-cta[disabled]{opacity:.45;cursor:not-allowed}
+
+
+.home-redesign{margin-top:16px}
+.home-wrap{max-width:470px;margin:0 auto}
+.home-top-note{text-align:center;font-size:16px;font-weight:900;color:#f4f7ff;margin:0 0 12px;text-shadow:0 8px 18px rgba(0,0,0,.22)}
+.home-board{padding:16px;border-radius:34px;background:linear-gradient(135deg,#25d4cf 0%, #2778db 55%, #1f2f90 100%);border:1px solid rgba(255,255,255,.14);box-shadow:0 22px 50px rgba(0,0,0,.32)}
+.home-phone{position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.03));min-height:680px}
+.home-notch{display:none}
+.home-content{padding:54px 16px 122px}
+.home-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.home-kicker{font-size:14px;font-weight:900;color:rgba(255,255,255,.92)}
+.home-title-big{margin-top:4px;font-size:34px;line-height:1;letter-spacing:-.03em;font-weight:900;color:#10284d}
+.home-city{margin-top:6px;font-size:13px;color:rgba(255,255,255,.82);font-weight:800}
+.home-balance-card{margin-top:16px;padding:16px 16px 18px;border-radius:24px;background:linear-gradient(135deg,rgba(31,39,53,.88),rgba(57,68,83,.72));border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 34px rgba(0,0,0,.24);position:relative;overflow:hidden}
+.home-balance-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 25%, rgba(255,255,255,.10), transparent 24%),radial-gradient(circle at 84% 70%, rgba(255,255,255,.07), transparent 32%);pointer-events:none}
+.home-balance-row{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative;z-index:1}
+.home-balance-chip{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:900;color:#eff5ff}
+.home-balance-dot{width:12px;height:12px;border-radius:999px;background:linear-gradient(180deg,#ffd28d,#f4c56f);box-shadow:0 0 0 4px rgba(244,197,111,.18)}
+.home-balance-side{font-size:12px;font-weight:900;color:rgba(255,255,255,.78)}
+.home-balance-label{position:relative;z-index:1;margin-top:12px;font-size:15px;color:rgba(255,255,255,.86)}
+.home-balance-value{position:relative;z-index:1;margin-top:6px;font-size:clamp(32px,8vw,54px);line-height:1;font-weight:900;color:white;letter-spacing:-.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.home-balance-mini{position:relative;z-index:1;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;color:rgba(255,255,255,.82);font-size:12px;font-weight:800}
+.home-balance-gain{position:absolute;right:14px;bottom:14px;padding:8px 12px;border-radius:999px;background:rgba(89,212,156,.18);color:#d9ffe9;font-size:14px;font-weight:900;opacity:0;transform:translateY(8px) scale(.9)}
+.home-balance-gain.show{animation:homeGainFlash 1s ease}
+@keyframes homeGainFlash{0%{opacity:0;transform:translateY(8px) scale(.9)}20%{opacity:1;transform:translateY(0) scale(1)}80%{opacity:1;transform:translateY(-2px) scale(1)}100%{opacity:0;transform:translateY(-10px) scale(.96)}}
+.home-tap-card{margin-top:14px;padding:16px;border-radius:24px;background:linear-gradient(135deg,rgba(109,194,255,.92),rgba(59,101,224,.90));border:1px solid rgba(255,255,255,.16);color:#fff;box-shadow:0 18px 34px rgba(25,48,120,.24)}
+.home-tap-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.home-tap-main{font-size:clamp(28px,7vw,40px);font-weight:900;letter-spacing:-.03em}
+.home-tap-main small{font-size:16px;font-weight:800}
+.home-tap-level{font-size:13px;font-weight:900;color:rgba(255,255,255,.96)}
+.home-progress{margin-top:12px;height:4px;border-radius:999px;background:rgba(255,255,255,.28);overflow:hidden}
+.home-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#5ef2c0,#ffffff);border-radius:999px}
+.home-tap-meta{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;color:rgba(255,255,255,.92);font-size:13px;font-weight:800}
+.home-big-tap{position:relative;margin-top:18px;width:100%;min-height:300px;border:none;border-radius:28px;background:#f8fafc;color:#263246;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;overflow:hidden;box-shadow:inset 0 0 0 2px rgba(67,112,196,.18)}
+.home-big-tap::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 22%, rgba(0,0,0,.05), transparent 24%),linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0));pointer-events:none}
+.home-big-tap:active{transform:scale(.995)}
+.home-big-tap-icon{
+  width:110px;height:110px;opacity:.96;
+  display:flex;align-items:center;justify-content:center;
+  font-size:82px;line-height:1;
+}
+.home-big-tap-icon svg{display:none}
+.home-big-tap-title{font-size:clamp(28px,7vw,42px);line-height:1;font-weight:900;color:#243247;text-align:center;padding:0 10px}
+.home-big-tap-sub{font-size:16px;color:#69768a;font-weight:800;text-align:center;padding:0 14px}
+.home-big-tap-sub strong{color:#1b3f91}
+.home-tap-float{position:absolute;top:22px;left:50%;transform:translateX(-50%) translateY(10px) scale(.92);padding:8px 12px;border-radius:999px;background:rgba(89,212,156,.14);color:#0a7b4a;font-size:14px;font-weight:900;opacity:0}
+.home-tap-float.show{animation:homeTapFloat 1s ease}
+@keyframes homeTapFloat{0%{opacity:0;transform:translateX(-50%) translateY(10px) scale(.92)}20%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}100%{opacity:0;transform:translateX(-50%) translateY(-18px) scale(1.02)}}
+.home-pill-grid{margin-top:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.home-pill{padding:12px 10px;border-radius:18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.10);text-align:center}
+.home-pill-label{font-size:11px;color:rgba(255,255,255,.76);font-weight:800}
+.home-pill-value{margin-top:6px;font-size:14px;color:white;font-weight:900}
+.bottom-inner{align-items:center}
+.tab.home-center{
+  position:relative;
+  transform:none;
+  padding:11px 4px;
+  background:rgba(244,197,111,.10);
+  color:#ffe3a8;
+  box-shadow:none;
+}
+.tab.home-center svg{width:22px;height:22px}
+.tab.home-center.active{
+  background:linear-gradient(180deg,#ffd28d,#f4c56f);
+  color:#56390b;
+  box-shadow:0 10px 18px rgba(244,197,111,.22);
+}
+
+@media (max-width:430px){
+  h1{font-size:25px}
+  .quick-row{grid-template-columns:1fr}
+  .detail-hero,.focus-grid{grid-template-columns:1fr}
+  .detail-cover,.focus-cover{width:100%;height:160px}
+  .thumb{width:94px;height:72px}
+  .city-node{width:68px;height:68px}
+  .bottom-inner{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .market-detail-header{flex-direction:column;align-items:flex-start}
+  .market-big-logo{width:84px;height:84px}
+  .home-content{padding:48px 14px 126px}
+  .home-balance-card{padding:14px 14px 16px}
+  .home-balance-value{font-size:clamp(28px,10vw,44px)}
+  .home-tap-row{flex-wrap:wrap}
+  .home-big-tap{min-height:250px}
+  .home-pill-grid{grid-template-columns:1fr}
+}
+
+.realestate-shell{
+  background:#f6f7fb;
+  color:#20242b;
+  border:1px solid #e7ebf1;
+  border-radius:30px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+.re-summary{
+  text-align:center;
+  padding:10px 4px 18px;
+}
+.re-summary-value{
+  font-size:clamp(34px,8vw,62px);
+  font-weight:900;
+  letter-spacing:-0.04em;
+  color:#20242b;
+}
+.re-summary-sub{
+  margin-top:8px;
+  color:#70798a;
+  font-size:15px;
+}
+.re-entry-grid{
+  display:grid;
+  gap:16px;
+}
+.re-entry{
+  position:relative;
+  min-height:210px;
+  border:none;
+  border-radius:30px;
+  overflow:hidden;
+  cursor:pointer;
+  padding:22px;
+  display:flex;
+  align-items:flex-end;
+  text-align:left;
+  color:#fff;
+  background:#12284f;
+  box-shadow:0 16px 30px rgba(0,0,0,.18);
+}
+.re-entry-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.re-entry::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(10,17,31,.10),rgba(10,17,31,.58));
+}
+.re-entry > div{position:relative; z-index:1}
+.re-entry-title{
+  font-size:28px;
+  font-weight:900;
+  line-height:1.05;
+}
+.re-entry-sub{
+  margin-top:10px;
+  font-size:15px;
+  line-height:1.35;
+  max-width:320px;
+}
+.re-entry-badge{
+  position:absolute;
+  right:12px;
+  top:12px;
+  z-index:1;
+  min-width:34px;
+  height:34px;
+  padding:0 10px;
+  border-radius:999px;
+  background:#ef5c79;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  font-weight:900;
+  border:3px solid rgba(255,255,255,.92);
+}
+.re-topbar{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  margin-bottom:14px;
+}
+.re-back{
+  border:none;
+  background:transparent;
+  color:#20242b;
+  font-size:36px;
+  line-height:1;
+  font-weight:400;
+  cursor:pointer;
+  padding:0;
+  flex-shrink:0;
+}
+.re-title{
+  font-size:24px;
+  font-weight:900;
+  line-height:1.05;
+}
+.re-subtitle{
+  margin-top:6px;
+  color:#606a7b;
+  font-size:14px;
+}
+.re-sortbar{
+  display:flex;
+  gap:12px;
+  overflow:auto;
+  padding-bottom:4px;
+  margin:12px 0 14px;
+}
+.re-sortbar::-webkit-scrollbar{display:none}
+.re-sortbtn{
+  border:none;
+  white-space:nowrap;
+  cursor:pointer;
+  padding:14px 18px;
+  border-radius:999px;
+  background:#dfe3ea;
+  color:#2a2f37;
+  font-size:14px;
+  font-weight:900;
+}
+.re-sortbtn.active{
+  background:#3d80ee;
+  color:#fff;
+}
+.re-list{
+  display:grid;
+  gap:16px;
+}
+.re-card{
+  background:#f1f2f4;
+  border:1px solid #e2e6ec;
+  border-radius:28px;
+  overflow:hidden;
+  position:relative;
+}
+.re-card-image{
+  width:100%;
+  height:230px;
+  object-fit:cover;
+  display:block;
+  background:#cfd5df;
+}
+.re-card-badge{
+  position:absolute;
+  right:12px;
+  top:12px;
+  min-width:34px;
+  height:34px;
+  padding:0 10px;
+  border-radius:999px;
+  background:#ef5c79;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  font-weight:900;
+  border:3px solid rgba(255,255,255,.92);
+}
+.re-card-body{
+  padding:18px 18px 20px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:16px;
+  align-items:center;
+}
+.re-card-text{
+  min-width:0;
+}
+.re-price{
+  font-size:34px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-0.04em;
+  color:#111318;
+}
+.re-location{
+  margin-top:12px;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  color:#2d3139;
+}
+.re-pin{
+  color:#4b86f2;
+  font-size:22px;
+  line-height:1;
+  margin-top:2px;
+}
+.re-location-lines{
+  font-size:17px;
+  line-height:1.15;
+}
+.re-card-muted{
+  margin-top:18px;
+  color:#90959f;
+  font-size:16px;
+}
+.re-card-action{
+  border:none;
+  cursor:pointer;
+  padding:24px 34px;
+  border-radius:24px;
+  background:#3d80ee;
+  color:#fff;
+  font-size:22px;
+  font-weight:900;
+  min-width:190px;
+}
+.re-card-action[disabled]{
+  background:#d9d9dc;
+  color:#f7f7f8;
+  cursor:not-allowed;
+}
+.re-empty{
+  padding:18px;
+  border-radius:22px;
+  background:#fff;
+  border:1px solid #e7ebf1;
+  color:#7a8291;
+  line-height:1.55;
+}
+.re-detail-image{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  display:block;
+  border-radius:0 0 28px 28px;
+}
+.re-balance-row{
+  margin:2px 0 14px;
+  text-align:center;
+  font-size:20px;
+  color:#20242b;
+}
+.re-balance-row strong{font-size:22px}
+.re-detail-meta{
+  padding:18px 6px 8px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:18px;
+  align-items:start;
+}
+.re-detail-income{
+  font-size:17px;
+  color:#7e838d;
+  line-height:1.3;
+}
+.re-detail-income strong{
+  display:block;
+  color:#111318;
+  font-size:26px;
+  line-height:1;
+  margin-bottom:8px;
+}
+.re-detail-location{
+  font-size:17px;
+  color:#2d3139;
+  text-align:right;
+  line-height:1.15;
+}
+.re-divider{
+  height:1px;
+  background:#e3e6ec;
+  margin:14px 0 22px;
+}
+.re-section-title{
+  font-size:22px;
+  font-weight:900;
+  margin-bottom:16px;
+}
+.re-upgrades{
+  display:grid;
+  gap:0;
+}
+.re-upgrade{
+  display:grid;
+  grid-template-columns:76px 1fr auto;
+  gap:16px;
+  align-items:center;
+  padding:14px 0;
+  border-bottom:1px solid #e3e6ec;
+}
+.re-upgrade:last-child{border-bottom:none}
+.re-upgrade-icon{
+  width:76px;
+  height:76px;
+  border-radius:18px;
+  background:#e6e6e9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:38px;
+  position:relative;
+}
+.re-upgrade-dot{
+  position:absolute;
+  right:-6px;
+  top:-6px;
+  width:20px;
+  height:20px;
+  border-radius:999px;
+  background:#ef5c79;
+  border:3px solid #f6f7fb;
+}
+.re-upgrade-label{
+  font-size:16px;
+  color:#61666f;
+  line-height:1.3;
+}
+.re-upgrade-price{
+  margin-top:8px;
+  font-size:18px;
+  font-weight:900;
+  color:#111318;
+}
+.re-upgrade-btn{
+  border:none;
+  cursor:pointer;
+  padding:16px 18px;
+  border-radius:18px;
+  background:#3d80ee;
+  color:#fff;
+  font-size:16px;
+  font-weight:900;
+  min-width:132px;
+}
+.re-upgrade-btn[disabled]{
+  background:#d9d9dc;
+  color:#f7f7f8;
+  cursor:not-allowed;
+}
+.re-sell-wrap{
+  margin-top:24px;
+}
+.re-market-value{
+  font-size:20px;
+  color:#2a2f37;
+  margin-bottom:14px;
+}
+.re-market-value strong{
+  font-size:22px;
+  margin-left:8px;
+}
+.re-sell-btn{
+  width:100%;
+  border:none;
+  cursor:pointer;
+  padding:22px 18px;
+  border-radius:22px;
+  background:#3d80ee;
+  color:#fff;
+  font-size:28px;
+  font-weight:900;
+  line-height:1.05;
+}
+.re-sell-btn small{
+  display:block;
+  margin-top:8px;
+  font-size:17px;
+  font-weight:700;
+  opacity:.92;
+}
+@media (max-width:430px){
+  .re-card-body{grid-template-columns:1fr}
+  .re-card-action{width:100%;min-width:0}
+  .re-detail-meta{grid-template-columns:1fr}
+  .re-detail-location{text-align:left}
+  .re-upgrade{grid-template-columns:64px 1fr}
+  .re-upgrade-btn{grid-column:1/-1;width:100%}
+  .re-entry{min-height:190px}
+  .re-summary-value{font-size:48px}
+}
+
+.bottom-nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:560px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(11,23,48,0) 0%,rgba(11,23,48,.82) 18%,rgba(11,23,48,1) 55%);z-index:95}
+.bottom-inner{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:8px;background:rgba(255,255,255,.07);backdrop-filter:blur(10px);border-radius:24px;border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
+.tab{border:none;background:transparent;cursor:pointer;border-radius:18px;padding:9px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#b8c9e8;font-size:10px;font-weight:900}
+.tab svg{width:22px;height:22px}
+.tab.active{background:rgba(244,197,111,.14);color:#ffe3a8}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(18px);background:rgba(7,13,28,.95);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:11px 14px;color:white;font-size:13px;font-weight:900;opacity:0;pointer-events:none;transition:.2s ease;max-width:calc(100vw - 28px);text-align:center;z-index:120}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.particle-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:170}
+.coin-pop{position:absolute;color:#ffdc91;font-size:16px;font-weight:900;animation:coinPop .95s ease forwards;text-shadow:0 6px 14px rgba(0,0,0,.35)}
+@keyframes coinPop{0%{opacity:0;transform:translate(-50%,0) scale(.82)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-74px) scale(1.08)}}
+.modal-backdrop{position:fixed;inset:0;background:rgba(3,9,20,.72);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center;z-index:140;padding:16px}
+.modal-backdrop.show{display:flex}
+.sheet{width:100%;max-width:560px;max-height:86vh;overflow:auto;background:linear-gradient(180deg,#183664,#132a54);border:1px solid rgba(255,255,255,.08);border-radius:28px 28px 20px 20px;padding:16px;box-shadow:var(--shadow);animation:sheetUp .2s ease}
+@keyframes sheetUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet-handle{width:56px;height:6px;border-radius:999px;background:rgba(255,255,255,.18);margin:0 auto 14px}
+.sheet-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.sheet-title{font-size:20px;font-weight:900}
+.sheet-sub{font-size:12px;color:var(--muted);line-height:1.45;margin-top:4px}
+.close-btn{border:none;background:rgba(255,255,255,.08);color:var(--text);width:38px;height:38px;border-radius:14px;cursor:pointer;font-size:18px;font-weight:900}
+.detail-hero{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:start;margin-bottom:12px}
+.detail-cover{width:120px;height:120px;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.detail-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.detail-name{font-size:22px;font-weight:900}
+.detail-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-top:6px}
+.upgrade-list,.rev-list{display:grid;gap:10px}
+.upgrade-card,.rev-item{padding:12px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+.upgrade-top,.rev-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.upgrade-name,.rev-name{font-size:14px;font-weight:900}
+.upgrade-meta,.rev-meta{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
+.upgrade-buy{padding:10px 12px;font-size:12px;background:linear-gradient(180deg,#ffd28d,#f4c56f);color:#543608;white-space:nowrap}
+.rev-value{font-size:14px;font-weight:900;color:#ffe3a8}
+.empty-state{padding:16px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);color:var(--muted);line-height:1.5}
+.trade-mode{display:flex;gap:8px;margin-top:12px;background:rgba(255,255,255,.04);padding:6px;border-radius:18px;border:1px solid rgba(255,255,255,.06)}
+.trade-mode-btn{flex:1;padding:10px 12px;border:none;border-radius:14px;background:transparent;color:var(--muted);font-weight:900;cursor:pointer}
+.trade-mode-btn.active.buy{background:rgba(123,194,255,.16);color:#dff1ff}
+.trade-mode-btn.active.sell{background:rgba(89,212,156,.16);color:#dfffee}
+.stepper{display:grid;grid-template-columns:46px 1fr 46px;gap:8px;margin-top:12px}
+.step-btn{border:none;cursor:pointer;border-radius:14px;background:rgba(255,255,255,.08);color:var(--text);font-size:22px;font-weight:900}
+.trade-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;margin-top:14px;align-items:center}
+.trade-input{width:100%;padding:12px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);color:var(--text);outline:none}
+.trade-btn{padding:12px 14px}
+.trade-btn.buy{background:linear-gradient(180deg,#7ec1ff,#77bcff);color:#08274d}
+.trade-btn.sell{background:linear-gradient(180deg,#6ae4b5,#59d49c);color:#063425}
+.trade-presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.trade-chip{border:none;cursor:pointer;padding:9px 11px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--text);font-size:12px;font-weight:800}
+.trade-summary{margin-top:12px;padding:12px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.trade-stat{padding:10px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.05)}
+.trade-stat .label{font-size:11px;color:var(--muted);margin-bottom:4px}
+.trade-stat .value{font-size:14px;font-weight:900}
+.chart-wrap{margin-top:12px;padding:14px;border-radius:22px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+.chart-svg{width:100%;height:210px;display:block}
+.chart-meta{display:flex;justify-content:space-between;gap:10px;margin-top:10px;font-size:12px;color:var(--muted)}
+.chart-legend{display:flex;gap:8px;align-items:center}
+.legend-dot{width:10px;height:10px;border-radius:999px;background:#7bc2ff}
+@media (max-width:430px){
+  h1{font-size:25px}
+  .quick-row{grid-template-columns:1fr}
+  .detail-hero,.focus-grid{grid-template-columns:1fr}
+  .detail-cover,.focus-cover{width:100%;height:160px}
+  .thumb{width:94px;height:72px}
+  .city-node{width:68px;height:68px}
+  .bottom-inner{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
+
+
+/* mobile-first simplification + fortune tab */
+html{height:100%;overscroll-behavior:none}
+body{min-height:100svh;min-height:100dvh;overscroll-behavior:none}
+button,[role="button"],.tab,.city-select-btn,.market-row,.investment-row,.re-card,.re-entry,.re-card-action,.re-upgrade-btn,.home-big-tap{touch-action:manipulation;user-select:none;-webkit-user-select:none}
+img{-webkit-user-drag:none;user-select:none}
+.app{padding-inline:max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-right))}
+.home-board{border-radius:30px}
+.home-phone{min-height:auto}
+.home-content{padding:46px 14px 128px}
+.home-top-note{margin-bottom:10px}
+.home-pill-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.home-click-upgrade{
+  margin-top:14px;padding:14px;border-radius:22px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;
+}
+.home-click-upgrade-label{font-size:12px;color:rgba(255,255,255,.82);font-weight:800}
+.home-click-upgrade-value{margin-top:4px;font-size:22px;font-weight:900;color:#fff;line-height:1.05}
+.home-click-upgrade-sub{margin-top:6px;font-size:13px;color:rgba(255,255,255,.82);line-height:1.35}
+.home-click-upgrade-btn{
+  border:none;border-radius:18px;padding:14px 16px;min-width:128px;
+  background:linear-gradient(180deg,#ffd28d,#f4c56f);color:#5b3b0e;font-size:14px;font-weight:900;cursor:pointer;
+}
+.home-click-upgrade-btn small{display:block;margin-top:4px;font-size:11px;font-weight:800;opacity:.92}
+.home-click-upgrade-btn[disabled]{opacity:.56;cursor:not-allowed}
+.wealth-shell,.wealth-card{padding:16px;border-radius:26px}
+.wealth-shell{display:grid;gap:12px}
+.wealth-kicker{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.wealth-total{font-size:clamp(30px,8vw,52px);font-weight:900;line-height:1;letter-spacing:-.04em}
+.wealth-sub{font-size:13px;color:var(--muted);line-height:1.45}
+.wealth-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.wealth-stat{padding:14px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+.wealth-stat .label{font-size:12px;color:var(--muted);margin-bottom:6px}
+.wealth-stat .value{font-size:18px;font-weight:900}
+.wealth-card-title{font-size:17px;font-weight:900;margin-bottom:10px}
+.wealth-bar{display:flex;overflow:hidden;height:14px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)}
+.wealth-bar-part{height:100%;min-width:10px}
+.wealth-list,.city-simple-list{display:grid;gap:10px;margin-top:12px}
+.wealth-row,.city-simple-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+.wealth-row-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.wealth-dot{width:14px;height:14px;border-radius:999px;flex-shrink:0}
+.wealth-row-name{font-size:14px;font-weight:900}
+.wealth-row-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.wealth-row-value{text-align:right}
+.wealth-row-amount{font-size:15px;font-weight:900}
+.wealth-row-share{font-size:12px;color:var(--muted);margin-top:4px}
+.city-simple-row{align-items:flex-start}
+.city-simple-main{min-width:0;flex:1}
+.city-simple-name{font-size:15px;font-weight:900;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.city-simple-sub{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4}
+.city-select-btn{border:none;border-radius:14px;padding:12px 14px;background:linear-gradient(180deg,#7ec1ff,#77bcff);color:#08274d;font-weight:900;cursor:pointer;white-space:nowrap}
+.city-select-btn[disabled]{opacity:.6;cursor:not-allowed}
+.city-select-btn.active{background:linear-gradient(180deg,#6ae4b5,#59d49c);color:#063425}
+.city-meta-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.city-meta-pill{padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.06);font-size:11px;font-weight:800;color:#dbe7ff}
+@media (max-width:560px){
+  .orb,.orb2,.orb3{display:none}
+  .page{animation:none}
+  .home-wrap{max-width:none}
+  .home-board{padding:8px;border-radius:26px}
+  .home-phone{border-radius:24px}
+  .home-content{padding:38px 12px 122px}
+  .home-balance-card,.home-tap-card,.home-click-upgrade,.home-big-tap,.wealth-shell,.wealth-card,.card,.realestate-shell,.markets-shell{box-shadow:0 10px 22px rgba(0,0,0,.22)}
+  .money-pill{padding:10px 12px;font-size:12px}
+  .brand-title{font-size:19px}
+  .brand-sub{font-size:11px}
+  .home-balance-value{font-size:clamp(28px,11vw,44px)}
+  .home-big-tap{min-height:248px;border-radius:24px}
+  .home-big-tap-title{font-size:clamp(24px,8vw,34px)}
+  .home-big-tap-sub{font-size:15px}
+  .home-click-upgrade{grid-template-columns:1fr}
+  .home-click-upgrade-btn{width:100%}
+  .wealth-stats{grid-template-columns:1fr 1fr}
+  .bottom-nav{padding:8px 10px calc(10px + env(safe-area-inset-bottom))}
+  .bottom-inner{padding:8px 6px;border-radius:20px}
+  .tab{padding:10px 3px;font-size:10px}
+  .sheet,.market-sheet{max-width:100%;max-height:min(90svh, calc(100dvh - 8px));border-radius:24px 24px 0 0;padding:14px 14px calc(20px + env(safe-area-inset-bottom))}
+  .modal-backdrop{padding:0}
+}
+@media (max-width:430px){
+  .wealth-stats{grid-template-columns:1fr}
+  .wealth-row,.city-simple-row{padding:12px}
+  .home-pill-grid{grid-template-columns:1fr}
+}
+@media (max-width:560px), (prefers-reduced-motion: reduce){
+  .collect-btn,.collect-btn::after,.purchase-pop,.cash-pop,.spark-pop,.action-pop,.purchase-label,.coin-pop{animation:none!important}
+}
+
+</style>
+</head>
+<body>
+<div class="orb"></div><div class="orb2"></div><div class="orb3"></div>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo" id="logo"></div>
+      <div>
+        <div class="brand-title">Roi du Quartier</div>
+        <div class="brand-sub">business tycoon mobile</div>
+      </div>
+    </div>
+    <button class="money-pill" id="topCashBtn">0 €</button>
+  </div>
+
+  <div class="banner" id="banner"></div>
+
+  <section class="page active" id="page-home">
+    <div class="home-redesign">
+      <div class="home-wrap">
+        <div class="home-top-note">Click money!</div>
+        <div class="home-board">
+          <div class="home-phone">
+            <div class="home-notch"></div>
+            <div class="home-content">
+              <div class="home-header">
+                <div>
+                  <div class="home-kicker">Earnings</div>
+                  <div class="home-title-big">Argent</div>
+                  <div class="home-city" id="heroCityBadge">Downtown</div>
+                </div>
+                <div class="hero-badge" id="heroPrestigeBadge">Prestige 0</div>
+              </div>
+
+              <div class="home-balance-card">
+                <div class="home-balance-row">
+                  <div class="home-balance-chip"><span class="home-balance-dot"></span><span>Compte principal</span></div>
+                  <div class="home-balance-side" id="homeBalanceSide">x1 normal</div>
+                </div>
+                <div class="home-balance-label">Fortune</div>
+                <div class="home-balance-value" id="statCash">0 €</div>
+                <div class="home-balance-mini">
+                  <span id="statCareer">0 € total</span>
+                  <span id="statIncome">0 €/min</span>
+                </div>
+                <div class="home-balance-gain" id="homeBalanceGain">+10 €</div>
+              </div>
+
+              <div class="home-tap-card">
+                <div class="home-tap-row">
+                  <div class="home-tap-main" id="homePerClick">10 € <small>par clic</small></div>
+                  <div class="home-tap-level" id="homeTapLevel">niveau 1</div>
+                </div>
+                <div class="home-progress"><span id="homeClickBar"></span></div>
+                <div class="home-tap-meta">
+                  <span id="homeBoostState">x1</span>
+                  <span>Touchez pour gagner</span>
+                </div>
+              </div>
+
+              <button class="home-big-tap" id="collectBtn" type="button">
+                <div class="home-tap-float" id="homeTapFloat">+10 €</div>
+                <div class="home-big-tap-icon" aria-hidden="true">👆</div>
+                <div class="home-big-tap-title">Touchez pour gagner</div>
+                <div class="home-big-tap-sub">Chaque tap rapporte <strong id="homeTapButtonValue">10 €</strong></div>
+              </button>
+
+              <div class="home-pill-grid">
+                <div class="home-pill">
+                  <div class="home-pill-label">Biens</div>
+                  <div class="home-pill-value" id="statAssets">0</div>
+                </div>
+                <div class="home-pill">
+                  <div class="home-pill-label">Ville</div>
+                  <div class="home-pill-value" id="homeCityName">Downtown</div>
+                </div>
+                <div class="home-pill">
+                  <div class="home-pill-label">Boost</div>
+                  <div class="home-pill-value" id="homeBoostPill">x1</div>
+                </div>
+              </div>
+
+              <div class="home-click-upgrade">
+                <div>
+                  <div class="home-click-upgrade-label">Amélioration du clic</div>
+                  <div class="home-click-upgrade-value" id="homeClickUpgradeValue">10 € → 15 €</div>
+                  <div class="home-click-upgrade-sub">Monte ton gain par tap pour avancer même quand les biens deviennent très chers.</div>
+                </div>
+                <button class="home-click-upgrade-btn" id="upgradeTapBtn" type="button">Améliorer<small id="homeClickUpgradePrice">250 €</small></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-assets">
+    <div class="section">
+      <div class="section-head">
+        <div><div class="section-title">Biens</div><div class="section-sub">Clique sur un bien pour ouvrir sa fiche, ses upgrades et son manager.</div></div>
+        <div class="muted-tag" id="assetsCityTag">Downtown</div>
+      </div>
+      <div class="list" id="assetList"></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-map">
+    <div class="section">
+      <div class="section-head">
+        <div><div class="section-title">Fortune</div><div class="section-sub">Une vue simple de ta richesse totale, de sa répartition et de tes villes.</div></div>
+        <div class="muted-tag" id="wealthNetWorthTag">0 €</div>
+      </div>
+
+      <div class="card wealth-shell">
+        <div>
+          <div class="wealth-kicker">Fortune totale</div>
+          <div class="wealth-total" id="wealthTotalValue">0 €</div>
+          <div class="wealth-sub">Argent liquide + valeur estimée de tes entreprises + immobilier + portefeuille marchés.</div>
+        </div>
+        <div class="wealth-stats" id="wealthStats"></div>
+      </div>
+
+      <div class="section" style="margin-top:12px">
+        <div class="card wealth-card">
+          <div class="wealth-card-title">Répartition</div>
+          <div class="wealth-bar" id="wealthBar"></div>
+          <div class="wealth-list" id="wealthBreakdownList"></div>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:12px">
+        <div class="card wealth-card">
+          <div class="wealth-card-title">Revenus et rythme</div>
+          <div class="wealth-list" id="wealthIncomeList"></div>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:12px">
+        <div class="section-head">
+          <div><div class="section-title">Villes</div><div class="section-sub">Choisis ici la ville active pour acheter et gérer tes biens.</div></div>
+        </div>
+        <div class="card wealth-card">
+          <div class="city-simple-list" id="wealthCityList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-markets">
+    <div class="section">
+      <div class="markets-shell">
+        <div class="market-screen-title" id="marketScreenTitle">Échange de cryptomonnaies</div>
+        <div class="market-screen-sub">Trie les actifs, ouvre la fiche complète, ajoute en favoris puis achète ou vends comme dans une app d’échange.</div>
+        <div class="segment">
+          <button class="segment-btn active" data-market-tab="cryptos">Cryptos</button>
+          <button class="segment-btn" data-market-tab="stocks">Actions</button>
+        </div>
+        <div class="segment" id="marketSortBar" style="margin-top:8px">
+          <button class="segment-btn active" data-market-sort="popular">Populaires</button>
+          <button class="segment-btn" data-market-sort="gainers">Gagnants</button>
+          <button class="segment-btn" data-market-sort="losers">Perdants</button>
+          <button class="segment-btn" data-market-sort="favorites">Favoris</button>
+        </div>
+        <button class="market-portfolio-card" id="marketPortfolioCard" type="button"></button>
+        <div class="market-list" id="marketList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-realestate">
+    <div class="section">
+      <div class="realestate-shell" id="realEstateMount"></div>
+    </div>
+  </section>
+</div>
+
+<div class="bottom-nav">
+  <div class="bottom-inner">
+    <button class="tab" data-tab="assets"><span id="icon-assets"></span><span>Biens</span></button>
+    <button class="tab" data-tab="map"><span id="icon-map"></span><span>Fortune</span></button>
+    <button class="tab home-center active" data-tab="home"><span id="icon-home"></span><span>Accueil</span></button>
+    <button class="tab" data-tab="markets"><span id="icon-markets"></span><span>Marchés</span></button>
+    <button class="tab" data-tab="realestate"><span id="icon-estate"></span><span>Immobilier</span></button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="particle-layer" id="particleLayer"></div>
+
+<div class="modal-backdrop" id="incomeModal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-top">
+      <div>
+        <div class="sheet-title">Sources de revenus</div>
+        <div class="sheet-sub">Toutes tes lignes de revenus, triées du plus rentable au moins rentable.</div>
+      </div>
+      <button class="close-btn" data-close="incomeModal">×</button>
+    </div>
+    <div class="rev-list" id="incomeBreakdown"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="assetModal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-top">
+      <div>
+        <div class="sheet-title" id="assetModalTitle">Bien</div>
+        <div class="sheet-sub" id="assetModalSub">Détails du bien</div>
+      </div>
+      <button class="close-btn" data-close="assetModal">×</button>
+    </div>
+    <div id="assetModalBody"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="marketModal">
+  <div class="sheet market-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-top">
+      <div>
+        <div class="sheet-title" id="marketModalTitle">Actif</div>
+        <div class="sheet-sub" id="marketModalSub">Cours dynamique</div>
+      </div>
+      <button class="close-btn" data-close="marketModal">×</button>
+    </div>
+    <div id="marketModalBody"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="tradeModal">
+  <div class="sheet market-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-top">
+      <div>
+        <div class="sheet-title" id="tradeModalTitle">Ordre</div>
+        <div class="sheet-sub" id="tradeModalSub">Passe un ordre</div>
+      </div>
+      <button class="close-btn" data-close="tradeModal">×</button>
+    </div>
+    <div id="tradeModalBody"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="investmentsModal">
+  <div class="sheet market-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-top">
+      <div>
+        <div class="sheet-title" id="investmentsModalTitle">Tes investissements</div>
+        <div class="sheet-sub" id="investmentsModalSub">Vue globale de ton portefeuille</div>
+      </div>
+      <button class="close-btn" data-close="investmentsModal">×</button>
+    </div>
+    <div id="investmentsModalBody"></div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const toastEl = $('toast');
+let toastTimer = null;
+let currentAssetModal = null;
+let currentMarketModal = null;
+let currentTradeModal = null;
+let currentInvestmentsKind = null;
+
+function icon(name){
+  const icons = {
+    crown:`<svg viewBox="0 0 24 24" fill="none"><path d="M4 18h16l-1-9-4 3-3-5-3 5-4-3-1 9Z" fill="#f4c56f" stroke="#d8a94d" stroke-width="1.2"/><path d="M6 20h12" stroke="#d8a94d" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+    home:`<svg viewBox="0 0 24 24" fill="none"><path d="M4 11.5 12 5l8 6.5V20H4v-8.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 20v-5h6v5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+    assets:`<svg viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 7V5h8v2M8 12h8M8 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    map:`<svg viewBox="0 0 24 24" fill="none"><path d="m4 6 5-2 6 2 5-2v14l-5 2-6-2-5 2V6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 4v14m6-12v14" stroke="currentColor" stroke-width="1.8"/></svg>`,
+    markets:`<svg viewBox="0 0 24 24" fill="none"><path d="M5 19h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7 16 10.5 12.5 13 14.5 17 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    estate:`<svg viewBox="0 0 24 24" fill="none"><path d="M3 19h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 19V9l7-5 7 5v10" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 19v-5h6v5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+    money:`<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="3" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg>`,
+    rocket:`<svg viewBox="0 0 24 24" fill="none"><path d="M14 4c4 1 6 5 6 5-1 4-5 6-5 6l-4-4s2-4 3-7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m11 13-4 4m0 0 1-4-4 1 3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    star:`<svg viewBox="0 0 24 24" fill="none"><path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 16.4 7.2 19l.9-5.4L4.2 9.7l5.4-.8L12 4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`
+  };
+  return icons[name];
+}
+$('logo').innerHTML = icon('crown');
+$('icon-home').innerHTML = icon('home');
+$('icon-assets').innerHTML = icon('assets');
+$('icon-map').innerHTML = icon('money');
+$('icon-markets').innerHTML = icon('markets');
+$('icon-estate').innerHTML = icon('estate');
+
+function wm(file, width=1000){
+  return 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(file) + '?width=' + width;
+}
+function hashCode(str){ let h=0; for(let i=0;i<str.length;i++){ h=((h<<5)-h)+str.charCodeAt(i); h|=0; } return Math.abs(h); }
+function hslColor(seed, s=72, l=52){ return `hsl(${seed%360} ${s}% ${l}%)`; }
+function svgData(svg){ return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg); }
+
+function businessImage(kind, label){
+  const specs = {
+    kiosk:{icon:'📰', c1:'#7bc2ff', c2:'#214f8a'},
+    bakery:{icon:'🥖', c1:'#f4c56f', c2:'#c8842e'},
+    supermarket:{icon:'🛒', c1:'#69c9a1', c2:'#2e7b5f'},
+    pharmacy:{icon:'💊', c1:'#ff8a8a', c2:'#b85151'},
+    bookshop:{icon:'📚', c1:'#b18cff', c2:'#7150b8'},
+    jewelry:{icon:'💎', c1:'#8fd6ff', c2:'#3c7bb3'},
+    snack:{icon:'🍔', c1:'#ffb26e', c2:'#c96f2d'},
+    coffee:{icon:'☕', c1:'#c8a27a', c2:'#6a4529'},
+    restaurant:{icon:'🍽', c1:'#ffd28d', c2:'#cf8a42'},
+    sushi:{icon:'🍣', c1:'#ff9fb0', c2:'#b45469'},
+    pizzeria:{icon:'🍕', c1:'#ffcf83', c2:'#d87d35'},
+    laundry:{icon:'🧺', c1:'#8cc9ff', c2:'#4683c2'},
+    gym:{icon:'🏋️', c1:'#69c9a1', c2:'#307f5f'},
+    cinema:{icon:'🎬', c1:'#5f79c8', c2:'#2f3f79'},
+    clinic:{icon:'🩺', c1:'#a2e3ff', c2:'#4589a8'},
+    salon:{icon:'💇', c1:'#ffb3d7', c2:'#a84f7d'},
+    taxi:{icon:'🚕', c1:'#ffd35f', c2:'#c28c12'},
+    bus:{icon:'🚌', c1:'#7bc2ff', c2:'#366ea6'},
+    rail:{icon:'🚆', c1:'#b7c3d6', c2:'#56647d'},
+    shipping:{icon:'🚢', c1:'#8fd6ff', c2:'#2f7ea1'},
+    airline:{icon:'✈️', c1:'#dbe7ff', c2:'#6e8fd1'},
+    bike:{icon:'🚲', c1:'#69c9a1', c2:'#2c7a5b'},
+    bank:{icon:'🏦', c1:'#7bc2ff', c2:'#315c98'},
+    asset:{icon:'📈', c1:'#69c9a1', c2:'#2b6f58'},
+    fintech:{icon:'💳', c1:'#b18cff', c2:'#6249a1'},
+    insurance:{icon:'🛡️', c1:'#8fd6ff', c2:'#3d7da4'},
+    appstudio:{icon:'📱', c1:'#8cc9ff', c2:'#315e98'},
+    cloud:{icon:'☁️', c1:'#dbe7ff', c2:'#7693c3'},
+    gaming:{icon:'🎮', c1:'#b18cff', c2:'#6249a1'},
+    robotics:{icon:'🤖', c1:'#9fd0ff', c2:'#4a7eac'},
+    agency:{icon:'📣', c1:'#ffb26e', c2:'#c36f32'},
+    tv:{icon:'📺', c1:'#8fd6ff', c2:'#4377a2'},
+    music:{icon:'🎵', c1:'#ff9fd2', c2:'#98507f'},
+    news:{icon:'🗞️', c1:'#cdd8e6', c2:'#6f7c8d'},
+    solar:{icon:'☀️', c1:'#ffd35f', c2:'#d49320'},
+    factory:{icon:'🏭', c1:'#b7c3d6', c2:'#5e6a80'},
+    depot:{icon:'📦', c1:'#c8a27a', c2:'#7a5734'},
+    recycling:{icon:'♻️', c1:'#77d9a6', c2:'#2c7b58'},
+    hotel:{icon:'🏨', c1:'#8fd6ff', c2:'#4b7dad'},
+    resort:{icon:'🌴', c1:'#69c9a1', c2:'#2f7b5d'},
+    tower:{icon:'🏙️', c1:'#b18cff', c2:'#6043a3'},
+    casino:{icon:'🎰', c1:'#ff9e62', c2:'#b85a2b'}
+  };
+  const s = specs[kind] || {icon:'🏢', c1:'#8cc9ff', c2:'#315e98'};
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240">
+    <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="${s.c1}"/><stop offset="1" stop-color="${s.c2}"/></linearGradient></defs>
+    <rect width="400" height="240" rx="28" fill="url(#g)"/>
+    <circle cx="320" cy="44" r="54" fill="rgba(255,255,255,.10)"/>
+    <circle cx="76" cy="190" r="66" fill="rgba(255,255,255,.08)"/>
+    <rect x="24" y="24" width="352" height="192" rx="22" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.18)"/>
+    <text x="200" y="142" text-anchor="middle" font-size="76">${s.icon}</text>
+    <text x="24" y="38" fill="white" font-family="Arial" font-size="18" font-weight="700">${label}</text>
+  </svg>`;
+  return svgData(svg);
+}
+
+function marketLogoData(ticker, type){
+  const seed = hashCode(ticker + type);
+  const c1 = hslColor(seed, 78, type === 'stocks' ? 58 : 52);
+  const c2 = hslColor(seed + 80, 72, 42);
+  const letters = ticker.slice(0,3);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+    <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>
+    <rect width="120" height="120" rx="34" fill="url(#g)"/>
+    <circle cx="30" cy="30" r="10" fill="rgba(255,255,255,.18)"/><circle cx="90" cy="86" r="18" fill="rgba(255,255,255,.10)"/>
+    <text x="60" y="70" fill="white" font-family="Arial" font-size="32" font-weight="700" text-anchor="middle">${letters}</text>
+  </svg>`;
+  return svgData(svg);
+}
+
+const CITIES = [
+  { id:"downtown", name:"Downtown", bonus:1.00, unlock:0, desc:"Le cœur des affaires. Stable, lisible et idéal pour démarrer.", favorites:["kiosk","coffee","bank"], map:{x:12,y:62}, image:wm('City skyline 2020.jpg',1200) },
+  { id:"campus", name:"Campus", bonus:1.12, unlock:120000, desc:"Les étudiants soutiennent les services rapides, les snacks et les laveries.", favorites:["snack","laundry","gym"], map:{x:28,y:44}, image:wm('Casual Photo of College Campus.jpg',1200) },
+  { id:"marina", name:"Marina", bonus:1.24, unlock:450000, desc:"Quartier touristique premium. Hôtels, cafés et loisirs y sont plus rentables.", favorites:["coffee","hotel","resort"], map:{x:46,y:66}, image:wm("Wild Horses' docked at Harbour Marina, Bainbridge Island 02.jpg",1200) },
+  { id:"mall", name:"Mall District", bonus:1.36, unlock:1500000, desc:"Zone retail dense où les commerces physiques excellent.", favorites:["bakery","supermarket","pharmacy"], map:{x:68,y:50}, image:wm('A typical Publix grocery store exterior seen in Farragut, Tennessee 03.jpg',1200) },
+  { id:"logistics", name:"Logistics Hub", bonus:1.50, unlock:6000000, desc:"Le centre du transport et de la distribution.", favorites:["bus","rail","shipping"], map:{x:82,y:33}, image:wm('Car dealership.webp',1200) },
+  { id:"skyport", name:"Skyport", bonus:1.68, unlock:25000000, desc:"Ville ultra premium et internationale. L’aviation, la tech et les tours y dominent.", favorites:["airline","tower","data"], map:{x:90,y:20}, image:wm('The Exterior of the hotel.jpg',1200) },
+];
+
+const BUSINESSES = [
+  { id:"kiosk", name:"Kiosque", category:"Retail", baseCost:3000, baseIncome:0.025000, unlock:0, image:businessImage("kiosk","Kiosque"), summary:"Petit point de vente de départ. Peu rentable seul, mais utile pour lancer le tout premier flux.", unitLabel:"kiosque", upgrades:[{id:"sellers",label:"Vendeurs",base:1,step:1,baseCost:360,growth:1.30,boost:0.10,desc:"Chaque vendeur augmente le débit de vente."},{id:"shelves",label:"Rayons",base:2,step:1,baseCost:420,growth:1.32,boost:0.09,desc:"Plus de rayons augmente le stock exposé."},{id:"ads",label:"Panneaux pub",base:0,step:1,baseCost:540,growth:1.34,boost:0.12,desc:"Attire davantage de passants."}] },
+  { id:"bakery", name:"Boulangerie", category:"Retail", baseCost:8000, baseIncome:0.066667, unlock:12000, image:businessImage("bakery","Boulangerie"), summary:"Commerce local fiable, excellent en zone shopping.", unitLabel:"boulangerie", upgrades:[{id:"bakers",label:"Boulangers",base:2,step:1,baseCost:880,growth:1.28,boost:0.08,desc:"Davantage de production chaque matin."},{id:"ovens",label:"Fours",base:1,step:1,baseCost:1200,growth:1.30,boost:0.10,desc:"Les fours augmentent la capacité horaire."},{id:"delivery",label:"Livraison locale",base:0,step:1,baseCost:1360,growth:1.33,boost:0.11,desc:"Ouvre un nouveau canal de vente."}] },
+  { id:"supermarket", name:"Supermarché", category:"Retail", baseCost:25000, baseIncome:0.208333, unlock:45000, image:businessImage("supermarket","Supermarché"), summary:"Un gros cap économique avec un flux régulier et défensif.", unitLabel:"supermarché", upgrades:[{id:"aisles",label:"Allées",base:4,step:1,baseCost:2500,growth:1.26,boost:0.07,desc:"Ajoute de nouvelles références."},{id:"cashiers",label:"Caissiers",base:2,step:1,baseCost:2750,growth:1.28,boost:0.08,desc:"Réduit les files et augmente le débit."},{id:"suppliers",label:"Fournisseurs",base:1,step:1,baseCost:4000,growth:1.32,boost:0.10,desc:"Améliore l’approvisionnement."}] },
+  { id:"pharmacy", name:"Pharmacie", category:"Retail", baseCost:70000, baseIncome:0.583333, unlock:120000, image:businessImage("pharmacy","Pharmacie"), summary:"Commerce défensif avec des marges solides et une demande constante.", unitLabel:"pharmacie", upgrades:[{id:"pharmacists",label:"Pharmaciens",base:1,step:1,baseCost:7000,growth:1.27,boost:0.07,desc:"Permet de servir plus de clients."},{id:"storage",label:"Stock",base:2,step:1,baseCost:8400,growth:1.29,boost:0.09,desc:"Moins de ruptures, plus de ventes."},{id:"testing",label:"Services santé",base:0,step:1,baseCost:12600,growth:1.34,boost:0.11,desc:"Ajoute des services à plus forte marge."}] },
+  { id:"bookshop", name:"Librairie", category:"Retail", baseCost:110000, baseIncome:0.916667, unlock:180000, image:businessImage("bookshop","Librairie"), summary:"Commerce de niche avec une clientèle fidèle et cultivée.", unitLabel:"librairie", upgrades:[{id:"authors",label:"Dédicaces",base:0,step:1,baseCost:11000,growth:1.28,boost:0.07,desc:"Événements qui attirent des visiteurs."},{id:"stock",label:"Références",base:10,step:2,baseCost:12000,growth:1.26,boost:0.08,desc:"Plus de livres = plus de ventes."},{id:"club",label:"Club lecture",base:0,step:1,baseCost:14500,growth:1.32,boost:0.10,desc:"Fidélise la clientèle locale."}] },
+  { id:"jewelry", name:"Bijouterie", category:"Retail", baseCost:240000, baseIncome:2.000000, unlock:380000, image:businessImage("jewelry","Bijouterie"), summary:"Petit volume mais très forte marge dans les quartiers premium.", unitLabel:"bijouterie", upgrades:[{id:"designers",label:"Designers",base:1,step:1,baseCost:22000,growth:1.27,boost:0.08,desc:"Crée des pièces exclusives."},{id:"showcases",label:"Vitrines",base:2,step:1,baseCost:26000,growth:1.29,boost:0.09,desc:"Expose mieux les produits haut de gamme."},{id:"security",label:"Sécurité",base:1,step:1,baseCost:30000,growth:1.31,boost:0.10,desc:"Permet d’élargir le stock disponible."}] },
+  { id:"snack", name:"Snack Bar", category:"Food", baseCost:12000, baseIncome:0.100000, unlock:18000, image:businessImage("snack","Snack Bar"), summary:"Restauration rapide très utile en début de progression active.", unitLabel:"snack", upgrades:[{id:"cooks",label:"Cuisiniers",base:1,step:1,baseCost:1300,growth:1.28,boost:0.08,desc:"Accélère le service."},{id:"tables",label:"Tables",base:4,step:2,baseCost:1100,growth:1.24,boost:0.06,desc:"Plus de places = plus de clients."},{id:"scooters",label:"Livraison",base:0,step:1,baseCost:1900,growth:1.32,boost:0.11,desc:"Ouvre la vente hors salle."}] },
+  { id:"coffee", name:"Coffee House", category:"Food", baseCost:40000, baseIncome:0.333333, unlock:70000, image:businessImage("coffee","Coffee House"), summary:"Commerce premium régulier très fort dans les zones riches.", unitLabel:"coffee house", upgrades:[{id:"baristas",label:"Baristas",base:1,step:1,baseCost:3600,growth:1.28,boost:0.08,desc:"Accélère le service premium."},{id:"machines",label:"Machines",base:1,step:1,baseCost:4400,growth:1.30,boost:0.09,desc:"Augmente le débit horaire."},{id:"pastries",label:"Pâtisseries",base:1,step:1,baseCost:3900,growth:1.27,boost:0.07,desc:"Ajoute des ventes annexes."}] },
+  { id:"restaurant", name:"Restaurant", category:"Food", baseCost:120000, baseIncome:1.000000, unlock:200000, image:businessImage("restaurant","Restaurant"), summary:"Business classique, plus stable qu’un snack et plus rentable à terme.", unitLabel:"restaurant", upgrades:[{id:"chefs",label:"Chefs",base:2,step:1,baseCost:12000,growth:1.29,boost:0.08,desc:"Améliore qualité et capacité."},{id:"seats",label:"Places",base:10,step:2,baseCost:9500,growth:1.24,boost:0.06,desc:"Permet plus de clients simultanés."},{id:"wine",label:"Carte premium",base:0,step:1,baseCost:17000,growth:1.33,boost:0.11,desc:"Ajoute des revenus haut de gamme."}] },
+  { id:"sushi", name:"Sushi Bar", category:"Food", baseCost:260000, baseIncome:2.166667, unlock:420000, image:businessImage("sushi","Sushi Bar"), summary:"Resto tendance à forte marge, efficace dans les quartiers premium.", unitLabel:"sushi bar", upgrades:[{id:"chefs",label:"Maîtres sushi",base:1,step:1,baseCost:22000,growth:1.29,boost:0.08,desc:"Améliore la qualité et l’exclusivité."},{id:"seats",label:"Comptoirs",base:6,step:2,baseCost:18000,growth:1.25,boost:0.06,desc:"Augmente le service simultané."},{id:"delivery",label:"Livraison luxe",base:0,step:1,baseCost:26000,growth:1.32,boost:0.10,desc:"Ouvre un canal très rentable."}] },
+  { id:"pizzeria", name:"Pizzeria", category:"Food", baseCost:90000, baseIncome:0.750000, unlock:160000, image:businessImage("pizzeria","Pizzeria"), summary:"Bonne machine à cash populaire avec livraison facile.", unitLabel:"pizzeria", upgrades:[{id:"pizzaiolos",label:"Pizzaiolos",base:1,step:1,baseCost:9000,growth:1.28,boost:0.08,desc:"Prépare plus vite les commandes."},{id:"ovens",label:"Fours à pizza",base:1,step:1,baseCost:11000,growth:1.29,boost:0.09,desc:"Augmente le débit."},{id:"delivery",label:"Scooters",base:0,step:1,baseCost:12000,growth:1.30,boost:0.10,desc:"Booste les ventes à domicile."}] },
+  { id:"laundry", name:"Laverie", category:"Services", baseCost:18000, baseIncome:0.150000, unlock:26000, image:businessImage("laundry","Laverie"), summary:"Très stable, surtout dans les zones étudiantes.", unitLabel:"laverie", upgrades:[{id:"washers",label:"Machines",base:2,step:1,baseCost:1600,growth:1.27,boost:0.08,desc:"Augmente les cycles en parallèle."},{id:"staff",label:"Employés",base:1,step:1,baseCost:1400,growth:1.24,boost:0.06,desc:"Fluidifie le service."},{id:"contracts",label:"Contrats lessive",base:1,step:1,baseCost:2200,growth:1.29,boost:0.09,desc:"Améliore la marge nette."}] },
+  { id:"gym", name:"Salle de sport", category:"Services", baseCost:60000, baseIncome:0.500000, unlock:100000, image:businessImage("gym","Salle de sport"), summary:"Abonnements réguliers et rentabilité croissante.", unitLabel:"salle", upgrades:[{id:"coaches",label:"Coachs",base:2,step:1,baseCost:5200,growth:1.27,boost:0.08,desc:"Augmente l’attractivité."},{id:"machines",label:"Machines",base:6,step:2,baseCost:6400,growth:1.29,boost:0.09,desc:"Plus d’équipements = plus d’abonnés."},{id:"membership",label:"Abos premium",base:0,step:1,baseCost:8000,growth:1.31,boost:0.10,desc:"Hausse le revenu par membre."}] },
+  { id:"cinema", name:"Cinéma", category:"Services", baseCost:220000, baseIncome:1.833333, unlock:360000, image:businessImage("cinema","Cinéma"), summary:"Un service de loisir massif avec forte fréquentation.", unitLabel:"cinéma", upgrades:[{id:"screens",label:"Salles",base:2,step:1,baseCost:20000,growth:1.28,boost:0.08,desc:"Plus de films en parallèle."},{id:"seats",label:"Sièges",base:60,step:10,baseCost:12000,growth:1.22,boost:0.05,desc:"Augmente la capacité."},{id:"vip",label:"VIP",base:0,step:1,baseCost:28000,growth:1.32,boost:0.11,desc:"Améliore la marge par spectateur."}] },
+  { id:"clinic", name:"Clinique", category:"Services", baseCost:320000, baseIncome:2.666667, unlock:520000, image:businessImage("clinic","Clinique"), summary:"Service médical de quartier avec revenu stable et élevé.", unitLabel:"clinique", upgrades:[{id:"doctors",label:"Médecins",base:2,step:1,baseCost:26000,growth:1.26,boost:0.07,desc:"Permet plus de consultations."},{id:"rooms",label:"Salles",base:4,step:1,baseCost:22000,growth:1.25,boost:0.06,desc:"Augmente la capacité d’accueil."},{id:"tests",label:"Laboratoire",base:0,step:1,baseCost:34000,growth:1.31,boost:0.10,desc:"Ajoute des actes rentables."}] },
+  { id:"salon", name:"Salon de beauté", category:"Services", baseCost:150000, baseIncome:1.250000, unlock:250000, image:businessImage("salon","Salon de beauté"), summary:"Petit service premium avec forte fidélisation.", unitLabel:"salon", upgrades:[{id:"stylists",label:"Stylistes",base:2,step:1,baseCost:14000,growth:1.27,boost:0.08,desc:"Permet plus de rendez-vous."},{id:"chairs",label:"Fauteuils",base:3,step:1,baseCost:11000,growth:1.24,boost:0.06,desc:"Plus de postes de travail."},{id:"spa",label:"Soins premium",base:0,step:1,baseCost:18000,growth:1.30,boost:0.10,desc:"Ajoute des prestations haut de gamme."}] },
+  { id:"taxi", name:"Flotte de taxis", category:"Transport", baseCost:90000, baseIncome:0.750000, unlock:150000, image:businessImage("taxi","Flotte de taxis"), summary:"Couverture urbaine efficace et rentable dans les villes denses.", unitLabel:"flotte taxi", upgrades:[{id:"cars",label:"Taxis",base:4,step:2,baseCost:7000,growth:1.24,boost:0.07,desc:"Ajoute plus de courses simultanées."},{id:"drivers",label:"Chauffeurs",base:4,step:2,baseCost:6200,growth:1.22,boost:0.06,desc:"Augmente la couverture."},{id:"dispatch",label:"Dispatch app",base:1,step:1,baseCost:9600,growth:1.29,boost:0.09,desc:"Optimise les trajets."}] },
+  { id:"bus", name:"Compagnie de bus", category:"Transport", baseCost:180000, baseIncome:1.500000, unlock:300000, image:businessImage("bus","Compagnie de bus"), summary:"Très bon revenu régulier, surtout dans les zones en expansion.", unitLabel:"compagnie bus", upgrades:[{id:"buses",label:"Bus",base:2,step:1,baseCost:15000,growth:1.27,boost:0.08,desc:"Plus de lignes et de fréquences."},{id:"routes",label:"Routes",base:1,step:1,baseCost:19000,growth:1.30,boost:0.10,desc:"Ajoute de nouveaux trajets."},{id:"drivers",label:"Chauffeurs",base:4,step:2,baseCost:12000,growth:1.23,boost:0.06,desc:"Augmente la rotation."}] },
+  { id:"rail", name:"Fret ferroviaire", category:"Transport", baseCost:600000, baseIncome:5.000000, unlock:950000, image:businessImage("rail","Fret ferroviaire"), summary:"Idéal pour les hubs logistiques avec une forte montée en puissance.", unitLabel:"réseau fret", upgrades:[{id:"engines",label:"Locomotives",base:1,step:1,baseCost:42000,growth:1.28,boost:0.08,desc:"Ajoute de la capacité de traction."},{id:"wagons",label:"Wagons",base:10,step:2,baseCost:26000,growth:1.23,boost:0.05,desc:"Augmente le volume transporté."},{id:"freightRoutes",label:"Routes fret",base:1,step:1,baseCost:50000,growth:1.30,boost:0.09,desc:"Ouvre de nouveaux corridors logistiques."}] },
+  { id:"shipping", name:"Compagnie maritime", category:"Transport", baseCost:1400000, baseIncome:11.666667, unlock:2200000, image:businessImage("shipping","Compagnie maritime"), summary:"Très rentable dans les zones premium et portuaires.", unitLabel:"compagnie maritime", upgrades:[{id:"ships",label:"Navires",base:1,step:1,baseCost:96000,growth:1.30,boost:0.09,desc:"Ajoute des trajets et de la capacité."},{id:"containers",label:"Conteneurs",base:60,step:10,baseCost:34000,growth:1.20,boost:0.05,desc:"Augmente la charge utile."},{id:"ports",label:"Accords portuaires",base:1,step:1,baseCost:110000,growth:1.31,boost:0.10,desc:"Déverrouille de nouvelles routes."}] },
+  { id:"airline", name:"Compagnie aérienne", category:"Transport", baseCost:3500000, baseIncome:29.166667, unlock:5200000, image:businessImage("airline","Compagnie aérienne"), summary:"Très grosse machine à cash dans les hubs internationaux.", unitLabel:"compagnie aérienne", upgrades:[{id:"planes",label:"Avions",base:1,step:1,baseCost:220000,growth:1.31,boost:0.10,desc:"Ajoute de nouvelles liaisons."},{id:"crews",label:"Équipages",base:6,step:2,baseCost:120000,growth:1.24,boost:0.06,desc:"Augmente la fréquence des vols."},{id:"lounges",label:"Lounges",base:0,step:1,baseCost:280000,growth:1.33,boost:0.11,desc:"Hausse la rentabilité premium."}] },
+  { id:"bike", name:"Location vélo", category:"Transport", baseCost:45000, baseIncome:0.375000, unlock:80000, image:businessImage("bike","Location vélo"), summary:"Petit business urbain, très fort dans les zones étudiantes.", unitLabel:"service vélo", upgrades:[{id:"bikes",label:"Vélos",base:8,step:2,baseCost:3400,growth:1.23,boost:0.06,desc:"Ajoute de nouvelles unités disponibles."},{id:"stations",label:"Stations",base:2,step:1,baseCost:5200,growth:1.27,boost:0.08,desc:"Étend la couverture urbaine."},{id:"passes",label:"Pass abonnés",base:0,step:1,baseCost:6200,growth:1.29,boost:0.09,desc:"Améliore la récurrence du revenu."}] },
+  { id:"bank", name:"Banque locale", category:"Finance", baseCost:420000, baseIncome:3.500000, unlock:700000, image:businessImage("bank","Banque locale"), summary:"Très forte dans les zones financières, stable et rentable.", unitLabel:"banque", upgrades:[{id:"advisors",label:"Conseillers",base:2,step:1,baseCost:32000,growth:1.26,boost:0.07,desc:"Permet plus de clients servis."},{id:"atms",label:"ATM",base:2,step:1,baseCost:26000,growth:1.22,boost:0.05,desc:"Étend la présence locale."},{id:"premium",label:"Desks premium",base:0,step:1,baseCost:44000,growth:1.30,boost:0.10,desc:"Ajoute une clientèle plus rentable."}] },
+  { id:"asset", name:"Cabinet de gestion", category:"Finance", baseCost:1800000, baseIncome:15.000000, unlock:2800000, image:businessImage("asset","Cabinet de gestion"), summary:"La gestion d’actifs devient très rentable en late game.", unitLabel:"cabinet", upgrades:[{id:"brokers",label:"Brokers",base:2,step:1,baseCost:140000,growth:1.27,boost:0.08,desc:"Augmente le volume de clientèle."},{id:"research",label:"Recherche",base:1,step:1,baseCost:160000,growth:1.28,boost:0.09,desc:"Améliore les performances et la rétention."},{id:"family",label:"Family office",base:0,step:1,baseCost:220000,growth:1.31,boost:0.10,desc:"Ouvre un segment ultra rentable."}] },
+  { id:"fintech", name:"Fintech", category:"Finance", baseCost:850000, baseIncome:7.083333, unlock:1500000, image:businessImage("fintech","Fintech"), summary:"Business financier digital avec très forte scalabilité.", unitLabel:"fintech", upgrades:[{id:"engineers",label:"Ingénieurs",base:3,step:1,baseCost:62000,growth:1.26,boost:0.07,desc:"Améliore les produits de paiement."},{id:"cards",label:"Cartes",base:1000,step:200,baseCost:38000,growth:1.21,boost:0.05,desc:"Augmente la base utilisateurs."},{id:"subscriptions",label:"Abos premium",base:0,step:1,baseCost:84000,growth:1.30,boost:0.10,desc:"Ajoute de la récurrence."}] },
+  { id:"insurance", name:"Assureur", category:"Finance", baseCost:1200000, baseIncome:10.000000, unlock:2000000, image:businessImage("insurance","Assureur"), summary:"Revenu récurrent et résilient grâce aux contrats longue durée.", unitLabel:"assureur", upgrades:[{id:"agents",label:"Agents",base:3,step:1,baseCost:86000,growth:1.25,boost:0.07,desc:"Vendent plus de contrats."},{id:"products",label:"Produits",base:2,step:1,baseCost:92000,growth:1.27,boost:0.08,desc:"Ajoute de nouvelles polices."},{id:"claims",label:"Gestion sinistres",base:1,step:1,baseCost:110000,growth:1.29,boost:0.09,desc:"Réduit les coûts opérationnels."}] },
+  { id:"appstudio", name:"Studio d’apps", category:"Tech", baseCost:300000, baseIncome:2.500000, unlock:500000, image:businessImage("appstudio","Studio d’apps"), summary:"Un business numérique flexible avec une forte marge.", unitLabel:"studio", upgrades:[{id:"devs",label:"Développeurs",base:3,step:1,baseCost:24000,growth:1.26,boost:0.07,desc:"Permet de sortir plus de fonctionnalités."},{id:"servers",label:"Serveurs",base:2,step:1,baseCost:18000,growth:1.24,boost:0.06,desc:"Supporte plus d’utilisateurs."},{id:"subscriptions",label:"Abos",base:0,step:1,baseCost:32000,growth:1.30,boost:0.10,desc:"Crée un revenu récurrent."}] },
+  { id:"cloud", name:"Data Center", category:"Tech", baseCost:2500000, baseIncome:20.833333, unlock:3800000, image:businessImage("cloud","Data Center"), summary:"Très gros business B2B à forte inertie et très bonnes marges.", unitLabel:"data center", upgrades:[{id:"racks",label:"Racks",base:10,step:2,baseCost:150000,growth:1.24,boost:0.06,desc:"Augmente la capacité d’hébergement."},{id:"cooling",label:"Refroidissement",base:2,step:1,baseCost:180000,growth:1.27,boost:0.08,desc:"Optimise l’efficacité et l’échelle."},{id:"contracts",label:"Contrats entreprise",base:1,step:1,baseCost:220000,growth:1.30,boost:0.10,desc:"Augmente la valeur par client."}] },
+  { id:"gaming", name:"Studio gaming", category:"Tech", baseCost:1100000, baseIncome:9.166667, unlock:1700000, image:businessImage("gaming","Studio gaming"), summary:"Très volatile mais potentiellement énorme quand les jeux marchent.", unitLabel:"studio gaming", upgrades:[{id:"designers",label:"Designers",base:3,step:1,baseCost:76000,growth:1.26,boost:0.07,desc:"Accélère la production."},{id:"artists",label:"Artistes",base:3,step:1,baseCost:76000,growth:1.26,boost:0.07,desc:"Améliore la qualité perçue."},{id:"battlepass",label:"Battle Pass",base:0,step:1,baseCost:120000,growth:1.31,boost:0.10,desc:"Ajoute une monétisation récurrente."}] },
+  { id:"robotics", name:"Robotique", category:"Tech", baseCost:4200000, baseIncome:35.000000, unlock:6200000, image:businessImage("robotics","Robotique"), summary:"Industrie tech premium avec gros potentiel en very late game.", unitLabel:"entreprise robotique", upgrades:[{id:"engineers",label:"Ingénieurs",base:4,step:1,baseCost:260000,growth:1.25,boost:0.07,desc:"Accélère la R&D."},{id:"prototypes",label:"Prototypes",base:2,step:1,baseCost:300000,growth:1.28,boost:0.08,desc:"Améliore la gamme de produits."},{id:"contracts",label:"Contrats industriels",base:1,step:1,baseCost:380000,growth:1.31,boost:0.10,desc:"Ouvre les gros clients."}] },
+  { id:"agency", name:"Agence pub", category:"Media", baseCost:150000, baseIncome:1.250000, unlock:240000, image:businessImage("agency","Agence pub"), summary:"Structure légère mais rentable avec de bons contrats.", unitLabel:"agence", upgrades:[{id:"creatives",label:"Créatifs",base:2,step:1,baseCost:12000,growth:1.26,boost:0.07,desc:"Permet plus de campagnes."},{id:"clients",label:"Clients grands comptes",base:1,step:1,baseCost:16000,growth:1.29,boost:0.09,desc:"Augmente le panier moyen."},{id:"studios",label:"Studios créa",base:1,step:1,baseCost:18000,growth:1.30,boost:0.10,desc:"Améliore la production interne."}] },
+  { id:"tv", name:"Réseau TV", category:"Media", baseCost:950000, baseIncome:7.916667, unlock:1500000, image:businessImage("tv","Réseau TV"), summary:"Business média classique avec revenus pub et diffusion.", unitLabel:"réseau tv", upgrades:[{id:"shows",label:"Émissions",base:2,step:1,baseCost:68000,growth:1.26,boost:0.07,desc:"Augmente l’audience."},{id:"studios",label:"Studios",base:1,step:1,baseCost:82000,growth:1.28,boost:0.08,desc:"Permet plus de production."},{id:"ads",label:"Annonceurs",base:1,step:1,baseCost:92000,growth:1.30,boost:0.10,desc:"Booste les revenus publicitaires."}] },
+  { id:"music", name:"Label musical", category:"Media", baseCost:420000, baseIncome:3.500000, unlock:700000, image:businessImage("music","Label musical"), summary:"Catalogue et artistes créent une base de revenus durable.", unitLabel:"label", upgrades:[{id:"artists",label:"Artistes",base:2,step:1,baseCost:32000,growth:1.26,boost:0.07,desc:"Signe de nouveaux talents."},{id:"catalog",label:"Catalogue",base:4,step:1,baseCost:36000,growth:1.27,boost:0.08,desc:"Augmente les royalties."},{id:"touring",label:"Tournées",base:0,step:1,baseCost:54000,growth:1.31,boost:0.10,desc:"Ajoute un gros canal de revenu."}] },
+  { id:"news", name:"Média en ligne", category:"Media", baseCost:280000, baseIncome:2.333333, unlock:460000, image:businessImage("news","Média en ligne"), summary:"Audience numérique croissante avec publicité et abonnements.", unitLabel:"média", upgrades:[{id:"journalists",label:"Journalistes",base:3,step:1,baseCost:22000,growth:1.26,boost:0.07,desc:"Produit plus d’articles."},{id:"topics",label:"Rubriques",base:2,step:1,baseCost:18000,growth:1.24,boost:0.06,desc:"Élargit l’audience."},{id:"members",label:"Abonnés premium",base:0,step:1,baseCost:34000,growth:1.30,boost:0.10,desc:"Ajoute de la récurrence."}] },
+  { id:"solar", name:"Parc solaire", category:"Industry", baseCost:750000, baseIncome:6.250000, unlock:1200000, image:businessImage("solar","Parc solaire"), summary:"Actif industriel propre avec revenu plutôt stable.", unitLabel:"parc solaire", upgrades:[{id:"panels",label:"Panneaux",base:30,step:5,baseCost:52000,growth:1.22,boost:0.05,desc:"Augmente la production totale."},{id:"storage",label:"Batteries",base:2,step:1,baseCost:68000,growth:1.26,boost:0.07,desc:"Réduit les pertes et lisse le flux."},{id:"grid",label:"Accords réseau",base:1,step:1,baseCost:82000,growth:1.29,boost:0.09,desc:"Améliore le prix de vente."}] },
+  { id:"factory", name:"Usine", category:"Industry", baseCost:2200000, baseIncome:18.333333, unlock:3600000, image:businessImage("factory","Usine"), summary:"Production lourde à haute intensité capitalistique.", unitLabel:"usine", upgrades:[{id:"workers",label:"Ouvriers",base:10,step:2,baseCost:120000,growth:1.22,boost:0.05,desc:"Augmente le débit."},{id:"lines",label:"Lignes de prod",base:2,step:1,baseCost:180000,growth:1.27,boost:0.08,desc:"Ajoute une vraie capacité industrielle."},{id:"automation",label:"Automatisation",base:0,step:1,baseCost:260000,growth:1.31,boost:0.10,desc:"Booste la marge et la qualité."}] },
+  { id:"depot", name:"Hub logistique", category:"Industry", baseCost:1300000, baseIncome:10.833333, unlock:2200000, image:businessImage("depot","Hub logistique"), summary:"Plaque tournante essentielle pour les flux de marchandises.", unitLabel:"hub", upgrades:[{id:"forklifts",label:"Chariots",base:4,step:1,baseCost:86000,growth:1.24,boost:0.06,desc:"Augmente la rotation."},{id:"docks",label:"Quais",base:2,step:1,baseCost:98000,growth:1.27,boost:0.08,desc:"Traite plus de volume."},{id:"software",label:"Logiciel WMS",base:1,step:1,baseCost:120000,growth:1.30,boost:0.09,desc:"Optimise l’exploitation."}] },
+  { id:"recycling", name:"Centre de recyclage", category:"Industry", baseCost:980000, baseIncome:8.166667, unlock:1600000, image:businessImage("recycling","Centre de recyclage"), summary:"Actif industriel rentable et plutôt résilient.", unitLabel:"centre recyclage", upgrades:[{id:"lines",label:"Lignes tri",base:2,step:1,baseCost:64000,growth:1.25,boost:0.07,desc:"Traite plus de matières."},{id:"trucks",label:"Camions",base:2,step:1,baseCost:72000,growth:1.26,boost:0.07,desc:"Améliore la collecte."},{id:"contracts",label:"Contrats ville",base:1,step:1,baseCost:94000,growth:1.29,boost:0.09,desc:"Sécurise le volume entrant."}] },
+  { id:"hotel", name:"Hôtel", category:"Hospitality", baseCost:5000000, baseIncome:41.666667, unlock:8000000, image:businessImage("hotel","Hôtel"), summary:"Actif premium solide, surtout dans les zones touristiques.", unitLabel:"hôtel", upgrades:[{id:"rooms",label:"Chambres",base:10,step:2,baseCost:260000,growth:1.25,boost:0.07,desc:"Augmente la capacité d’accueil."},{id:"butlers",label:"Majordomes",base:1,step:1,baseCost:180000,growth:1.24,boost:0.06,desc:"Améliore la qualité du service."},{id:"spa",label:"Spa",base:0,step:1,baseCost:340000,growth:1.30,boost:0.10,desc:"Ajoute des revenus annexes."}] },
+  { id:"resort", name:"Resort", category:"Hospitality", baseCost:18000000, baseIncome:150.000000, unlock:30000000, image:businessImage("resort","Resort"), summary:"Le business loisir haut de gamme par excellence.", unitLabel:"resort", upgrades:[{id:"villas",label:"Villas",base:4,step:1,baseCost:1200000,growth:1.27,boost:0.08,desc:"Augmente la capacité haut de gamme."},{id:"staff",label:"Staff premium",base:6,step:2,baseCost:960000,growth:1.24,boost:0.06,desc:"Améliore l’expérience client."},{id:"leisure",label:"Loisirs",base:1,step:1,baseCost:1680000,growth:1.30,boost:0.10,desc:"Ouvre des dépenses annexes."}] },
+  { id:"casino", name:"Casino", category:"Hospitality", baseCost:12000000, baseIncome:100.000000, unlock:22000000, image:businessImage("casino","Casino"), summary:"Très rentable, mais réservé aux zones premium et très tardives.", unitLabel:"casino", upgrades:[{id:"tables",label:"Tables VIP",base:4,step:1,baseCost:880000,growth:1.26,boost:0.08,desc:"Plus de capacité de jeu."},{id:"hosts",label:"Hôtes premium",base:2,step:1,baseCost:720000,growth:1.24,boost:0.06,desc:"Améliore la rétention des gros clients."},{id:"shows",label:"Shows privés",base:0,step:1,baseCost:1100000,growth:1.30,boost:0.10,desc:"Ajoute une source de revenu luxe."}] },
+  { id:"tower", name:"Tour immobilière", category:"Real Estate", baseCost:50000000, baseIncome:416.666667, unlock:80000000, image:businessImage("tower","Tour immobilière"), summary:"Le grand objectif late game, très cher mais massif.", unitLabel:"tour", upgrades:[{id:"floors",label:"Étages",base:12,step:2,baseCost:4500000,growth:1.25,boost:0.08,desc:"Augmente la capacité totale."},{id:"elevators",label:"Ascenseurs",base:2,step:1,baseCost:4000000,growth:1.23,boost:0.06,desc:"Fluidifie la tour et améliore la valeur."},{id:"suites",label:"Suites premium",base:0,step:1,baseCost:7000000,growth:1.30,boost:0.10,desc:"Ajoute la couche ultra premium."}] },
+];
+
+const BUSINESS_COST_MULT = {
+  Retail:2.4,
+  Food:2.55,
+  Services:2.7,
+  Transport:3.0,
+  Finance:3.25,
+  Tech:3.55,
+  Media:3.0,
+  Industry:3.6,
+  Hospitality:4.0,
+  'Real Estate':4.6
+};
+const BUSINESS_YIELD_RATE = {
+  Retail:0.0085,
+  Food:0.0088,
+  Services:0.0086,
+  Transport:0.0090,
+  Finance:0.0091,
+  Tech:0.0093,
+  Media:0.0089,
+  Industry:0.0090,
+  Hospitality:0.0095,
+  'Real Estate':0.0092
+};
+BUSINESSES.forEach(b => {
+  const costMult = BUSINESS_COST_MULT[b.category] || 3.0;
+  const unlockMult = Math.max(1.8, costMult - 0.15);
+  b.baseCost = Math.floor(b.baseCost * costMult);
+  b.unlock = Math.floor(b.unlock * unlockMult);
+  b.baseIncome = Number((b.baseCost * (BUSINESS_YIELD_RATE[b.category] || 0.0088) / 60).toFixed(6));
+  b.upgrades.forEach(u => {
+    u.baseCost = Math.floor(u.baseCost * (costMult * 1.14));
+    u.growth = Number((u.growth + 0.08).toFixed(2));
+    u.boost = Number((u.boost * 0.72).toFixed(3));
+  });
+});
+
+
+const ESTATE_UPGRADES = [
+  { id:'aesthetic', icon:'🎨', label:'Effectuer des réparations esthétiques', costRatio:1.00, boost:0.34 },
+  { id:'appliances', icon:'🧊', label:'Améliorer les appareils électroménagers', costRatio:0.30, boost:0.18 },
+  { id:'furniture', icon:'🛋️', label:'Restaurer les meubles', costRatio:0.15, boost:0.11 },
+  { id:'internet', icon:'🔌', label:'Internet haut débit filaire', costRatio:0.08, boost:0.09 }
+];
+
+function estateImage(seed, label){
+  const skyTop = hslColor(seed * 41, 82, 68);
+  const skyBottom = hslColor(seed * 53 + 40, 74, 86);
+  const grass = hslColor(seed * 29 + 80, 54, 48);
+  const house = hslColor(seed * 33 + 12, 18, 82);
+  const roof = hslColor(seed * 47 + 8, 18, 26);
+  const trim = hslColor(seed * 61 + 20, 18, 96);
+  const door = hslColor(seed * 73 + 120, 38, 28);
+  const win = hslColor(seed * 17 + 190, 80, 70);
+  const shrub = hslColor(seed * 31 + 110, 45, 34);
+  const houseW = 260 + (seed % 5) * 24;
+  const houseX = 450 - houseW / 2;
+  const houseH = 150 + (seed % 4) * 18;
+  const houseY = 280 - houseH / 2 + 40;
+  const roofH = 70 + (seed % 3) * 16;
+  const doorW = 42 + (seed % 3) * 4;
+  const winCount = 2 + (seed % 3);
+  const porch = seed % 2 === 0;
+  const tree = seed % 3 !== 0;
+
+  let topWindows = '';
+  for(let i = 0; i < winCount; i++){
+    const wx = houseX + 26 + i * ((houseW - 92) / Math.max(1, winCount - 1));
+    topWindows += `<rect x="${wx}" y="${houseY + 34}" width="54" height="60" rx="6" fill="url(#glass${seed})" stroke="${trim}" stroke-width="4"/>`;
+  }
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560">
+    <defs>
+      <linearGradient id="sky${seed}" x1="0" y1="0" x2="0" y2="1">
+        <stop stop-color="${skyTop}"/><stop offset="1" stop-color="${skyBottom}"/>
+      </linearGradient>
+      <linearGradient id="glass${seed}" x1="0" y1="0" x2="1" y2="1">
+        <stop stop-color="${win}"/><stop offset="1" stop-color="#dff4ff"/>
+      </linearGradient>
+    </defs>
+    <rect width="900" height="560" fill="url(#sky${seed})"/>
+    <rect y="390" width="900" height="170" fill="${grass}"/>
+    <rect y="356" width="900" height="34" fill="#d9d8d6"/>
+    <path d="M410 560 L480 356 L548 356 L620 560 Z" fill="#d5c8bd" opacity=".92"/>
+    ${tree ? `<circle cx="${130 + (seed % 4) * 18}" cy="220" r="78" fill="${shrub}" opacity=".88"/><rect x="${120 + (seed % 4) * 18}" y="250" width="20" height="90" rx="8" fill="#6f4f34"/>` : ''}
+    ${tree ? `<circle cx="${760 - (seed % 5) * 20}" cy="230" r="70" fill="${shrub}" opacity=".82"/><rect x="${752 - (seed % 5) * 20}" y="258" width="18" height="82" rx="8" fill="#6f4f34"/>` : ''}
+    <rect x="${houseX}" y="${houseY}" width="${houseW}" height="${houseH}" rx="10" fill="${house}" stroke="#b3b9c3" stroke-width="4"/>
+    <path d="M${houseX-26} ${houseY+20} L450 ${houseY-roofH} L${houseX+houseW+26} ${houseY+20} Z" fill="${roof}" stroke="#444c57" stroke-width="4"/>
+    ${porch ? `<rect x="${houseX + houseW*0.34}" y="${houseY + houseH*0.52}" width="${houseW*0.32}" height="${houseH*0.26}" fill="${roof}" opacity=".96"/><rect x="${houseX + houseW*0.38}" y="${houseY + houseH*0.54}" width="10" height="${houseH*0.24}" fill="${trim}"/><rect x="${houseX + houseW*0.62}" y="${houseY + houseH*0.54}" width="10" height="${houseH*0.24}" fill="${trim}"/>` : ''}
+    <rect x="${450 - doorW/2}" y="${houseY + houseH - 92}" width="${doorW}" height="92" rx="7" fill="${door}" stroke="${trim}" stroke-width="4"/>
+    <circle cx="${450 + doorW/2 - 9}" cy="${houseY + houseH - 46}" r="4" fill="${trim}"/>
+    ${topWindows}
+    <rect x="${houseX + 30}" y="${houseY + houseH - 102}" width="58" height="56" rx="6" fill="url(#glass${seed})" stroke="${trim}" stroke-width="4"/>
+    <rect x="${houseX + houseW - 88}" y="${houseY + houseH - 102}" width="58" height="56" rx="6" fill="url(#glass${seed})" stroke="${trim}" stroke-width="4"/>
+    <rect x="${houseX - 20}" y="${houseY + houseH - 26}" width="${houseW + 40}" height="16" rx="8" fill="#c7ccd4"/>
+    <text x="48" y="70" fill="rgba(255,255,255,.88)" font-family="Arial" font-size="28" font-weight="700">${label}</text>
+  </svg>`;
+  return svgData(svg);
+}
+
+const REAL_ESTATE_MARKET = [
+  ['estate_01','Cleveland','Ohio',32000,1],
+  ['estate_02','Baltimore','Maryland',39000,2],
+  ['estate_03','London','UK',105000,3],
+  ['estate_04','Vancouver','Canada',124500,4],
+  ['estate_05','Lisbon','Portugal',148000,5],
+  ['estate_06','Brussels','Belgium',162000,6],
+  ['estate_07','Marseille','France',178000,7],
+  ['estate_08','Valencia','Spain',195000,8],
+  ['estate_09','Dublin','Ireland',214000,9],
+  ['estate_10','Prague','Czechia',228000,10],
+  ['estate_11','Vienna','Austria',246000,11],
+  ['estate_12','Milan','Italy',268000,12],
+  ['estate_13','Berlin','Germany',289000,13],
+  ['estate_14','Amsterdam','Netherlands',312000,14],
+  ['estate_15','Copenhagen','Denmark',338000,15],
+  ['estate_16','Oslo','Norway',364000,16],
+  ['estate_17','Stockholm','Sweden',392000,17],
+  ['estate_18','Geneva','Switzerland',425000,18],
+  ['estate_19','Tokyo','Japan',462000,19],
+  ['estate_20','Seoul','South Korea',498000,20],
+  ['estate_21','Singapore','Singapore',540000,21],
+  ['estate_22','Sydney','Australia',588000,22],
+  ['estate_23','Auckland','New Zealand',636000,23],
+  ['estate_24','Dubai','UAE',690000,24],
+  ['estate_25','Miami','Florida',748000,25],
+  ['estate_26','Los Angeles','California',812000,26],
+  ['estate_27','San Francisco','California',885000,27],
+  ['estate_28','New York','New York',960000,28],
+  ['estate_29','Monaco','Monaco',1150000,29],
+  ['estate_30','Hong Kong','China',1320000,30]
+].map(([id, city, country, price, seed]) => ({
+  id,
+  city,
+  country,
+  price,
+  seed,
+  name: 'Maison',
+  image: estateImage(seed, city)
+}));
+
+REAL_ESTATE_MARKET.forEach((prop, idx) => {
+  prop.price = Math.floor(prop.price * (2.4 + idx * 0.06));
+});
+ESTATE_UPGRADES.forEach(up => {
+  up.boost = Number((up.boost * 0.65).toFixed(3));
+});
+const MARKET_FEE_RATE = 0.025;
+const ESTATE_BASE_YIELD = 0.0048;
+
+const MISSIONS = [
+  { id:'m1', title:'Atteins 5 000 € de cash', reward:900, test:s => s.cash >= 5000 },
+  { id:'m2', title:'Possède 15 biens', reward:2400, test:s => totalOwnedAssets(s) >= 15 },
+  { id:'m3', title:'Génère 25 000 € au total', reward:5000, test:s => s.career >= 25000 },
+  { id:'m4', title:'Monte un bien au niveau 5', reward:8000, test:s => hasAnyUpgradeLevel(s, 5) },
+  { id:'m5', title:'Débloque 4 villes', reward:12000, test:s => unlockedCitiesCount(s) >= 4 },
+  { id:'m6', title:'Génère 250 000 € au total', reward:35000, test:s => s.career >= 250000 }
+];
+
+const STOCK_SEEDS = [
+  ['Tesla', 'TSLA', 12.0, 0.006],
+  ['Volkswagen', 'VOW', 15.9, 0.0077],
+  ['Nike', 'NKE', 19.8, 0.0094],
+  ['Apple', 'AAPL', 23.7, 0.0111],
+  ['Microsoft', 'MSFT', 27.6, 0.0128],
+  ['Amazon', 'AMZN', 31.5, 0.0145],
+  ['Nvidia', 'NVDA', 35.4, 0.0162],
+  ['Meta', 'META', 18.3, 0.0179],
+  ['Google', 'GOOGL', 22.2, 0.0196],
+  ['Coca-Cola', 'KO', 26.1, 0.006],
+  ['McDonald\'s', 'MCD', 30.0, 0.0077],
+  ['Samsung', 'SMSN', 33.9, 0.0094],
+  ['Toyota', 'TM', 37.8, 0.0111],
+  ['BMW', 'BMW', 41.7, 0.0128],
+  ['Ferrari', 'RACE', 24.6, 0.0145],
+  ['Shell', 'SHEL', 28.5, 0.0162],
+  ['Disney', 'DIS', 32.4, 0.0179],
+  ['Sony', 'SONY', 36.3, 0.0196],
+  ['Visa', 'V', 40.2, 0.006],
+  ['Mastercard', 'MA', 44.1, 0.0077],
+  ['Intel', 'INTC', 48.0, 0.0094],
+  ['AMD', 'AMD', 30.9, 0.0111],
+  ['Netflix', 'NFLX', 34.8, 0.0128],
+  ['Adobe', 'ADBE', 38.7, 0.0145],
+  ['PepsiCo', 'PEP', 42.6, 0.0162],
+  ['Uber', 'UBER', 46.5, 0.0179],
+  ['Airbnb', 'ABNB', 50.4, 0.0196],
+  ['PayPal', 'PYPL', 54.3, 0.006],
+  ['Alibaba', 'BABA', 37.2, 0.0077],
+  ['SAP', 'SAP', 41.1, 0.0094],
+  ['Siemens', 'SIE', 45.0, 0.0111],
+  ['LVMH', 'LVMH', 48.9, 0.0128],
+  ['Hermes', 'RMS', 52.8, 0.0145],
+  ['Adidas', 'ADS', 56.7, 0.0162],
+  ['Puma', 'PUM', 60.6, 0.0179],
+  ['Carrefour', 'CA', 43.5, 0.0196],
+  ['Unilever', 'ULVR', 47.4, 0.006],
+  ['Nestle', 'NESN', 51.3, 0.0077],
+  ['TotalEnergies', 'TTE', 55.2, 0.0094],
+  ['Airbus', 'AIR', 59.1, 0.0111],
+  ['Boeing', 'BA', 63.0, 0.0128],
+  ['Pfizer', 'PFE', 66.9, 0.0145],
+  ['Novartis', 'NVS', 49.8, 0.0162],
+  ['Sanofi', 'SNY', 53.7, 0.0179],
+  ['Spotify', 'SPOT', 57.6, 0.0196],
+  ['TSMC', 'TSM', 61.5, 0.006],
+  ['Oracle', 'ORCL', 65.4, 0.0077],
+  ['Cisco', 'CSCO', 69.3, 0.0094],
+  ['Qualcomm', 'QCOM', 73.2, 0.0111],
+  ['Broadcom', 'AVGO', 56.1, 0.0128],
+  ['Arm', 'ARM', 60.0, 0.0145],
+  ['Roblox', 'RBLX', 63.9, 0.0162],
+  ['Coinbase', 'COIN', 67.8, 0.0179],
+  ['Block', 'SQ', 71.7, 0.0196],
+  ['Goldman Sachs', 'GS', 75.6, 0.006],
+  ['JPMorgan', 'JPM', 79.5, 0.0077],
+  ['BNP Paribas', 'BNP', 62.4, 0.0094],
+  ['UBS', 'UBS', 66.3, 0.0111],
+  ['Deutsche Bank', 'DB', 70.2, 0.0128],
+  ['Santander', 'SAN', 74.1, 0.0145],
+  ['Intesa Sanpaolo', 'ISP', 78.0, 0.0162],
+  ['Costco', 'COST', 81.9, 0.0179],
+  ['Walmart', 'WMT', 85.8, 0.0196],
+  ['Target', 'TGT', 68.7, 0.006],
+  ['Home Depot', 'HD', 72.6, 0.0077],
+  ['Starbucks', 'SBUX', 76.5, 0.0094],
+  ['Chipotle', 'CMG', 80.4, 0.0111],
+  ['Ryanair', 'RYA', 84.3, 0.0128],
+  ['Lufthansa', 'LHA', 88.2, 0.0145],
+  ['Delta Air Lines', 'DAL', 92.1, 0.0162],
+  ['American Airlines', 'AAL', 75.0, 0.0179],
+  ['United Airlines', 'UAL', 78.9, 0.0196],
+  ['Renault', 'RNO', 82.8, 0.006],
+  ['Stellantis', 'STLA', 86.7, 0.0077],
+  ['Ford', 'F', 90.6, 0.0094],
+  ['General Motors', 'GM', 94.5, 0.0111],
+  ['BYD', 'BYD', 98.4, 0.0128],
+  ['Nio', 'NIO', 81.3, 0.0145],
+  ['Xiaomi', 'XIAC', 85.2, 0.0162],
+  ['Tencent', 'TCEHY', 89.1, 0.0179],
+  ['Baidu', 'BIDU', 93.0, 0.0196],
+  ['JD.com', 'JD', 96.9, 0.006],
+  ['MercadoLibre', 'MELI', 100.8, 0.0077],
+  ['Booking', 'BKNG', 104.7, 0.0094],
+  ['Hilton', 'HLT', 87.6, 0.0111],
+  ['Marriott', 'MAR', 91.5, 0.0128],
+  ['Hyatt', 'H', 95.4, 0.0145],
+  ['eBay', 'EBAY', 99.3, 0.0162],
+  ['Etsy', 'ETSY', 103.2, 0.0179],
+  ['Zoom', 'ZM', 107.1, 0.0196],
+  ['Snowflake', 'SNOW', 111.0, 0.006],
+  ['Palantir', 'PLTR', 93.9, 0.0077],
+  ['CrowdStrike', 'CRWD', 97.8, 0.0094],
+  ['Datadog', 'DDOG', 101.7, 0.0111],
+  ['Salesforce', 'CRM', 105.6, 0.0128],
+  ['HubSpot', 'HUBS', 109.5, 0.0145],
+  ['ServiceNow', 'NOW', 113.4, 0.0162],
+  ['Shopify', 'SHOP', 117.3, 0.0179],
+  ['Traton', '8TRA', 100.2, 0.0196],
+  ['Nasdaq 100 ETF', 'QQQ', 104.1, 0.006]
+];
+
+const CRYPTO_SEEDS = [
+  ['Bitcoin', 'BTC', 0.15, 0.012],
+  ['Ethereum', 'ETH', 0.73, 0.0147],
+  ['Solana', 'SOL', 1.31, 0.0174],
+  ['XRP', 'XRP', 1.89, 0.0201],
+  ['BNB', 'BNB', 2.47, 0.0228],
+  ['Cardano', 'ADA', 3.05, 0.0255],
+  ['Dogecoin', 'DOGE', 3.63, 0.0282],
+  ['Toncoin', 'TON', 4.21, 0.0309],
+  ['Avalanche', 'AVAX', 4.79, 0.0336],
+  ['Polkadot', 'DOT', 5.37, 0.0363],
+  ['Chainlink', 'LINK', 5.95, 0.039],
+  ['Litecoin', 'LTC', 4.22, 0.0417],
+  ['Shiba Inu', 'SHIB', 4.8, 0.0444],
+  ['Tron', 'TRX', 5.38, 0.012],
+  ['Monero', 'XMR', 5.96, 0.0147],
+  ['Aptos', 'APT', 6.54, 0.0174],
+  ['Sui', 'SUI', 7.12, 0.0201],
+  ['Near', 'NEAR', 7.7, 0.0228],
+  ['Kaspa', 'KAS', 8.28, 0.0255],
+  ['Render', 'RNDR', 8.86, 0.0282],
+  ['Arbitrum', 'ARB', 9.44, 0.0309],
+  ['Optimism', 'OP', 10.02, 0.0336],
+  ['Stellar', 'XLM', 8.29, 0.0363],
+  ['VeChain', 'VET', 8.87, 0.039],
+  ['Filecoin', 'FIL', 9.45, 0.0417],
+  ['Internet Computer', 'ICP', 10.03, 0.0444],
+  ['Hedera', 'HBAR', 10.61, 0.012],
+  ['Algorand', 'ALGO', 11.19, 0.0147],
+  ['Cosmos', 'ATOM', 11.77, 0.0174],
+  ['Tezos', 'XTZ', 12.35, 0.0201],
+  ['Maker', 'MKR', 12.93, 0.0228],
+  ['Aave', 'AAVE', 13.51, 0.0255],
+  ['Uniswap', 'UNI', 14.09, 0.0282],
+  ['Lido DAO', 'LDO', 12.36, 0.0309],
+  ['Injective', 'INJ', 12.94, 0.0336],
+  ['Jupiter', 'JUP', 13.52, 0.0363],
+  ['Sei', 'SEI', 14.1, 0.039],
+  ['Celestia', 'TIA', 14.68, 0.0417],
+  ['Mantle', 'MNT', 15.26, 0.0444],
+  ['Stacks', 'STX', 15.84, 0.012],
+  ['Immutable', 'IMX', 16.42, 0.0147],
+  ['Flow', 'FLOW', 17.0, 0.0174],
+  ['ApeCoin', 'APE', 17.58, 0.0201],
+  ['Bonk', 'BONK', 18.16, 0.0228],
+  ['Pepe', 'PEPE', 16.43, 0.0255],
+  ['Fantom', 'FTM', 17.01, 0.0282],
+  ['THORChain', 'RUNE', 17.59, 0.0309],
+  ['Pyth', 'PYTH', 18.17, 0.0336],
+  ['The Graph', 'GRT', 18.75, 0.0363],
+  ['Synthetix', 'SNX', 19.33, 0.039],
+  ['Curve', 'CRV', 19.91, 0.0417],
+  ['PancakeSwap', 'CAKE', 20.49, 0.0444],
+  ['Rocket Pool', 'RPL', 21.07, 0.012],
+  ['dYdX', 'DYDX', 21.65, 0.0147],
+  ['GMX', 'GMX', 22.23, 0.0174],
+  ['Helium', 'HNT', 20.5, 0.0201],
+  ['Kava', 'KAVA', 21.08, 0.0228],
+  ['Compound', 'COMP', 21.66, 0.0255],
+  ['1inch', '1INCH', 22.24, 0.0282],
+  ['Axie Infinity', 'AXS', 22.82, 0.0309],
+  ['Sandbox', 'SAND', 23.4, 0.0336],
+  ['Decentraland', 'MANA', 23.98, 0.0363],
+  ['Gala', 'GALA', 24.56, 0.039],
+  ['Chiliz', 'CHZ', 25.14, 0.0417],
+  ['Zcash', 'ZEC', 25.72, 0.0444],
+  ['Dash', 'DASH', 26.3, 0.012],
+  ['Neo', 'NEO', 24.57, 0.0147],
+  ['EOS', 'EOS', 25.15, 0.0174],
+  ['IOTA', 'IOTA', 25.73, 0.0201],
+  ['Qtum', 'QTUM', 26.31, 0.0228],
+  ['Nexo', 'NEXO', 26.89, 0.0255],
+  ['Terra Classic', 'LUNC', 27.47, 0.0282],
+  ['Beam', 'BEAM', 28.05, 0.0309],
+  ['Blur', 'BLUR', 28.63, 0.0336],
+  ['Flare', 'FLR', 29.21, 0.0363],
+  ['Worldcoin', 'WLD', 29.79, 0.039],
+  ['Ondo', 'ONDO', 30.37, 0.0417],
+  ['Ethena', 'ENA', 28.64, 0.0444],
+  ['Wormhole', 'W', 29.22, 0.012],
+  ['Aevo', 'AEVO', 29.8, 0.0147],
+  ['Notcoin', 'NOT', 30.38, 0.0174],
+  ['Arkham', 'ARKM', 30.96, 0.0201],
+  ['Gnosis', 'GNO', 31.54, 0.0228],
+  ['Ocean Protocol', 'OCEAN', 32.12, 0.0255],
+  ['Fetch.ai', 'FET', 32.7, 0.0282],
+  ['SingularityNET', 'AGIX', 33.28, 0.0309],
+  ['Akash', 'AKT', 33.86, 0.0336],
+  ['Mina', 'MINA', 34.44, 0.0363],
+  ['Zilliqa', 'ZIL', 32.71, 0.039],
+  ['Celo', 'CELO', 33.29, 0.0417],
+  ['Harmony', 'ONE', 33.87, 0.0444],
+  ['Loopring', 'LRC', 34.45, 0.012],
+  ['Kadena', 'KDA', 35.03, 0.0147],
+  ['Enjin Coin', 'ENJ', 35.61, 0.0174],
+  ['Safe', 'SAFE', 36.19, 0.0201],
+  ['Bittensor', 'TAO', 36.77, 0.0228],
+  ['Mog Coin', 'MOG', 37.35, 0.0255],
+  ['Popcat', 'POPCAT', 37.93, 0.0282],
+  ['Turbo', 'TURBO', 38.51, 0.0309],
+  ['Reserve Rights', 'RSR', 36.78, 0.0336]
+];
+
+function generateMarketUniverse(kind, seeds){
+  return seeds.map(([name,ticker,price,vol], idx) => {
+    const history = [];
+    let p = price;
+    const precision = kind === 'stocks' ? 2 : 4;
+    const popularity = seeds.length - idx;
+    const shockChance = kind === 'stocks' ? 0.0025 : 0.0065;
+    const shockMin = kind === 'stocks' ? 0.035 : 0.14;
+    const shockMax = kind === 'stocks' ? 0.12 : 0.48;
+    let trend = (Math.random() - 0.5) * 0.002;
+    let momentum = 0;
+    for(let i=0;i<60;i++){
+      if(Math.random() < 0.06) trend += (Math.random() - 0.5) * (kind === 'stocks' ? 0.002 : 0.0065);
+      momentum = momentum * 0.84 + (Math.random() - 0.5) * vol * (kind === 'stocks' ? 0.04 : 0.090);
+      let move = trend * 0.25 + momentum + (Math.random() - 0.5) * vol * (kind === 'stocks' ? 0.14 : 0.30);
+      if(Math.random() < shockChance){
+        const shock = shockMin + Math.random() * (shockMax - shockMin);
+        move += shock * (Math.random() < 0.62 ? 1 : -1);
+      }
+      const minPrice = kind === 'stocks' ? 2 : 0.05;
+      p = Math.max(minPrice, p * (1 + move));
+      history.push(Number(p.toFixed(precision)));
+    }
+    return { name, ticker, price:Number(p.toFixed(precision)), history, vol, popularity, trend, momentum, shockChance, shockMin, shockMax, lastChangePct:0 };
+  });
+}
+
+function createBusinessState(){
+  const out = {};
+  BUSINESSES.forEach(b => {
+    const upgrades = {};
+    b.upgrades.forEach(u => upgrades[u.id] = u.base);
+    out[b.id] = { count:0, manager:false, upgrades };
+  });
+  return out;
+}
+
+function createRealEstateState(){
+  const owned = {};
+  REAL_ESTATE_MARKET.forEach(prop => {
+    const upgrades = {};
+    ESTATE_UPGRADES.forEach(up => upgrades[up.id] = false);
+    owned[prop.id] = { owned:false, upgrades };
+  });
+  return { view:'home', marketSort:'desc', ownedSort:'desc', selectedId:null, owned };
+}
+function sanitizeRealEstate(rawEstate){
+  const base = createRealEstateState();
+  const view = ['home','market','owned','detail'].includes(rawEstate?.view) ? rawEstate.view : 'home';
+  const marketSort = rawEstate?.marketSort === 'asc' ? 'asc' : 'desc';
+  const ownedSort = rawEstate?.ownedSort === 'asc' ? 'asc' : 'desc';
+  const selectedId = REAL_ESTATE_MARKET.some(p => p.id === rawEstate?.selectedId) ? rawEstate.selectedId : null;
+  REAL_ESTATE_MARKET.forEach(prop => {
+    const source = rawEstate?.owned?.[prop.id] || {};
+    base.owned[prop.id].owned = Boolean(source.owned);
+    ESTATE_UPGRADES.forEach(up => {
+      base.owned[prop.id].upgrades[up.id] = Boolean(source.upgrades?.[up.id]);
+    });
+  });
+  return { ...base, view, marketSort, ownedSort, selectedId };
+}
+
+function createInitialState(prestige=0){
+  const cities = {};
+  CITIES.forEach(c => cities[c.id] = createBusinessState());
+  return {
+    cash:1200,
+    career:0,
+    prestige,
+    tap:10,
+    tapLevel:1,
+    rewardUntil:0,
+    selectedCity:'downtown',
+    marketTab:'stocks',
+    marketSort:'popular',
+    missionsDone:[],
+    managerClock:0,
+    cities,
+    markets:{ stocks:generateMarketUniverse('stocks', STOCK_SEEDS), cryptos:generateMarketUniverse('cryptos', CRYPTO_SEEDS) },
+    holdings:{ stocks:{}, cryptos:{} },
+    favorites:{ stocks:{}, cryptos:{} },
+    realEstate:createRealEstateState(),
+    lastSaved:Date.now()
+  };
+}
+
+function money(v){ return new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(Math.floor(v)); }
+function moneyRate(v){ return new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:2}).format(v); }
+function moneyCompact(v){
+  const abs = Math.abs(v);
+  if(abs < 1000000) return money(v);
+  return new Intl.NumberFormat('fr-FR',{notation:'compact',maximumFractionDigits:2}).format(v) + ' €';
+}
+function fmtNumber(v){ return new Intl.NumberFormat('fr-FR',{maximumFractionDigits:2}).format(v); }
+function cityById(id){ return CITIES.find(c => c.id === id); }
+function businessById(id){ return BUSINESSES.find(b => b.id === id); }
+function prestigeMult(level){ return 1 + level * 0.25; }
+function boostMult(s){ return Date.now() < s.rewardUntil ? 2 : 1; }
+function canUnlockCity(s, city){ return s.career >= city.unlock; }
+function totalOwnedAssets(s){ return CITIES.reduce((acc, c) => acc + BUSINESSES.reduce((sub, b) => sub + s.cities[c.id][b.id].count, 0), 0) + estateOwnedCount(s); }
+function totalManagers(s){ return CITIES.reduce((acc, c) => acc + BUSINESSES.reduce((sub, b) => sub + (s.cities[c.id][b.id].manager ? 1 : 0), 0), 0); }
+function unlockedCitiesCount(s){ return CITIES.filter(c => canUnlockCity(s, c)).length; }
+function hasAnyUpgradeLevel(s, minExtra){ return CITIES.some(c => BUSINESSES.some(b => b.upgrades.some(u => ((s.cities[c.id][b.id].upgrades[u.id] - u.base) / u.step) >= minExtra))); }
+function baseBuyCost(s, cityId, bizId){ const b = businessById(bizId); const count = s.cities[cityId][bizId].count; if(count >= 1) return Infinity; return Math.floor(b.baseCost); }
+function totalUpgradeSteps(b, item){ return b.upgrades.reduce((sum, u) => sum + ((item.upgrades[u.id] - u.base) / u.step), 0); }
+function managerCost(s, cityId, bizId){ const b = businessById(bizId); const item = s.cities[cityId][bizId]; return Math.floor(b.baseCost * (6 + item.count * 0.8 + totalUpgradeSteps(b, item) * 0.25)); }
+function upgradeCostFor(item, upgrade){ const stepCount = getUpgradeLevel(item, upgrade); if(stepCount >= 10) return Infinity; return Math.floor(upgrade.baseCost * Math.pow(upgrade.growth, stepCount)); }
+function cityFavoriteBoost(cityId, bizId){ const c = cityById(cityId); return c.favorites.includes(bizId) ? 1.22 : 1; }
+function managerBoost(item){ return item.manager ? 1.35 : 1; }
+function upgradeMultiplier(b, item){ return b.upgrades.reduce((mult, u) => mult * (1 + Math.max(0, (item.upgrades[u.id]-u.base)/u.step) * u.boost), 1); }
+function incomeForBusiness(s, cityId, bizId){
+  const c = cityById(cityId);
+  const b = businessById(bizId);
+  const item = s.cities[cityId][bizId];
+  if(item.count <= 0) return 0;
+  return item.count * b.baseIncome * c.bonus * cityFavoriteBoost(cityId, bizId) * managerBoost(item) * upgradeMultiplier(b, item) * prestigeMult(s.prestige) * boostMult(s);
+}
+function estateUpgradeCost(prop, upgrade){ return Math.floor(prop.price * upgrade.costRatio); }
+function getEstateStatus(s, propId){
+  const fallback = createRealEstateState().owned[propId];
+  return s.realEstate?.owned?.[propId] || fallback;
+}
+function estateUpgradeCount(status){ return ESTATE_UPGRADES.reduce((acc, up) => acc + (status.upgrades[up.id] ? 1 : 0), 0); }
+function estateRemainingCount(status){ return ESTATE_UPGRADES.length - estateUpgradeCount(status); }
+function estateOwnedCount(s){ return REAL_ESTATE_MARKET.reduce((acc, prop) => acc + (getEstateStatus(s, prop.id).owned ? 1 : 0), 0); }
+function estateIncomeForProperty(s, propId){
+  const prop = REAL_ESTATE_MARKET.find(p => p.id === propId);
+  const status = getEstateStatus(s, propId);
+  if(!prop || !status.owned) return 0;
+  let mult = 1;
+  ESTATE_UPGRADES.forEach(up => { if(status.upgrades[up.id]) mult += up.boost; });
+  return (prop.price * ESTATE_BASE_YIELD / 60) * mult * prestigeMult(s.prestige) * boostMult(s);
+}
+function estateTotalIncome(s){ return REAL_ESTATE_MARKET.reduce((acc, prop) => acc + estateIncomeForProperty(s, prop.id), 0); }
+function estateUpgradeSpent(s, propId){
+  const prop = REAL_ESTATE_MARKET.find(p => p.id === propId);
+  const status = getEstateStatus(s, propId);
+  if(!prop) return 0;
+  return ESTATE_UPGRADES.reduce((acc, up) => acc + (status.upgrades[up.id] ? estateUpgradeCost(prop, up) : 0), 0);
+}
+function estateMarketValue(s, propId){
+  const prop = REAL_ESTATE_MARKET.find(p => p.id === propId);
+  if(!prop) return 0;
+  return prop.price + Math.floor(estateUpgradeSpent(s, propId) * 0.6);
+}
+function estateSaleValue(s, propId){
+  return Math.floor(estateMarketValue(s, propId) * 0.88);
+}
+function totalIncome(s){ return CITIES.reduce((acc,c) => acc + BUSINESSES.reduce((sub,b) => sub + incomeForBusiness(s, c.id, b.id), 0), 0) + estateTotalIncome(s); }
+function getUpgradeLevel(item, upgrade){ return Math.max(0, Math.round((item.upgrades[upgrade.id] - upgrade.base) / upgrade.step)); }
+function isUpgradeMaxed(item, upgrade){ return getUpgradeLevel(item, upgrade) >= 10; }
+function incomeWithNextUpgrade(s, cityId, bizId, upgradeId){ const clone = JSON.parse(JSON.stringify(s)); const biz = businessById(bizId); const up = biz.upgrades.find(u => u.id === upgradeId); const item = clone.cities[cityId][bizId]; if(getUpgradeLevel(item, up) >= 10) return incomeForBusiness(clone, cityId, bizId); item.upgrades[upgradeId] += up.step; return incomeForBusiness(clone, cityId, bizId); }
+function incomeGainFromNextUpgrade(s, cityId, bizId, upgradeId){ return incomeWithNextUpgrade(s, cityId, bizId, upgradeId) - incomeForBusiness(s, cityId, bizId); }
+function prestigeGoal(s){ return 300000 * (s.prestige + 1); }
+function tapValueAtLevel(level){ return Math.max(10, Math.floor(10 * Math.pow(1.55, Math.max(0, level - 1)))); }
+function tapClickValue(s){ return Number.isFinite(s.tap) ? s.tap : tapValueAtLevel(s.tapLevel || 1); }
+function tapUpgradeCost(s){ return Math.floor(220 * Math.pow(1.92, Math.max(0, (s.tapLevel || 1) - 1))); }
+function nextTapValue(s){ return tapValueAtLevel((s.tapLevel || 1) + 1); }
+function totalUpgradeSpendForItem(item, biz){
+  let spent = 0;
+  biz.upgrades.forEach(up => {
+    const level = getUpgradeLevel(item, up);
+    for(let i = 0; i < level; i++) spent += Math.floor(up.baseCost * Math.pow(up.growth, i));
+  });
+  return spent;
+}
+function businessCapitalValue(s, cityId, bizId){
+  const biz = businessById(bizId);
+  const item = s.cities[cityId][bizId];
+  if(item.count <= 0) return 0;
+  let total = item.count * biz.baseCost + totalUpgradeSpendForItem(item, biz);
+  if(item.manager) total += Math.floor(biz.baseCost * 1.1);
+  return total;
+}
+function totalBusinessValue(s){
+  return CITIES.reduce((sum, city) => sum + BUSINESSES.reduce((sub, biz) => sub + businessCapitalValue(s, city.id, biz.id), 0), 0);
+}
+function portfolioValue(s){
+  return ['stocks','cryptos'].reduce((sum, kind) => sum + s.markets[kind].reduce((sub, asset) => {
+    const hold = s.holdings[kind][asset.ticker] || { qty:0 };
+    return sub + hold.qty * asset.price;
+  }, 0), 0);
+}
+function totalRealEstateValue(s){
+  return REAL_ESTATE_MARKET.reduce((sum, prop) => sum + (getEstateStatus(s, prop.id).owned ? estateMarketValue(s, prop.id) : 0), 0);
+}
+function wealthBreakdown(s){
+  const rows = [
+    { key:'cash', label:'Liquidités', value:Math.max(0, s.cash), color:'#f4c56f', sub:'argent disponible tout de suite' },
+    { key:'businesses', label:'Entreprises', value:totalBusinessValue(s), color:'#7bc2ff', sub:'valeur estimée de tes biens et upgrades' },
+    { key:'realestate', label:'Immobilier', value:totalRealEstateValue(s), color:'#59d49c', sub:'valeur marchande de tes propriétés' },
+    { key:'markets', label:'Marchés', value:portfolioValue(s), color:'#b18cff', sub:'valeur actuelle de ton portefeuille' }
+  ];
+  const total = rows.reduce((sum, row) => sum + row.value, 0);
+  return rows.map(row => ({ ...row, share: total > 0 ? row.value / total : 0 }));
+}
+function totalNetWorth(s){ return wealthBreakdown(s).reduce((sum, row) => sum + row.value, 0); }
+function cityIncomeTotal(s, cityId){ return BUSINESSES.reduce((sum, biz) => sum + incomeForBusiness(s, cityId, biz.id), 0); }
+function cityOwnedCount(s, cityId){ return BUSINESSES.reduce((sum, biz) => sum + s.cities[cityId][biz.id].count, 0); }
+
+function sanitizeState(raw){
+  const base = createInitialState(raw?.prestige || 0);
+  const cities = {};
+  CITIES.forEach(c => {
+    cities[c.id] = createBusinessState();
+    const rawCity = raw?.cities?.[c.id] || {};
+    BUSINESSES.forEach(b => {
+      const rawItem = rawCity[b.id] || {};
+      const item = cities[c.id][b.id];
+      item.count = Number.isFinite(rawItem.count) ? Math.max(0, Math.min(1, rawItem.count)) : 0;
+      item.manager = Boolean(rawItem.manager) && item.count > 0;
+      b.upgrades.forEach(u => {
+        const v = rawItem.upgrades?.[u.id];
+        item.upgrades[u.id] = Number.isFinite(v) ? Math.max(u.base, v) : u.base;
+      });
+    });
+  });
+  const markets = { stocks:[], cryptos:[] };
+  ['stocks','cryptos'].forEach(kind => {
+    const baseList = base.markets[kind];
+    const rawList = raw?.markets?.[kind];
+    markets[kind] = Array.isArray(rawList) && rawList.length === baseList.length
+      ? rawList.map((m, idx) => ({ ...baseList[idx], ...m, price:Number.isFinite(m.price)?m.price:baseList[idx].price, history:Array.isArray(m.history)&&m.history.length ? m.history.slice(-40).map(Number) : baseList[idx].history }))
+      : baseList;
+  });
+  return {
+    ...base, ...raw,
+    cities, markets,
+    holdings:{ stocks:raw?.holdings?.stocks || {}, cryptos:raw?.holdings?.cryptos || {} },
+    realEstate:sanitizeRealEstate(raw?.realEstate),
+    missionsDone:Array.isArray(raw?.missionsDone) ? raw.missionsDone : [],
+    marketTab: raw?.marketTab === 'cryptos' ? 'cryptos' : 'stocks',
+    selectedCity: CITIES.some(c => c.id === raw?.selectedCity) ? raw.selectedCity : 'downtown',
+    cash:Number.isFinite(raw?.cash) ? raw.cash : base.cash,
+    career:Number.isFinite(raw?.career) ? raw.career : base.career,
+    prestige:Number.isFinite(raw?.prestige) ? raw.prestige : base.prestige,
+    tap:Number.isFinite(raw?.tap) ? Math.max(1, raw.tap) : base.tap,
+    tapLevel:Number.isFinite(raw?.tapLevel) ? Math.max(1, Math.floor(raw.tapLevel)) : base.tapLevel,
+    rewardUntil:Number.isFinite(raw?.rewardUntil) ? raw.rewardUntil : 0,
+    managerClock:Number.isFinite(raw?.managerClock) ? raw.managerClock : 0,
+    lastSaved:Number.isFinite(raw?.lastSaved) ? raw.lastSaved : Date.now()
+  };
+}
+function loadState(){
+  try{
+    const raw = localStorage.getItem('roi_du_quartier_v8_mobile');
+    if(!raw) return createInitialState();
+    const s = sanitizeState(JSON.parse(raw));
+    const elapsed = Math.min(60 * 60 * 8, Math.max(0, Math.floor((Date.now()-s.lastSaved)/1000)));
+    if(elapsed > 0){
+      const offline = totalIncome(s) * (elapsed / 60);
+      s.cash += offline;
+      s.career += offline;
+      applyManagerAutomation(s, elapsed);
+      for(let i=0;i<Math.min(30, elapsed);i++) updateMarkets(s);
+      if(offline > 0) requestAnimationFrame(() => showBanner('Retour réussi : ' + money(offline) + ' gagnés hors ligne.'));
+    }
+    s.lastSaved = Date.now();
+    return s;
+  } catch(e) {
+    return createInitialState();
+  }
+}
+function rehydrateMarkets(s){
+  ['stocks','cryptos'].forEach(kind => {
+    s.markets[kind].forEach((asset, idx) => {
+      asset.popularity = Number.isFinite(asset.popularity) ? asset.popularity : (s.markets[kind].length - idx);
+      asset.drift = Number.isFinite(asset.drift) ? asset.drift : ((Math.random()-0.5) * (kind === 'stocks' ? 0.0006 : 0.0012));
+      asset.bias = Number.isFinite(asset.bias) ? asset.bias : 0;
+      asset.eventTicks = Number.isFinite(asset.eventTicks) ? asset.eventTicks : 0;
+      asset.eventDir = Number.isFinite(asset.eventDir) ? asset.eventDir : 0;
+      asset.lastChangePct = Number.isFinite(asset.lastChangePct) ? asset.lastChangePct : 0;
+      if(!Array.isArray(asset.history) || asset.history.length < 40){
+        asset.history = Array.isArray(asset.history) && asset.history.length ? asset.history : [asset.price];
+        while(asset.history.length < 80){
+          const prev = asset.history[asset.history.length - 1];
+          const tiny = (Math.random()-0.5) * (kind === 'stocks' ? 0.003 : 0.006);
+          asset.history.push(Number(Math.max(kind === 'stocks' ? 2 : 0.05, prev * (1 + tiny)).toFixed(kind === 'stocks' ? 2 : 4)));
+        }
+      }
+    });
+  });
+  s.marketClock = Number.isFinite(s.marketClock) ? s.marketClock : 0;
+  return s;
+}
+let state = rehydrateMarkets(loadState());
+if(!state.realEstate) state.realEstate = createRealEstateState();
+state.tapLevel = Math.max(1, state.tapLevel || 1);
+state.tap = tapValueAtLevel(state.tapLevel);
+
+function saveState(){ state.lastSaved = Date.now(); localStorage.setItem('roi_du_quartier_v8_mobile', JSON.stringify(state)); }
+function showBanner(message){ $('banner').textContent = message; $('banner').style.display = 'block'; }
+function flashHomeGain(gain){
+  const balance = $('homeBalanceGain');
+  const tap = $('homeTapFloat');
+  if(balance){
+    balance.textContent = '+' + money(gain);
+    balance.classList.remove('show');
+    void balance.offsetWidth;
+    balance.classList.add('show');
+  }
+  if(tap){
+    tap.textContent = '+' + money(gain);
+    tap.classList.remove('show');
+    void tap.offsetWidth;
+    tap.classList.add('show');
+  }
+}
+function showToast(message){ toastEl.textContent = message; toastEl.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200); }
+function coinBurst(amount){
+  const layer = $('particleLayer');
+  const rect = $('collectBtn').getBoundingClientRect();
+  const x = rect.left + rect.width/2;
+  const y = rect.top + 10;
+  for(let i=0;i<4;i++){
+    const node = document.createElement('div');
+    node.className = 'coin-pop';
+    node.textContent = '+' + money(amount);
+    node.style.left = (x + (Math.random()*80-40)) + 'px';
+    node.style.top = (y + Math.random()*10) + 'px';
+    layer.appendChild(node);
+    setTimeout(() => node.remove(), 950);
+  }
+}
+function claimCompletedMissions(){
+  const newly = MISSIONS.filter(m => !state.missionsDone.includes(m.id) && m.test(state));
+  if(!newly.length) return;
+  const reward = newly.reduce((sum,m) => sum + m.reward, 0);
+  state.cash += reward;
+  state.career += reward;
+  state.missionsDone.push(...newly.map(m => m.id));
+  showBanner('Mission accomplie : +' + money(reward));
+  showToast('+' + money(reward));
+}
+function applyManagerAutomation(targetState, seconds=1){
+  targetState.managerClock = (targetState.managerClock || 0) + seconds;
+  const cycles = Math.min(60, Math.floor(targetState.managerClock / 10));
+  if(cycles <= 0) return;
+  targetState.managerClock -= cycles * 10;
+  for(let c=0;c<cycles;c++){
+    CITIES.forEach(city => {
+      BUSINESSES.forEach(biz => {
+        const item = targetState.cities[city.id][biz.id];
+        if(!item.manager || item.count <= 0) return;
+        const actions = [];
+        biz.upgrades.forEach(up => {
+          if(!isUpgradeMaxed(item, up)) actions.push({ type:'upgrade', upgradeId:up.id, cost:upgradeCostFor(item, up) });
+        });
+        if(!actions.length) return;
+        actions.sort((a,b) => a.cost - b.cost);
+        const chosen = actions[0];
+        if(targetState.cash < chosen.cost) return;
+        targetState.cash -= chosen.cost;
+        const up = biz.upgrades.find(u => u.id === chosen.upgradeId);
+        item.upgrades[up.id] += up.step;
+      });
+    });
+  }
+}
+function updateMarkets(targetState=state, ticks=1){
+  targetState.marketClock = (targetState.marketClock || 0) + ticks;
+  const cycles = Math.floor(targetState.marketClock / 60);
+  if(cycles <= 0) return;
+  targetState.marketClock -= cycles * 60;
+
+  ['stocks','cryptos'].forEach(kind => {
+    const minPrice = kind === 'stocks' ? 2 : 0.05;
+    const precision = kind === 'stocks' ? 2 : 4;
+
+    for(let step = 0; step < cycles; step++){
+      targetState.markets[kind].forEach(asset => {
+        asset.minuteIndex = (asset.minuteIndex || 0) + 1;
+
+        if(Math.random() < (kind === 'stocks' ? 0.025 : 0.035)){
+          asset.drift = (asset.drift || 0) + (Math.random() - 0.5) * (kind === 'stocks' ? 0.00022 : 0.00095);
+        }
+        const driftCap = kind === 'stocks' ? 0.0018 : 0.0078;
+        asset.drift = Math.max(-driftCap, Math.min(driftCap, asset.drift || 0));
+
+        if((asset.eventTicks || 0) <= 0 && Math.random() < (kind === 'stocks' ? 0.006 : 0.015)){
+          asset.eventTicks = Math.floor((kind === 'stocks' ? 3 : 2) + Math.random() * (kind === 'stocks' ? 5 : 8));
+          asset.eventDir = Math.random() < 0.56 ? 1 : -1;
+          asset.bias = (kind === 'stocks' ? 0.008 : 0.036) * asset.eventDir * (0.6 + Math.random() * 2.5);
+        } else if((asset.eventTicks || 0) > 0){
+          asset.eventTicks -= 1;
+        }
+
+        const recentMean = asset.history.slice(-20).reduce((sum, v) => sum + v, 0) / Math.min(20, asset.history.length);
+        const meanRevert = ((recentMean - asset.price) / asset.price) * (kind === 'stocks' ? 0.08 : 0.035);
+        const normalNoise = (Math.random() - 0.5) * (kind === 'stocks' ? 0.0034 : 0.0160);
+        const eventPush = (asset.eventTicks || 0) > 0 ? (asset.bias || 0) : 0;
+        const jump = Math.random() < (kind === 'stocks' ? 0.002 : 0.008)
+          ? (kind === 'stocks' ? 0.02 : 0.14) * (Math.random() < 0.5 ? -1 : 1)
+          : 0;
+
+        let pct = normalNoise + (asset.drift || 0) + meanRevert + eventPush + jump;
+        const hardCap = kind === 'stocks' ? 0.08 : 0.32;
+        pct = Math.max(-hardCap, Math.min(hardCap, pct));
+
+        let next = asset.price * (1 + pct);
+        if(next < minPrice) next = minPrice * (1 + Math.random() * 0.12);
+        asset.price = Number(next.toFixed(precision));
+        asset.lastChangePct = pct * 100;
+        asset.history.push(asset.price);
+        if(asset.history.length > 180) asset.history.shift();
+      });
+    }
+  });
+}
+function incomeSources(s){
+  const rows = [];
+  CITIES.forEach(city => BUSINESSES.forEach(biz => {
+    const item = s.cities[city.id][biz.id];
+    const value = incomeForBusiness(s, city.id, biz.id);
+    if(item.count > 0 && value > 0) rows.push({ city:city.name, business:biz.name, count:item.count, manager:item.manager, meta:`${city.name} • ${item.count} site(s)`, value });
+  }));
+  REAL_ESTATE_MARKET.forEach(prop => {
+    const status = getEstateStatus(s, prop.id);
+    const value = estateIncomeForProperty(s, prop.id);
+    if(status.owned && value > 0) rows.push({ city:prop.city, business:`${prop.name} • ${prop.city}`, count:1, manager:false, meta:`${prop.city}, ${prop.country} • immobilier`, value });
+  });
+  rows.sort((a,b) => b.value - a.value);
+  return rows;
+}
+function renderIncomeModal(){
+  const rows = incomeSources(state);
+  const wrap = $('incomeBreakdown');
+  if(!rows.length){
+    wrap.innerHTML = `<div class="empty-state">Tu n’as pas encore de revenu passif. Achète d’abord un bien dans l’onglet <strong>Biens</strong>.</div>`;
+    return;
+  }
+  wrap.innerHTML = rows.map(row => `
+    <div class="rev-item">
+      <div class="rev-top">
+        <div>
+          <div class="rev-name">${row.business}${row.manager ? ' • manager' : ''}</div>
+          <div class="rev-meta">${row.meta || (row.city + ' • ' + row.count + ' site(s)')}</div>
+        </div>
+        <div class="rev-value">${moneyRate(row.value)}/min</div>
+      </div>
+    </div>
+  `).join('');
+}
+function getHolding(kind, ticker){
+  return state.holdings[kind][ticker] || { qty:0, avg:0 };
+}
+function getPortfolioSummary(kind){
+  let value = 0, cost = 0, count = 0, winners = 0;
+  state.markets[kind].forEach(asset => {
+    const hold = getHolding(kind, asset.ticker);
+    if(hold.qty > 0){
+      count += 1;
+      const currentValue = hold.qty * asset.price;
+      const currentCost = hold.qty * hold.avg;
+      value += currentValue;
+      cost += currentCost;
+      if(currentValue - currentCost >= 0) winners += 1;
+    }
+  });
+  return { value, cost, pnl:value-cost, count, winners };
+}
+function renderMarketPortfolioCard(){
+  const kind = state.marketTab;
+  const sum = getPortfolioSummary(kind);
+  const currentNode = $('marketPortfolioCard');
+  if(!currentNode) return;
+  if(sum.count === 0){
+    currentNode.outerHTML = `<div class="market-portfolio-empty" id="marketPortfolioCard">Tu n’as pas encore d’investissement en ${kind === 'cryptos' ? 'cryptos' : 'actions'}. Ouvre une fiche et achète ton premier actif.</div>`;
+    return;
+  }
+  currentNode.outerHTML = `<button class="market-portfolio-card" id="marketPortfolioCard" type="button">
+    <div class="market-portfolio-title">Valeur totale de ${kind === 'cryptos' ? 'la cryptomonnaie' : "l’investissement en actions"}</div>
+    <div class="market-portfolio-value">${money(sum.value)}</div>
+    <div class="market-portfolio-change ${sum.pnl >= 0 ? 'up' : 'down'}">${sum.pnl >= 0 ? '▲' : '▼'} ${money(Math.abs(sum.pnl))} (${sum.cost > 0 ? Math.abs(sum.pnl / sum.cost * 100).toFixed(2) : '0.00'} %)</div>
+    <div class="market-portfolio-cta">Voir</div>
+  </button>`;
+  $('marketPortfolioCard').addEventListener('click', () => openInvestmentsModal(kind));
+}
+function openInvestmentsModal(kind){
+  currentInvestmentsKind = kind;
+  renderInvestmentsModal();
+  openModal('investmentsModal');
+}
+function renderInvestmentsModal(){
+  if(!currentInvestmentsKind) return;
+  const kind = currentInvestmentsKind;
+  const sum = getPortfolioSummary(kind);
+  const items = state.markets[kind]
+    .map(asset => {
+      const hold = getHolding(kind, asset.ticker);
+      if(!(hold.qty > 0)) return null;
+      const value = hold.qty * asset.price;
+      const pnl = value - hold.qty * hold.avg;
+      return { asset, hold, value, pnl };
+    })
+    .filter(Boolean)
+    .sort((a,b) => b.value - a.value);
+
+  $('investmentsModalTitle').textContent = kind === 'cryptos' ? 'Tes cryptomonnaies' : 'Tes actions';
+  $('investmentsModalSub').textContent = items.length ? `${items.length} ligne(s) en portefeuille` : 'Aucune position ouverte';
+  $('investmentsModalBody').innerHTML = `
+    <div class="investments-summary-grid">
+      <div class="investments-summary-card"><div class="label">Valeur totale</div><div class="value">${money(sum.value)}</div></div>
+      <div class="investments-summary-card"><div class="label">Gains / pertes</div><div class="value">${sum.pnl >= 0 ? '+' : ''}${money(sum.pnl)}</div></div>
+      <div class="investments-summary-card"><div class="label">Lignes détenues</div><div class="value">${sum.count}</div></div>
+      <div class="investments-summary-card"><div class="label">Positions gagnantes</div><div class="value">${sum.winners}</div></div>
+    </div>
+    <div class="investments-list">
+      ${items.length ? items.map(({asset, hold, value, pnl}) => `
+        <div class="investment-row" data-open-portfolio-market="${kind}:${asset.ticker}">
+          <div class="investment-left">
+            <div class="market-logo"><img src="${marketLogoData(asset.ticker, kind)}" alt="${asset.ticker}" /></div>
+            <div>
+              <div class="investment-name">${asset.name}</div>
+              <div class="investment-sub">${fmtNumber(hold.qty)} ${asset.ticker} • PRU ${hold.avg.toFixed(kind === 'stocks' ? 2 : 4)}</div>
+            </div>
+          </div>
+          <div class="investment-right">
+            <div class="investment-value">${money(value)}</div>
+            <div class="investment-pnl ${pnl >= 0 ? 'delta-up' : 'delta-down'}">${pnl >= 0 ? '+' : ''}${money(pnl)}</div>
+          </div>
+        </div>
+      `).join('') : `<div class="empty-state">Tu n’as encore aucune position ouverte sur ce marché.</div>`}
+    </div>
+  `;
+  document.querySelectorAll('[data-open-portfolio-market]').forEach(row => {
+    row.addEventListener('click', () => {
+      const [k, t] = row.getAttribute('data-open-portfolio-market').split(':');
+      closeModal('investmentsModal');
+      openMarketModal(k, t);
+    });
+  });
+}
+function openModal(id){ $(id).classList.add('show'); }
+function closeModal(id){
+  $(id).classList.remove('show');
+  if(id === 'marketModal') currentMarketModal = null;
+  if(id === 'tradeModal') currentTradeModal = null;
+}
+
+function renderHome(){
+  const current = cityById(state.selectedCity);
+  const tapGain = tapClickValue(state) * prestigeMult(state.prestige) * boostMult(state);
+  const nextCost = tapUpgradeCost(state);
+  const progress = Math.max(6, Math.min(100, (state.cash / Math.max(1, nextCost)) * 100));
+  const nextValue = nextTapValue(state);
+
+  $('topCashBtn').textContent = moneyCompact(state.cash);
+  $('heroCityBadge').textContent = current.name;
+  $('heroPrestigeBadge').textContent = 'Prestige ' + state.prestige;
+  $('statCash').textContent = moneyCompact(state.cash);
+  $('statIncome').textContent = moneyRate(totalIncome(state)) + '/min';
+  $('statCareer').textContent = moneyCompact(state.career) + ' total';
+  $('statAssets').textContent = String(totalOwnedAssets(state));
+  $('homePerClick').innerHTML = money(tapGain) + ' <small>par clic</small>';
+  $('homeTapButtonValue').textContent = money(tapGain);
+  $('homeTapLevel').textContent = 'clic niv. ' + (state.tapLevel || 1);
+  $('homeClickBar').style.width = progress.toFixed(1) + '%';
+  $('homeCityName').textContent = current.name;
+  $('homeBalanceSide').textContent = Date.now() < state.rewardUntil ? 'x2 actif' : 'x1 normal';
+  $('homeBoostState').textContent = Date.now() < state.rewardUntil ? 'x2' : 'x1';
+  $('homeBoostPill').textContent = Date.now() < state.rewardUntil ? 'x2' : 'x1';
+  $('homeClickUpgradeValue').textContent = money(tapClickValue(state)) + ' → ' + money(nextValue);
+  $('homeClickUpgradePrice').textContent = money(nextCost);
+  const btn = $('upgradeTapBtn');
+  btn.disabled = state.cash < nextCost;
+  btn.querySelector('small').textContent = money(nextCost);
+}
+
+function renderAssets(){
+  $('assetsCityTag').textContent = cityById(state.selectedCity).name;
+  const categories = [...new Set(BUSINESSES.map(b => b.category))];
+  $('assetList').innerHTML = categories.map(category => {
+    const items = BUSINESSES.filter(b => b.category === category).sort((a,b) => a.baseCost - b.baseCost);
+    return `
+      <div class="card" style="padding:14px">
+        <div class="section-title" style="font-size:17px;margin-bottom:10px">${category}</div>
+        <div class="list">
+          ${items.map(biz => {
+            const item = state.cities[state.selectedCity][biz.id];
+            const unlocked = state.career >= biz.unlock;
+            const owned = item.count >= 1;
+            const buy = baseBuyCost(state, state.selectedCity, biz.id);
+            const income = incomeForBusiness(state, state.selectedCity, biz.id);
+            const favorite = cityFavoriteBoost(state.selectedCity, biz.id) > 1;
+            const buyDisabled = owned || !unlocked || state.cash < buy;
+            return `
+              <div class="biz-card card" data-open-asset="${biz.id}">
+                <div class="row-top">
+                  <div class="left-wrap">
+                    <div class="thumb"><img src="${biz.image}" alt="${biz.name}" loading="lazy" referrerpolicy="no-referrer" /></div>
+                    <div>
+                      <div class="name">${biz.name}</div>
+                      <div class="desc">${biz.summary}</div>
+                    </div>
+                  </div>
+                  <div class="tag">${owned ? 'Possédé' : 'Disponible'}</div>
+                </div>
+                <div class="pills">
+                  <div class="pill">${biz.category}</div>
+                  <div class="pill">${favorite ? 'Bonus ville' : 'Standard'}</div>
+                  <div class="pill">${item.manager ? 'Manager actif' : 'Sans manager'}</div>
+                </div>
+                <div class="metrics">
+                  <div class="metric"><div class="label">Revenus</div><div class="value">${moneyRate(income)}/min</div></div>
+                  <div class="metric"><div class="label">Prix</div><div class="value">${owned ? 'Unique' : money(buy)}</div></div>
+                </div>
+                <div class="actions">
+                  <button class="cta" data-buy-asset="${biz.id}" ${buyDisabled ? 'disabled' : ''}>${owned ? 'Déjà possédé' : 'Acheter'}<small>${owned ? 'Unique' : unlocked ? money(buy) : 'Bloqué'}</small></button>
+                  <button class="btn-line" data-details-asset="${biz.id}">Gérer<small>Fiche complète</small></button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.querySelectorAll('[data-open-asset]').forEach(el => {
+    el.addEventListener('click', () => openAssetModal(el.getAttribute('data-open-asset')));
+  });
+  document.querySelectorAll('[data-buy-asset]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if(btn.disabled) return;
+      buyAsset(btn.getAttribute('data-buy-asset'), btn.getBoundingClientRect());
+    });
+  });
+  document.querySelectorAll('[data-details-asset]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      openAssetModal(btn.getAttribute('data-details-asset'));
+    });
+  });
+}
+
+function openAssetModal(bizId){
+  currentAssetModal = bizId;
+  renderAssetModal();
+  openModal('assetModal');
+}
+
+function renderAssetModal(){
+  if(!currentAssetModal) return;
+  const city = cityById(state.selectedCity);
+  const biz = businessById(currentAssetModal);
+  const item = state.cities[state.selectedCity][biz.id];
+  const buyCost = baseBuyCost(state, state.selectedCity, biz.id);
+  const income = incomeForBusiness(state, state.selectedCity, biz.id);
+  const managerPrice = managerCost(state, state.selectedCity, biz.id);
+  const canBuy = item.count < 1 && state.career >= biz.unlock && state.cash >= buyCost;
+  const canHireManager = !item.manager && item.count > 0 && state.cash >= managerPrice;
+
+  $('assetModalTitle').textContent = biz.name;
+  $('assetModalSub').textContent = `${city.name} • ${biz.category}`;
+  $('assetModalBody').innerHTML = `
+    <div class="detail-hero">
+      <div class="detail-cover"><img src="${biz.image}" alt="${biz.name}" loading="lazy" referrerpolicy="no-referrer" /></div>
+      <div>
+        <div class="detail-name">${biz.name}</div>
+        <div class="detail-desc">${biz.summary}</div>
+        <div class="pills">
+          <div class="pill">${city.name}</div>
+          <div class="pill">${item.count >= 1 ? 'Possédé' : 'Non possédé'}</div>
+          <div class="pill">${item.manager ? 'Manager actif' : 'Pas de manager'}</div>
+        </div>
+        <div class="metrics" style="margin-top:12px">
+          <div class="metric"><div class="label">Revenus</div><div class="value">${moneyRate(income)}/min</div></div>
+          <div class="metric"><div class="label">Achat</div><div class="value">${item.count >= 1 ? 'Unique' : state.career >= biz.unlock ? money(buyCost) : 'Bloqué'}</div></div>
+        </div>
+        <div class="actions" style="margin-top:12px">
+          <button class="cta" id="assetBuyBtn" ${canBuy ? '' : 'disabled'}>${item.count >= 1 ? 'Déjà possédé' : 'Acheter ' + biz.unitLabel}<small>${item.count >= 1 ? 'Achat unique' : state.career >= biz.unlock ? money(buyCost) : 'Bien verrouillé'}</small></button>
+          <button class="btn-line" id="assetManagerBtn" ${(canHireManager || item.manager) ? '' : 'disabled'}>
+            ${item.manager ? 'Manager actif' : 'Engager un manager'}
+            <small>${item.manager ? '+35% & auto' : money(managerPrice)}</small>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:17px;margin-bottom:10px">Améliorations propres</div>
+    <div class="upgrade-list">
+      ${biz.upgrades.map(up => {
+        const level = getUpgradeLevel(item, up);
+        const maxed = isUpgradeMaxed(item, up);
+        const cost = upgradeCostFor(item, up);
+        const gain = incomeGainFromNextUpgrade(state, state.selectedCity, biz.id, up.id);
+        const disabled = item.count <= 0 || maxed || state.cash < cost;
+        return `
+          <div class="upgrade-card" data-upgrade-card="${up.id}">
+            <div class="upgrade-top">
+              <div>
+                <div class="upgrade-name">${up.label}</div>
+                <div class="upgrade-meta">${up.desc}</div>
+                <div class="upgrade-meta">Niveau : ${level}/10 • +${Math.round(up.boost * 100)}% par niveau</div>
+                <div class="upgrade-meta">${maxed ? 'Amélioration terminée' : 'Gain immédiat : +' + moneyRate(gain) + '/min'}</div>
+              </div>
+              <button class="upgrade-buy" data-upgrade-buy="${up.id}" ${disabled ? 'disabled' : ''}>${maxed ? 'MAX' : 'Acheter'}<br>${maxed ? '10/10' : money(cost)}</button>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+
+  const buyBtn = $('assetBuyBtn');
+  if(buyBtn){
+    buyBtn.onclick = () => {
+      if(buyBtn.disabled) return;
+      buyAsset(biz.id, buyBtn.getBoundingClientRect());
+      renderAssetModal();
+    };
+  }
+
+  const managerBtn = $('assetManagerBtn');
+  if(managerBtn){
+    managerBtn.onclick = () => {
+      if(managerBtn.disabled || item.manager) return;
+      hireManager(biz.id, managerBtn.getBoundingClientRect());
+      renderAssetModal();
+    };
+  }
+
+  document.querySelectorAll('[data-upgrade-buy]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(btn.disabled) return;
+      buyUpgrade(biz.id, btn.getAttribute('data-upgrade-buy'), btn.getBoundingClientRect());
+      renderAssetModal();
+    });
+  });
+}
+
+function renderMapPage(){
+  const breakdown = wealthBreakdown(state);
+  const totalWorth = breakdown.reduce((sum, row) => sum + row.value, 0);
+  const passiveBusinesses = CITIES.reduce((sum, city) => sum + BUSINESSES.reduce((sub, biz) => sub + incomeForBusiness(state, city.id, biz.id), 0), 0);
+  const passiveEstate = estateTotalIncome(state);
+  const clickValue = tapClickValue(state) * prestigeMult(state.prestige) * boostMult(state);
+
+  $('wealthNetWorthTag').textContent = moneyCompact(totalWorth);
+  $('wealthTotalValue').textContent = moneyCompact(totalWorth);
+  $('wealthStats').innerHTML = `
+    <div class="wealth-stat"><div class="label">Liquidités</div><div class="value">${moneyCompact(state.cash)}</div></div>
+    <div class="wealth-stat"><div class="label">Revenus passifs</div><div class="value">${moneyRate(totalIncome(state))}/min</div></div>
+    <div class="wealth-stat"><div class="label">Par clic</div><div class="value">${money(clickValue)}</div></div>
+    <div class="wealth-stat"><div class="label">Ville active</div><div class="value">${cityById(state.selectedCity).name}</div></div>
+  `;
+
+  const visibleBreakdown = breakdown.filter(row => row.value > 0 || row.key === 'cash');
+  $('wealthBar').innerHTML = visibleBreakdown.map(row => `
+    <div class="wealth-bar-part" style="width:${Math.max(8, row.share * 100)}%;background:${row.color}"></div>
+  `).join('');
+  $('wealthBreakdownList').innerHTML = visibleBreakdown.map(row => `
+    <div class="wealth-row">
+      <div class="wealth-row-left">
+        <div class="wealth-dot" style="background:${row.color}"></div>
+        <div>
+          <div class="wealth-row-name">${row.label}</div>
+          <div class="wealth-row-sub">${row.sub}</div>
+        </div>
+      </div>
+      <div class="wealth-row-value">
+        <div class="wealth-row-amount">${moneyCompact(row.value)}</div>
+        <div class="wealth-row-share">${(row.share * 100).toFixed(0)}%</div>
+      </div>
+    </div>
+  `).join('');
+
+  const incomeRows = [
+    { name:'Entreprises', sub:'revenus passifs de tous tes business', value:passiveBusinesses },
+    { name:'Immobilier', sub:'loyers et rendement des propriétés', value:passiveEstate },
+    { name:'Clic', sub:'gain immédiat à chaque tap', value:clickValue, suffix:'/tap' },
+    { name:'Progression clic', sub:'coût du prochain niveau', value:tapUpgradeCost(state), moneyOnly:true }
+  ];
+  $('wealthIncomeList').innerHTML = incomeRows.map(row => `
+    <div class="wealth-row">
+      <div class="wealth-row-left">
+        <div>
+          <div class="wealth-row-name">${row.name}</div>
+          <div class="wealth-row-sub">${row.sub}</div>
+        </div>
+      </div>
+      <div class="wealth-row-value">
+        <div class="wealth-row-amount">${row.moneyOnly ? moneyCompact(row.value) : moneyRate(row.value) + (row.suffix || '/min')}</div>
+      </div>
+    </div>
+  `).join('');
+
+  $('wealthCityList').innerHTML = CITIES.map(city => {
+    const unlocked = canUnlockCity(state, city);
+    const active = state.selectedCity === city.id;
+    const income = cityIncomeTotal(state, city.id);
+    const owned = cityOwnedCount(state, city.id);
+    return `
+      <div class="city-simple-row">
+        <div class="city-simple-main">
+          <div class="city-simple-name">${city.name} ${active ? '<span class="tag">Active</span>' : ''}</div>
+          <div class="city-simple-sub">${city.desc}</div>
+          <div class="city-meta-pills">
+            <div class="city-meta-pill">Bonus x${city.bonus.toFixed(2)}</div>
+            <div class="city-meta-pill">${owned} bien(s)</div>
+            <div class="city-meta-pill">${moneyRate(income)}/min</div>
+            <div class="city-meta-pill">${unlocked ? 'Débloquée' : 'Déblocage ' + money(city.unlock)}</div>
+          </div>
+        </div>
+        <button class="city-select-btn ${active ? 'active' : ''}" data-wealth-city="${city.id}" ${unlocked ? '' : 'disabled'}>${active ? 'Active' : 'Choisir'}</button>
+      </div>
+    `;
+  }).join('');
+
+  document.querySelectorAll('[data-wealth-city]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-wealth-city');
+      const city = cityById(id);
+      if(!canUnlockCity(state, city)) return;
+      state.selectedCity = id;
+      renderAll();
+    });
+  });
+}
+
+function getMarketReturnPct(asset){
+  if(!asset.history || asset.history.length < 2) return 0;
+  const start = asset.history[Math.max(0, asset.history.length - 24)];
+  const end = asset.history[asset.history.length - 1];
+  return ((end - start) / start) * 100;
+}
+function formatMarketPrice(asset, kind){
+  return asset.price.toLocaleString('fr-FR', { minimumFractionDigits: kind === 'stocks' ? 2 : 2, maximumFractionDigits: kind === 'stocks' ? 2 : 4 });
+}
+function toggleFavorite(kind, ticker){
+  const favs = state.favorites[kind];
+  favs[ticker] = !favs[ticker];
+  if(!favs[ticker]) delete favs[ticker];
+  renderMarkets();
+  if(currentMarketModal && currentMarketModal.kind === kind && currentMarketModal.ticker === ticker) renderMarketModal();
+  saveState();
+}
+function sortedMarketList(kind){
+  const list = [...state.markets[kind]];
+  list.sort((a,b) => {
+    if(state.marketSort === 'favorites'){
+      return (state.favorites[kind][b.ticker] ? 1 : 0) - (state.favorites[kind][a.ticker] ? 1 : 0) || b.popularity - a.popularity;
+    }
+    if(state.marketSort === 'gainers') return getMarketReturnPct(b) - getMarketReturnPct(a);
+    if(state.marketSort === 'losers') return getMarketReturnPct(a) - getMarketReturnPct(b);
+    return b.popularity - a.popularity;
+  });
+  return state.marketSort === 'favorites' ? list.filter(a => state.favorites[kind][a.ticker]) : list;
+}
+function buildMiniChart(history, kind){
+  const pts = history.slice(-24);
+  const w = 170, h = 46, p = 4;
+  const min = Math.min(...pts), max = Math.max(...pts), range = Math.max(0.0001, max-min);
+  const points = pts.map((v,i) => {
+    const x = p + (i/(pts.length-1)) * (w-p*2);
+    const y = h-p - ((v-min)/range) * (h-p*2);
+    return [x,y];
+  });
+  const line = points.map(([x,y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ');
+  const color = getMarketReturnPct({history:pts}) >= 0 ? '#12b76a' : '#e15b52';
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline fill="none" stroke="${color}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" points="${line}"/></svg>`;
+}
+function renderMarkets(){
+  $('marketScreenTitle').textContent = state.marketTab === 'cryptos' ? 'Échange de cryptomonnaies' : 'Échange d’actions';
+  document.querySelectorAll('[data-market-tab]').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-market-tab') === state.marketTab));
+  document.querySelectorAll('[data-market-sort]').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-market-sort') === state.marketSort));
+
+  renderMarketPortfolioCard();
+
+  const list = sortedMarketList(state.marketTab);
+  if(!list.length){
+    $('marketList').innerHTML = `<div class="market-empty">Aucun actif ici pour l’instant. Ajoute des favoris avec le ❤ pour remplir cette liste.</div>`;
+    return;
+  }
+
+  $('marketList').innerHTML = list.map(asset => {
+    const deltaPct = getMarketReturnPct(asset);
+    const hold = state.holdings[state.marketTab][asset.ticker] || { qty:0, avg:0 };
+    const fav = !!state.favorites[state.marketTab][asset.ticker];
+    const availability = hold.qty > 0 ? `${fmtNumber(hold.qty)} disponible${hold.qty > 1 ? 's' : ''}` : 'Disponible';
+    return `
+      <div class="market-row" data-open-market="${state.marketTab}:${asset.ticker}">
+        <div class="market-row-left">
+          <div class="market-logo"><img src="${marketLogoData(asset.ticker, state.marketTab)}" alt="${asset.ticker}" /></div>
+          <div>
+            <div class="market-name">${asset.name}</div>
+            <div class="market-symbol">${availability}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="market-row-right">
+            <div class="market-price">$ ${formatMarketPrice(asset, state.marketTab)}</div>
+            <div class="market-delta ${deltaPct >= 0 ? 'delta-up' : 'delta-down'}">${deltaPct >= 0 ? '▲' : '▼'} ${Math.abs(deltaPct).toFixed(2)} %</div>
+          </div>
+          <button class="market-fav ${fav ? 'active' : ''}" data-fav-market="${state.marketTab}:${asset.ticker}">❤</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.querySelectorAll('[data-open-market]').forEach(card => card.addEventListener('click', () => {
+    const [kind, ticker] = card.getAttribute('data-open-market').split(':');
+    openMarketModal(kind, ticker);
+  }));
+  document.querySelectorAll('[data-fav-market]').forEach(btn => btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const [kind, ticker] = btn.getAttribute('data-fav-market').split(':');
+    toggleFavorite(kind, ticker);
+  }));
+}
+
+function buildChartSvg(history, kind, prefix='marketChart'){
+  const points = history.slice(-40);
+  const precision = kind === 'stocks' ? 2 : 4;
+  const w = 520, h = 285, padL = 68, padR = 18, padT = 16, padB = 36;
+  const minRaw = Math.min(...points);
+  const maxRaw = Math.max(...points);
+  const pad = (maxRaw - minRaw) * 0.16 || (kind === 'stocks' ? 2 : 0.02);
+  const min = Math.max(0, minRaw - pad);
+  const max = maxRaw + pad;
+  const range = Math.max(0.0001, max - min);
+  const chartW = w - padL - padR;
+  const chartH = h - padT - padB;
+  const xAt = (i) => padL + (i / (points.length - 1)) * chartW;
+  const yAt = (v) => h - padB - ((v - min) / range) * chartH;
+  const pts = points.map((v, i) => [xAt(i), yAt(v)]);
+  const line = pts.map(([x,y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' ');
+  const area = `M ${pts[0][0].toFixed(2)} ${h-padB} L ` + pts.map(([x,y]) => `${x.toFixed(2)} ${y.toFixed(2)}`).join(' L ') + ` L ${pts[pts.length-1][0].toFixed(2)} ${h-padB} Z`;
+  const gridLevels = [max, max - range/3, max - 2*range/3, min];
+  const now = new Date();
+  const labelsIdx = [0, Math.floor((points.length-1)*0.33), Math.floor((points.length-1)*0.66), points.length-1];
+  const labels = labelsIdx.map((idx) => {
+    const minsAgo = (points.length - 1 - idx);
+    const d = new Date(now.getTime() - minsAgo * 60000);
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    return { x:xAt(idx), label:`${hh}:${mm}` };
+  });
+
+  return `<div class="chart-hover-wrap" id="${prefix}Wrap">
+    <div class="chart-tooltip" id="${prefix}Tip">
+      <div class="chart-tooltip-price" id="${prefix}TipPrice">0</div>
+      <div class="chart-tooltip-time" id="${prefix}TipTime">--:--</div>
+    </div>
+    <svg class="chart-svg" viewBox="0 0 520 285" preserveAspectRatio="none" id="${prefix}Svg">
+      ${gridLevels.map(v => `<line x1="${padL}" x2="${w-padR}" y1="${yAt(v).toFixed(2)}" y2="${yAt(v).toFixed(2)}" stroke="#d7dde7" stroke-width="1"/>`).join('')}
+      ${gridLevels.map(v => `<text class="chart-cross-label" x="${padL-8}" y="${(yAt(v)+5).toFixed(2)}" text-anchor="end">${Number(v).toLocaleString('fr-FR', { minimumFractionDigits: precision, maximumFractionDigits: precision })}</text>`).join('')}
+      <path d="${area}" fill="rgba(79,135,255,.10)"/>
+      <polyline fill="none" stroke="#4f87ff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" points="${line}"/>
+      ${labels.map(l => `<text x="${l.x.toFixed(2)}" y="${h-10}" text-anchor="middle" class="chart-cross-label">${l.label}</text>`).join('')}
+      <line id="${prefix}Cross" x1="${pts[pts.length-1][0].toFixed(2)}" x2="${pts[pts.length-1][0].toFixed(2)}" y1="${padT}" y2="${h-padB}" stroke="#ef5350" stroke-width="1.5" opacity="0"/>
+      <circle id="${prefix}Dot" cx="${pts[pts.length-1][0].toFixed(2)}" cy="${pts[pts.length-1][1].toFixed(2)}" r="5" fill="#ef5350" stroke="#ffd6d4" stroke-width="6" stroke-opacity=".35" opacity="0"/>
+      <rect id="${prefix}Overlay" x="${padL}" y="${padT}" width="${chartW}" height="${chartH}" fill="transparent"/>
+    </svg>
+  </div>`;
+}
+
+function attachChartHover(history, kind, prefix='marketChart'){
+  const points = history.slice(-40);
+  const precision = kind === 'stocks' ? 2 : 4;
+  const svg = $(prefix + 'Svg');
+  const tip = $(prefix + 'Tip');
+  const tipPrice = $(prefix + 'TipPrice');
+  const tipTime = $(prefix + 'TipTime');
+  const cross = $(prefix + 'Cross');
+  const dot = $(prefix + 'Dot');
+  const overlay = $(prefix + 'Overlay');
+  if(!svg || !tip || !overlay) return;
+
+  const w = 520, h = 285, padL = 68, padR = 18, padT = 16, padB = 36;
+  const minRaw = Math.min(...points);
+  const maxRaw = Math.max(...points);
+  const pad = (maxRaw - minRaw) * 0.16 || (kind === 'stocks' ? 2 : 0.02);
+  const min = Math.max(0, minRaw - pad);
+  const max = maxRaw + pad;
+  const range = Math.max(0.0001, max - min);
+  const chartW = w - padL - padR;
+  const chartH = h - padT - padB;
+  const xAt = (i) => padL + (i / (points.length - 1)) * chartW;
+  const yAt = (v) => h - padB - ((v - min) / range) * chartH;
+
+  function setHover(clientX){
+    const rect = svg.getBoundingClientRect();
+    const relX = ((clientX - rect.left) / rect.width) * w;
+    let idx = Math.round(((relX - padL) / chartW) * (points.length - 1));
+    idx = Math.max(0, Math.min(points.length - 1, idx));
+    const x = xAt(idx);
+    const y = yAt(points[idx]);
+    const minsAgo = (points.length - 1 - idx);
+    const d = new Date(Date.now() - minsAgo * 60000);
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    const leftPx = ((x / w) * rect.width);
+    const topPx = ((y / h) * rect.height);
+    tip.style.display = 'block';
+    tipPrice.textContent = Number(points[idx]).toFixed(precision);
+    tipTime.textContent = `${hh}:${mm}`;
+    tip.style.left = leftPx + 'px';
+    if(topPx < 78){
+      tip.classList.add('below');
+      tip.style.top = topPx + 'px';
+    } else {
+      tip.classList.remove('below');
+      tip.style.top = (topPx - 16) + 'px';
+    }
+    cross.setAttribute('x1', x.toFixed(2));
+    cross.setAttribute('x2', x.toFixed(2));
+    dot.setAttribute('cx', x.toFixed(2));
+    dot.setAttribute('cy', y.toFixed(2));
+    cross.setAttribute('opacity', '1');
+    dot.setAttribute('opacity', '1');
+  }
+  function clearHover(){
+    tip.style.display = 'none';
+    cross.setAttribute('opacity', '0');
+    dot.setAttribute('opacity', '0');
+  }
+
+  overlay.addEventListener('mousemove', e => setHover(e.clientX));
+  overlay.addEventListener('mouseenter', e => setHover(e.clientX));
+  overlay.addEventListener('mouseleave', clearHover);
+}
+
+function openMarketModal(kind, ticker){
+  currentMarketModal = { kind, ticker };
+  renderMarketModal();
+  openModal('marketModal');
+}
+function renderMarketModal(){
+  if(!currentMarketModal) return;
+  const { kind, ticker } = currentMarketModal;
+  const asset = state.markets[kind].find(a => a.ticker === ticker);
+  const holding = state.holdings[kind][ticker] || { qty:0, avg:0 };
+  const deltaPct = getMarketReturnPct(asset);
+  const fav = !!state.favorites[kind][ticker];
+  const positionValue = holding.qty * asset.price;
+  const pnl = holding.qty > 0 ? positionValue - (holding.qty * holding.avg) : 0;
+  const marketCap = asset.price * (kind === 'cryptos' ? asset.popularity * 8200000 : asset.popularity * 1200000);
+
+  $('marketModalTitle').textContent = kind === 'cryptos' ? 'Détail de cryptomonnaie' : 'Détail de l’action';
+  $('marketModalSub').textContent = ticker;
+
+  $('marketModalBody').innerHTML = `
+    <div class="market-detail-screen">
+      <div class="market-modal-toolbar">
+        <button class="market-modal-close" id="marketCloseBtn">Fermer</button>
+        <button class="market-fav ${fav ? 'active' : ''}" id="modalFavBtn">❤</button>
+      </div>
+
+      <div class="market-detail-header">
+        <div class="market-big-logo"><img src="${marketLogoData(asset.ticker, kind)}" alt="${asset.ticker}" /></div>
+        <div style="flex:1">
+          <div class="market-big-name">${asset.name}</div>
+          <div class="market-big-price">$ ${formatMarketPrice(asset, kind)}</div>
+          <div class="market-change-box">
+            <div class="market-change-main">${holding.qty > 0 ? '$ ' + positionValue.toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}) : '$ ' + formatMarketPrice(asset, kind)}</div>
+            <div class="market-change-sub ${deltaPct >= 0 ? 'delta-up' : 'delta-down'}">${deltaPct >= 0 ? '▲' : '▼'} ${Math.abs(deltaPct).toFixed(2)} %</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        ${buildChartSvg(asset.history, kind, 'marketChart')}
+        <div class="chart-meta">
+          <div class="chart-legend"><span class="legend-dot"></span><span>cours dernière période</span></div>
+          <div>Dernier : ${formatMarketPrice(asset, kind)}</div>
+        </div>
+      </div>
+
+      <div class="market-detail-actions">
+        ${holding.qty > 0 ? `<button class="market-action-btn sell" id="openSellTradeBtn">Vendre</button><button class="market-action-btn buy secondary" id="openBuyTradeBtn">Acheter plus</button>` : `<button class="market-action-btn buy" id="openBuyTradeBtn" style="grid-column:1 / span 2">Acheter</button>`}
+      </div>
+
+      <div class="market-details-box">
+        <div class="market-details-title">Détails</div>
+        <div class="market-stats-grid">
+          <div class="market-stat-row"><div class="market-stat-label">Position détenue</div><div class="market-stat-value">${fmtNumber(holding.qty || 0)} ${ticker}</div></div>
+          <div class="market-stat-row"><div class="market-stat-label">Prix actuel</div><div class="market-stat-value">$ ${formatMarketPrice(asset, kind)}</div></div>
+          <div class="market-stat-row"><div class="market-stat-label">Valeur de position</div><div class="market-stat-value">${money(positionValue)}</div></div>
+          <div class="market-stat-row"><div class="market-stat-label">P/L latent</div><div class="market-stat-value">${pnl >= 0 ? '+' : ''}${money(pnl)}</div></div>
+          <div class="market-stat-row"><div class="market-stat-label">${kind === 'cryptos' ? 'Capitalisation de la cryptomonnaie' : 'Capitalisation boursière'}</div><div class="market-stat-value">${money(marketCap)}</div></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  attachChartHover(asset.history, kind, 'marketChart');
+  $('marketCloseBtn').onclick = () => closeModal('marketModal');
+  const marketBackdropClose = document.querySelector('#marketModal [data-close="marketModal"]');
+  if(marketBackdropClose) marketBackdropClose.onclick = () => closeModal('marketModal');
+  $('modalFavBtn').onclick = () => toggleFavorite(kind, ticker);
+  $('openBuyTradeBtn').onclick = () => openTradeModal(kind, ticker, 'buy');
+  if($('openSellTradeBtn')) $('openSellTradeBtn').onclick = () => openTradeModal(kind, ticker, 'sell');
+}
+function openTradeModal(kind, ticker, mode){
+  currentTradeModal = { kind, ticker, mode };
+  renderTradeModal();
+  openModal('tradeModal');
+}
+function renderTradeModal(){
+  if(!currentTradeModal) return;
+  const { kind, ticker, mode } = currentTradeModal;
+  const asset = state.markets[kind].find(a => a.ticker === ticker);
+  const holding = state.holdings[kind][ticker] || { qty:0, avg:0 };
+  const minQty = kind === 'stocks' ? 1 : 0.0001;
+  const maxQty = mode === 'buy' ? Math.max(0, state.cash / (asset.price * (1 + MARKET_FEE_RATE))) : holding.qty;
+
+  $('tradeModalTitle').textContent = mode === 'buy'
+    ? (kind === 'cryptos' ? 'Achat de cryptomonnaie' : 'Achat d’action')
+    : (kind === 'cryptos' ? 'Vente de cryptomonnaie' : 'Vente d’action');
+  $('tradeModalSub').textContent = ticker;
+
+  const deltaPct = getMarketReturnPct(asset);
+
+  $('tradeModalBody').innerHTML = `
+    <div class="trade-page">
+      <div class="market-modal-toolbar">
+        <button class="market-modal-close secondary" id="tradeCloseBtn">Retour</button>
+        <div></div>
+      </div>
+      <div class="trade-title">${mode === 'buy' ? (kind === 'cryptos' ? 'Achat de cryptomonnaie' : 'Achat d’action') : (kind === 'cryptos' ? 'Vente de cryptomonnaie' : 'Vente d’action')}</div>
+      <div class="trade-balance">Solde : <strong>${money(state.cash)}</strong></div>
+
+      <div class="trade-asset-row">
+        <div class="trade-asset-left">
+          <div class="market-logo" style="width:56px;height:56px"><img src="${marketLogoData(asset.ticker, kind)}" alt="${ticker}" /></div>
+          <div>
+            <div class="trade-asset-name">${asset.name}</div>
+            <div class="trade-asset-sub">${mode === 'buy' ? 'Disponible' : fmtNumber(holding.qty) + ' ' + ticker}</div>
+          </div>
+        </div>
+        <div>
+          <div class="market-price">$ ${formatMarketPrice(asset, kind)}</div>
+          <div class="market-delta ${deltaPct >= 0 ? 'delta-up' : 'delta-down'}">${deltaPct >= 0 ? '▲' : '▼'} ${Math.abs(deltaPct).toFixed(2)} %</div>
+        </div>
+      </div>
+
+      <div class="trade-qty-section">
+        <div class="trade-qty-label">Quantité :</div>
+        <div class="trade-qty-box">
+          <input class="trade-qty-input" id="tradeQtyInput" type="number" min="${minQty}" step="${kind === 'stocks' ? '1' : '0.0001'}" value="0" />
+          <button class="trade-max-btn" id="tradeMaxBtn">Max</button>
+        </div>
+        <div class="trade-limits">Min: ${fmtNumber(minQty)}; Max: ${fmtNumber(maxQty)} • Frais: ${(MARKET_FEE_RATE * 100).toFixed(1)}%</div>
+      </div>
+
+      <div class="trade-summary-line">Résumé : <span id="tradeSummaryValue">${money(0)}</span></div>
+
+      <button class="trade-cta" id="executeTradeBtn" disabled>${mode === 'buy' ? 'Acheter' : 'Vendre'}</button>
+    </div>
+  `;
+
+  const qtyInput = $('tradeQtyInput');
+  const summary = $('tradeSummaryValue');
+  const cta = $('executeTradeBtn');
+
+  function normalizeQty(v){
+    if(!Number.isFinite(v) || v < 0) return 0;
+    if(kind === 'stocks') return Math.floor(v);
+    return Number(v.toFixed(4));
+  }
+
+  function refresh(){
+    const qty = normalizeQty(Number(qtyInput.value));
+    const formatted = kind === 'stocks'
+      ? String(qty)
+      : (qty ? qty.toFixed(4).replace(/0+$/, '').replace(/\.$/, '') : '0');
+    if(qtyInput.value !== '' && qtyInput.value !== formatted) qtyInput.value = formatted;
+
+    const gross = qty * asset.price;
+    const total = mode === 'buy' ? gross * (1 + MARKET_FEE_RATE) : gross * (1 - MARKET_FEE_RATE);
+    summary.textContent = total.toLocaleString('fr-FR', { style:'currency', currency:'EUR', minimumFractionDigits:2, maximumFractionDigits:2 });
+
+    const validQty = qty >= minQty && qty > 0 && qty <= maxQty + 1e-9;
+    const validFunds = mode === 'buy' ? total <= state.cash + 1e-9 : qty <= holding.qty + 1e-9;
+    cta.disabled = !(validQty && validFunds);
+  }
+  refresh();
+
+  qtyInput.addEventListener('input', refresh);
+  $('tradeMaxBtn').onclick = () => {
+    const qty = normalizeQty(maxQty);
+    qtyInput.value = kind === 'stocks' ? String(qty) : (qty ? qty.toFixed(4).replace(/0+$/, '').replace(/\.$/, '') : '0');
+    refresh();
+  };
+  cta.onclick = () => executeTrade(kind, ticker, mode);
+}
+function executeTrade(kind, ticker, mode){
+  const asset = state.markets[kind].find(a => a.ticker === ticker);
+  const holding = state.holdings[kind][ticker] || { qty:0, avg:0 };
+  let qty = Number($('tradeQtyInput').value);
+  qty = kind === 'stocks' ? Math.floor(qty) : Number(qty.toFixed(4));
+  const minQty = kind === 'stocks' ? 1 : 0.0001;
+
+  if(!Number.isFinite(qty) || qty < minQty){
+    showToast('Quantité invalide');
+    return;
+  }
+
+  const gross = qty * asset.price;
+  const fee = gross * MARKET_FEE_RATE;
+  const total = mode === 'buy' ? gross + fee : gross - fee;
+  const btn = $('executeTradeBtn');
+  const sourceRect = btn ? btn.getBoundingClientRect() : null;
+  if(mode === 'buy'){
+    if(state.cash < total){
+      showToast('Pas assez de cash');
+      return;
+    }
+    state.cash -= total;
+    const newQty = holding.qty + qty;
+    const newAvg = newQty <= 0 ? 0 : ((holding.qty * holding.avg) + total) / newQty;
+    state.holdings[kind][ticker] = { qty:newQty, avg:newAvg };
+    showToast('Achat effectué');
+  } else {
+    if(holding.qty < qty){
+      showToast('Pas assez en portefeuille');
+      return;
+    }
+    state.cash += total;
+    const newQty = holding.qty - qty;
+    state.holdings[kind][ticker] = { qty:newQty, avg:newQty <= 0 ? 0 : holding.avg };
+    showToast('Vente effectuée');
+  }
+
+  closeModal('tradeModal');
+  renderAll();
+  triggerMarketAnimation(sourceRect, mode === 'buy' ? 'ACHAT' : 'VENTE', '#executeTradeBtn');
+  if(currentMarketModal && currentMarketModal.kind === kind && currentMarketModal.ticker === ticker){
+    renderMarketModal();
+  }
+}
+
+function triggerMarketAnimation(sourceRect, labelText, sourceSelector){
+  requestAnimationFrame(() => {
+    const layer = $('particleLayer');
+    const topCash = $('topCashBtn');
+    const sourceNode = sourceSelector ? document.querySelector(sourceSelector) : null;
+    if(!sourceRect) return;
+
+    function pulseNode(node, cls='action-pop', t=560){
+      if(!node) return;
+      node.classList.remove(cls);
+      void node.offsetWidth;
+      node.classList.add(cls);
+      setTimeout(() => node.classList.remove(cls), t);
+    }
+
+    const cx = sourceRect.left + sourceRect.width / 2;
+    const cy = sourceRect.top + sourceRect.height / 2;
+    [['-20px','-50px'], ['20px','-50px'], ['-44px','0px'], ['44px','0px'], ['0px','-68px'], ['0px','26px']].forEach(([dx,dy]) => {
+      const node = document.createElement('div');
+      node.className = 'spark-pop';
+      node.style.left = cx + 'px';
+      node.style.top = cy + 'px';
+      node.style.setProperty('--dx', dx);
+      node.style.setProperty('--dy', dy);
+      layer.appendChild(node);
+      setTimeout(() => node.remove(), 1000);
+    });
+
+    const label = document.createElement('div');
+    label.className = 'purchase-label';
+    label.textContent = labelText || 'TRADE';
+    label.style.left = cx + 'px';
+    label.style.top = (cy - 8) + 'px';
+    layer.appendChild(label);
+    setTimeout(() => label.remove(), 1150);
+
+    if(topCash) pulseNode(topCash, 'cash-pop', 760);
+    if(sourceNode) pulseNode(sourceNode, 'action-pop', 560);
+    if($('tradeModal').classList.contains('show')) pulseNode($('tradeModalBody'), 'purchase-pop', 860);
+    if($('marketModal').classList.contains('show')) pulseNode($('marketModalBody'), 'purchase-pop', 860);
+  });
+}
+
+function triggerPurchaseAnimation(bizId, sourceRect, labelText, sourceSelector){
+  requestAnimationFrame(() => {
+    const layer = $('particleLayer');
+    const card = document.querySelector(`[data-open-asset="${bizId}"]`);
+    const topCash = $('topCashBtn');
+    const sourceNode = sourceSelector ? document.querySelector(sourceSelector) : null;
+
+    function pulseNode(node, cls='purchase-pop', t=860){
+      if(!node) return;
+      node.classList.remove(cls);
+      void node.offsetWidth;
+      node.classList.add(cls);
+      setTimeout(() => node.classList.remove(cls), t);
+    }
+
+    function burst(rect, textLabel){
+      if(!rect) return;
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const vectors = [
+        ['-24px','-64px'], ['24px','-64px'], ['-56px','-20px'], ['56px','-20px'],
+        ['-42px','24px'], ['42px','24px'], ['0px','-80px'], ['0px','34px']
+      ];
+      vectors.forEach(([dx,dy]) => {
+        const node = document.createElement('div');
+        node.className = 'spark-pop';
+        node.style.left = cx + 'px';
+        node.style.top = cy + 'px';
+        node.style.setProperty('--dx', dx);
+        node.style.setProperty('--dy', dy);
+        layer.appendChild(node);
+        setTimeout(() => node.remove(), 1050);
+      });
+      const label = document.createElement('div');
+      label.className = 'purchase-label';
+      label.textContent = textLabel || 'OK';
+      label.style.left = cx + 'px';
+      label.style.top = (cy - 12) + 'px';
+      layer.appendChild(label);
+      setTimeout(() => label.remove(), 1150);
+    }
+
+    const rect = sourceRect || (card ? card.getBoundingClientRect() : null);
+    burst(rect, labelText);
+    if(card) pulseNode(card, 'purchase-pop', 860);
+    if(currentAssetModal === bizId && $('assetModal').classList.contains('show')){
+      pulseNode($('assetModalBody'), 'purchase-pop', 860);
+    }
+    if(sourceNode) pulseNode(sourceNode, 'action-pop', 520);
+    if(topCash) pulseNode(topCash, 'cash-pop', 760);
+  });
+}
+
+function buyAsset(bizId, sourceRect){
+  const biz = businessById(bizId);
+  const item = state.cities[state.selectedCity][bizId];
+  if(item.count >= 1){ showToast('Bien déjà possédé'); return; }
+  if(state.career < biz.unlock){ showToast('Bien verrouillé'); return; }
+  const cost = baseBuyCost(state, state.selectedCity, bizId);
+  if(state.cash < cost){ showToast('Pas assez de cash'); return; }
+  state.cash -= cost;
+  item.count = 1;
+  claimCompletedMissions();
+  renderAll();
+  triggerPurchaseAnimation(bizId, sourceRect, 'ACHAT', '#assetBuyBtn');
+}
+function buyUpgrade(bizId, upgradeId, sourceRect){
+  const biz = businessById(bizId);
+  const item = state.cities[state.selectedCity][bizId];
+  if(item.count <= 0){ showToast('Achète d’abord ce bien'); return; }
+  const up = biz.upgrades.find(u => u.id === upgradeId);
+  if(isUpgradeMaxed(item, up)){ showToast('Amélioration déjà au maximum'); return; }
+  const cost = upgradeCostFor(item, up);
+  if(state.cash < cost){ showToast('Pas assez de cash'); return; }
+  state.cash -= cost;
+  item.upgrades[up.id] += up.step;
+  claimCompletedMissions();
+  renderAll();
+  triggerPurchaseAnimation(bizId, sourceRect, 'UPGRADE', '[data-upgrade-buy]');
+}
+function hireManager(bizId, sourceRect){
+  const item = state.cities[state.selectedCity][bizId];
+  if(item.manager){ showToast('Manager déjà actif'); return; }
+  if(item.count <= 0){ showToast('Achète d’abord ce bien'); return; }
+  const cost = managerCost(state, state.selectedCity, bizId);
+  if(state.cash < cost){ showToast('Pas assez de cash'); return; }
+  state.cash -= cost;
+  item.manager = true;
+  showBanner('Manager engagé sur ' + businessById(bizId).name + '.');
+  renderAll();
+  triggerPurchaseAnimation(bizId, sourceRect, 'MANAGER', '#assetManagerBtn');
+}
+function buyTapUpgrade(sourceRect){
+  const cost = tapUpgradeCost(state);
+  if(state.cash < cost){ showToast('Pas assez de cash'); return; }
+  state.cash -= cost;
+  state.tapLevel = (state.tapLevel || 1) + 1;
+  state.tap = tapValueAtLevel(state.tapLevel);
+  showBanner('Tap amélioré : ' + money(state.tap) + ' par clic.');
+  renderAll();
+  triggerMarketAnimation(sourceRect, 'CLIC +', '#upgradeTapBtn');
+}
+
+
+function activateBoost(){ state.rewardUntil = Date.now() + 30000; showBanner('Boost activé : revenus x2 pendant 30 secondes.'); renderAll(); }
+function doPrestige(){
+  const goal = prestigeGoal(state);
+  if(state.career < goal){ showToast('Prestige verrouillé'); return; }
+  if(!confirm('Tu veux vraiment reset tes biens pour gagner un bonus permanent ?')) return;
+  state = createInitialState(state.prestige + 1);
+  state.tap = tapValueAtLevel(state.tapLevel);
+  showBanner('Prestige ' + state.prestige + ' activé.');
+  renderAll();
+}
+function exportSave(){
+  try{
+    const payload = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    navigator.clipboard.writeText(payload).then(() => showToast('Sauvegarde copiée'));
+  }catch(e){ prompt('Copie cette sauvegarde :', JSON.stringify(state)); }
+}
+function importSave(){
+  const value = prompt('Colle ta sauvegarde exportée :');
+  if(!value) return;
+  try{
+    state = sanitizeState(JSON.parse(decodeURIComponent(escape(atob(value)))));
+    state.tapLevel = Math.max(1, state.tapLevel || 1);
+    state.tap = tapValueAtLevel(state.tapLevel);
+    state.lastSaved = Date.now();
+    showBanner('Sauvegarde importée.');
+    renderAll();
+  }catch(e){ alert('Sauvegarde invalide.'); }
+}
+function resetSave(){
+  if(!confirm('Effacer toute la progression ?')) return;
+  state = createInitialState();
+  showBanner('Nouvelle partie.');
+  renderAll();
+}
+
+
+function estateSortedMarketList(){
+  const list = [...REAL_ESTATE_MARKET];
+  list.sort((a,b) => state.realEstate.marketSort === 'asc' ? a.price - b.price : b.price - a.price);
+  return list;
+}
+function estateSortedOwnedList(){
+  const list = REAL_ESTATE_MARKET.filter(prop => getEstateStatus(state, prop.id).owned);
+  list.sort((a,b) => state.realEstate.ownedSort === 'asc' ? a.price - b.price : b.price - a.price);
+  return list;
+}
+function openEstateView(view, propId=null){
+  state.realEstate.view = view;
+  state.realEstate.selectedId = propId;
+  if(view !== 'detail' && !propId) state.realEstate.selectedId = null;
+  renderRealEstate();
+  saveState();
+}
+function buyRealEstate(propId, sourceRect){
+  const prop = REAL_ESTATE_MARKET.find(p => p.id === propId);
+  const status = getEstateStatus(state, propId);
+  if(!prop || status.owned) return showToast('Bien déjà possédé');
+  if(state.cash < prop.price) return showToast('Pas assez de cash');
+  state.cash -= prop.price;
+  state.realEstate.owned[propId].owned = true;
+  showToast('Bien immobilier acheté');
+  renderAll();
+  triggerMarketAnimation(sourceRect, 'ACHAT');
+}
+function buyRealEstateUpgrade(propId, upgradeId, sourceRect){
+  const prop = REAL_ESTATE_MARKET.find(p => p.id === propId);
+  const up = ESTATE_UPGRADES.find(u => u.id === upgradeId);
+  const status = getEstateStatus(state, propId);
+  if(!prop || !up || !status.owned) return;
+  if(status.upgrades[upgradeId]) return showToast('Amélioration déjà achetée');
+  const cost = estateUpgradeCost(prop, up);
+  if(state.cash < cost) return showToast('Pas assez de cash');
+  state.cash -= cost;
+  state.realEstate.owned[propId].upgrades[upgradeId] = true;
+  showToast('Amélioration achetée');
+  renderAll();
+  triggerMarketAnimation(sourceRect, 'UPGRADE');
+}
+function sellRealEstate(propId, sourceRect){
+  const prop = REAL_ESTATE_MARKET.find(p => p.id === propId);
+  const status = getEstateStatus(state, propId);
+  if(!prop || !status.owned) return;
+  const gain = estateSaleValue(state, propId);
+  state.cash += gain;
+  const reset = createRealEstateState().owned[propId];
+  state.realEstate.owned[propId] = reset;
+  state.realEstate.view = 'owned';
+  state.realEstate.selectedId = null;
+  showToast('Bien vendu');
+  renderAll();
+  triggerMarketAnimation(sourceRect, 'VENTE');
+}
+function renderEstateDashboard(){
+  const income = estateTotalIncome(state);
+  const ownedCount = estateOwnedCount(state);
+  const pending = REAL_ESTATE_MARKET.reduce((acc, prop) => acc + (getEstateStatus(state, prop.id).owned ? estateRemainingCount(getEstateStatus(state, prop.id)) : 0), 0);
+  const marketBg = REAL_ESTATE_MARKET[2].image;
+  const firstOwned = REAL_ESTATE_MARKET.find(p => getEstateStatus(state, p.id).owned);
+  const myBg = (firstOwned || REAL_ESTATE_MARKET[1]).image;
+  return `
+    <div class="re-summary">
+      <div class="re-summary-value">${moneyRate(income)}</div>
+      <div class="re-summary-sub">Revenus locatifs par minute</div>
+    </div>
+    <div class="re-entry-grid">
+      <button class="re-entry" data-estate-view="market" type="button">
+        <img class="re-entry-img" src="${marketBg}" alt="Marché immobilier" />
+        <div>
+          <div class="re-entry-title">Marché immobilier</div>
+          <div class="re-entry-sub">Achetez des propriétés dans le monde entier et gagnez des revenus locatifs.</div>
+        </div>
+      </button>
+      <button class="re-entry" data-estate-view="owned" type="button">
+        <img class="re-entry-img" src="${myBg}" alt="Mon bien" />
+        ${pending > 0 ? `<div class="re-entry-badge">${pending}</div>` : ''}
+        <div>
+          <div class="re-entry-title">Mon bien</div>
+          <div class="re-entry-sub">Liste de mes biens${ownedCount ? ` • ${ownedCount} propriété(s)` : ''}</div>
+        </div>
+      </button>
+    </div>
+  `;
+}
+function renderEstateMarket(){
+  const list = estateSortedMarketList();
+  return `
+    <div class="re-topbar">
+      <button class="re-back" data-estate-view="home">←</button>
+      <div>
+        <div class="re-title">Marché immobilier</div>
+        <div class="re-subtitle">Solde : <strong>${moneyRate(state.cash)}</strong></div>
+      </div>
+    </div>
+    <div class="re-sortbar">
+      <button class="re-sortbtn ${state.realEstate.marketSort === 'desc' ? 'active' : ''}" data-estate-sort="market:desc">Le plus cher en premier</button>
+      <button class="re-sortbtn ${state.realEstate.marketSort === 'asc' ? 'active' : ''}" data-estate-sort="market:asc">Le moins cher en premier</button>
+    </div>
+    <div class="re-list">
+      ${list.map(prop => {
+        const owned = getEstateStatus(state, prop.id).owned;
+        const disabled = owned || state.cash < prop.price;
+        return `
+          <div class="re-card">
+            <img class="re-card-image" src="${prop.image}" alt="${prop.city}" />
+            <div class="re-card-body">
+              <div class="re-card-text">
+                <div class="re-price">${money(prop.price)}</div>
+                <div class="re-location">
+                  <div class="re-pin">◎</div>
+                  <div class="re-location-lines">${prop.city},<br>${prop.country}</div>
+                </div>
+              </div>
+              <button class="re-card-action" data-estate-buy="${prop.id}" ${disabled ? 'disabled' : ''}>${owned ? 'Possédé' : 'Acheter'}</button>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+function renderEstateOwned(){
+  const list = estateSortedOwnedList();
+  return `
+    <div class="re-topbar">
+      <button class="re-back" data-estate-view="home">←</button>
+      <div>
+        <div class="re-title">Mon bien</div>
+      </div>
+    </div>
+    <div class="re-sortbar">
+      <button class="re-sortbtn ${state.realEstate.ownedSort === 'desc' ? 'active' : ''}" data-estate-sort="owned:desc">Le plus cher en premier</button>
+      <button class="re-sortbtn ${state.realEstate.ownedSort === 'asc' ? 'active' : ''}" data-estate-sort="owned:asc">Le moins cher en premier</button>
+    </div>
+    ${!list.length ? `<div class="re-empty">Tu n’as pas encore acheté de propriété. Ouvre le <strong>Marché immobilier</strong> pour commencer.</div>` : `
+      <div class="re-list">
+        ${list.map(prop => {
+          const status = getEstateStatus(state, prop.id);
+          const remain = estateRemainingCount(status);
+          return `
+            <button class="re-card" type="button" data-estate-detail="${prop.id}">
+              ${remain > 0 ? `<div class="re-card-badge">${remain}</div>` : ''}
+              <img class="re-card-image" src="${prop.image}" alt="${prop.city}" />
+              <div class="re-card-body" style="grid-template-columns:1fr">
+                <div class="re-card-text">
+                  <div class="re-price">${money(prop.price)}</div>
+                  <div class="re-location">
+                    <div class="re-pin">◎</div>
+                    <div class="re-location-lines">${prop.city},<br>${prop.country}</div>
+                  </div>
+                  <div class="re-card-muted">${estateUpgradeCount(status) ? `${estateUpgradeCount(status)} amélioration(s)` : 'Aucune amélioration'}</div>
+                </div>
+              </div>
+            </button>
+          `;
+        }).join('')}
+      </div>
+    `}
+  `;
+}
+function renderEstateDetail(){
+  const prop = REAL_ESTATE_MARKET.find(p => p.id === state.realEstate.selectedId);
+  if(!prop) return renderEstateOwned();
+  const status = getEstateStatus(state, prop.id);
+  if(!status.owned) return renderEstateMarket();
+  return `
+    <div class="re-topbar">
+      <button class="re-back" data-estate-view="owned">←</button>
+      <div class="re-balance-row">Solde : <strong>${moneyRate(state.cash)}</strong></div>
+    </div>
+    <img class="re-detail-image" src="${prop.image}" alt="${prop.city}" />
+    <div class="re-detail-meta">
+      <div class="re-detail-income">
+        <strong>${moneyRate(estateIncomeForProperty(state, prop.id))}</strong>
+        Revenu par minute
+      </div>
+      <div class="re-location">
+        <div class="re-pin">◎</div>
+        <div class="re-location-lines">${prop.city},<br>${prop.country}</div>
+      </div>
+    </div>
+    <div class="re-divider"></div>
+    <div class="re-section-title">Améliorations disponibles</div>
+    <div class="re-upgrades">
+      ${ESTATE_UPGRADES.map(up => {
+        const bought = status.upgrades[up.id];
+        const cost = estateUpgradeCost(prop, up);
+        const disabled = bought || state.cash < cost;
+        return `
+          <div class="re-upgrade">
+            <div class="re-upgrade-icon">${up.icon}${bought ? '' : '<span class="re-upgrade-dot"></span>'}</div>
+            <div>
+              <div class="re-upgrade-label">${up.label}</div>
+              <div class="re-upgrade-price">${money(cost)}</div>
+            </div>
+            <button class="re-upgrade-btn" data-estate-upgrade="${prop.id}:${up.id}" ${disabled ? 'disabled' : ''}>${bought ? 'Installé' : 'Améliorer'}</button>
+          </div>
+        `;
+      }).join('')}
+    </div>
+    <div class="re-sell-wrap">
+      <div class="re-market-value">Valeur marchande : <strong>${money(estateMarketValue(state, prop.id))}</strong></div>
+      <button class="re-sell-btn" data-estate-sell="${prop.id}">Vendre<small>Taxe de vente : 12 %</small></button>
+    </div>
+  `;
+}
+function renderRealEstate(){
+  const mount = $('realEstateMount');
+  if(!mount) return;
+  if(!state.realEstate) state.realEstate = createRealEstateState();
+  let html = '';
+  if(state.realEstate.view === 'market') html = renderEstateMarket();
+  else if(state.realEstate.view === 'owned') html = renderEstateOwned();
+  else if(state.realEstate.view === 'detail') html = renderEstateDetail();
+  else html = renderEstateDashboard();
+  mount.innerHTML = html || '<div class="re-empty">La section immobilier se charge. Réessaie en revenant sur l’onglet.</div>';
+
+  mount.querySelectorAll('[data-estate-view]').forEach(btn => {
+    btn.addEventListener('click', () => openEstateView(btn.getAttribute('data-estate-view')));
+  });
+  mount.querySelectorAll('[data-estate-sort]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const [kind, value] = btn.getAttribute('data-estate-sort').split(':');
+      if(kind === 'market') state.realEstate.marketSort = value;
+      if(kind === 'owned') state.realEstate.ownedSort = value;
+      renderRealEstate();
+      saveState();
+    });
+  });
+  mount.querySelectorAll('[data-estate-buy]').forEach(btn => {
+    btn.addEventListener('click', e => buyRealEstate(btn.getAttribute('data-estate-buy'), e.currentTarget.getBoundingClientRect()));
+  });
+  mount.querySelectorAll('[data-estate-detail]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.realEstate.selectedId = btn.getAttribute('data-estate-detail');
+      state.realEstate.view = 'detail';
+      renderRealEstate();
+      saveState();
+    });
+  });
+  mount.querySelectorAll('[data-estate-upgrade]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const [propId, upgradeId] = btn.getAttribute('data-estate-upgrade').split(':');
+      buyRealEstateUpgrade(propId, upgradeId, e.currentTarget.getBoundingClientRect());
+    });
+  });
+  mount.querySelectorAll('[data-estate-sell]').forEach(btn => {
+    btn.addEventListener('click', e => sellRealEstate(btn.getAttribute('data-estate-sell'), e.currentTarget.getBoundingClientRect()));
+  });
+}
+
+function setTab(tab){
+  const page = $('page-' + tab);
+  const tabBtn = document.querySelector(`[data-tab="${tab}"]`);
+  if(!page || !tabBtn) return;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+  page.classList.add('active');
+  tabBtn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'auto' });
+  if(tab === 'home') renderHome();
+  if(tab === 'assets') renderAssets();
+  if(tab === 'map') renderMapPage();
+  if(tab === 'markets') renderMarkets();
+  if(tab === 'realestate') renderRealEstate();
+}
+function renderAll(){
+  renderHome();
+  const activePage = document.querySelector('.page.active')?.id?.replace('page-', '') || 'home';
+  if(activePage === 'assets') renderAssets();
+  if(activePage === 'map') renderMapPage();
+  if(activePage === 'markets') renderMarkets();
+  if(activePage === 'realestate') renderRealEstate();
+  renderIncomeModal();
+  if(currentAssetModal) renderAssetModal();
+  if(currentMarketModal) renderMarketModal();
+  if(currentInvestmentsKind) renderInvestmentsModal();
+  saveState();
+}
+
+document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => setTab(btn.getAttribute('data-tab'))));
+document.querySelectorAll('[data-market-tab]').forEach(btn => btn.addEventListener('click', () => { state.marketTab = btn.getAttribute('data-market-tab'); renderMarkets(); saveState(); }));
+document.querySelectorAll('[data-market-sort]').forEach(btn => btn.addEventListener('click', () => { state.marketSort = btn.getAttribute('data-market-sort'); renderMarkets(); saveState(); }));
+$('collectBtn').addEventListener('click', () => {
+  const gain = tapClickValue(state) * prestigeMult(state.prestige) * boostMult(state);
+  state.cash += gain; state.career += gain;
+  coinBurst(gain);
+  flashHomeGain(gain);
+  claimCompletedMissions();
+  renderAll();
+});
+if($('boostBtn')) $('boostBtn').addEventListener('click', activateBoost);
+if($('upgradeTapBtn')) $('upgradeTapBtn').addEventListener('click', () => buyTapUpgrade($('upgradeTapBtn').getBoundingClientRect()));
+$('topCashBtn').addEventListener('click', () => { renderIncomeModal(); openModal('incomeModal'); });
+
+document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => closeModal(btn.getAttribute('data-close'))));
+document.querySelectorAll('.modal-backdrop').forEach(modal => {
+  modal.addEventListener('click', e => {
+    if(e.target !== modal) return;
+    closeModal(modal.id);
+  });
+});
+document.querySelectorAll('.sheet').forEach(sheet => {
+  sheet.addEventListener('click', e => e.stopPropagation());
+});
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  if($('tradeModal').classList.contains('show')) return closeModal('tradeModal');
+  if($('marketModal').classList.contains('show')) return closeModal('marketModal');
+  if($('assetModal').classList.contains('show')) return closeModal('assetModal');
+  if($('investmentsModal').classList.contains('show')) return closeModal('investmentsModal');
+  if($('incomeModal').classList.contains('show')) return closeModal('incomeModal');
+});
+$('incomeModal').addEventListener('click', e => { if(e.target === $('incomeModal')) closeModal('incomeModal'); });
+$('assetModal').addEventListener('click', e => { if(e.target === $('assetModal')) closeModal('assetModal'); });
+$('marketModal').addEventListener('click', e => { if(e.target === $('marketModal')) closeModal('marketModal'); });
+$('tradeModal').addEventListener('click', e => { if(e.target === $('tradeModal')) closeModal('tradeModal'); });
+$('investmentsModal').addEventListener('click', e => { if(e.target === $('investmentsModal')) closeModal('investmentsModal'); });
+
+setInterval(() => {
+  const gain = totalIncome(state) / 60;
+  state.cash += gain;
+  state.career += gain;
+  applyManagerAutomation(state, 1);
+  updateMarkets();
+  claimCompletedMissions();
+  renderAll();
+}, 1000);
+
+document.addEventListener('visibilitychange', () => {
+  if(document.hidden){ saveState(); }
+  else{
+    const elapsed = Math.min(60 * 60 * 8, Math.max(0, Math.floor((Date.now() - state.lastSaved) / 1000)));
+    if(elapsed > 1){
+      const offline = totalIncome(state) * (elapsed / 60);
+      state.cash += offline;
+      state.career += offline;
+      applyManagerAutomation(state, elapsed);
+      updateMarkets(state, elapsed);
+      showBanner('Retour réussi : ' + money(offline) + ' gagnés hors ligne.');
+    }
+    renderAll();
+  }
+});
+
+renderAll();
+</script>
+</body>
+</html>
